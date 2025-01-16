@@ -2,6 +2,7 @@
 import { Article } from "@/types/article";
 import { formatDate } from "@/lib/utils";
 import Image from "next/image";
+import Link from "next/link";
 import { Heart } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -12,12 +13,12 @@ interface ArticleCardProps {
 export default function ArticleCard({ article }: ArticleCardProps) {
   return (
     <motion.div 
-      className="h-[420px] max-w-2xl mx-auto"
+      className="h-[420px] max-w-3xl mx-auto"
       whileHover={{ scale: 1.01 }}
       transition={{ type: "spring", stiffness: 300 }}
     >
       <div className="h-full p-4 bg-card rounded-xl border shadow-sm hover:shadow-md transition-shadow flex flex-col">
-        <div className="h-[180px] relative w-full overflow-hidden rounded-lg flex-shrink-0">
+        <div className="h-[230px] relative w-full overflow-hidden rounded-lg flex-shrink-0">
           <Image
             src={article.coverImage}
             alt={article.title}
@@ -41,9 +42,11 @@ export default function ArticleCard({ article }: ArticleCardProps) {
           </div>
 
           <div>
-            <h2 className="text-lg font-bold hover:text-primary transition-colors truncate mb-2" title={article.title}>
-              {article.title}
-            </h2>
+            <Link href={`/article/${article.id}`}>
+              <h2 className="text-lg font-bold hover:text-primary transition-colors truncate mb-2" title={article.title}>
+                {article.title}
+              </h2>
+            </Link>
             <p className="text-sm text-muted-foreground truncate" title={article.subtitle}>
               {article.subtitle}
             </p>

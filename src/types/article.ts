@@ -14,4 +14,5 @@ export interface Article {
     name: string;
     color: string;
   }>;
+  content?: string;
 } 
