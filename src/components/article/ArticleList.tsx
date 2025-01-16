@@ -6,11 +6,59 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { Article } from "@/types/article";
 import { generateMockArticles } from "@/lib/mock/articles";
 import { Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { Skeleton } from "@/components/ui/skeleton";
 import ArticleCard from "./ArticleCard";
 
 const PAGE_SIZE = 10;
-const CARD_GAP = 24; // 减小卡片间距
-const CARD_HEIGHT = 420; // 更新卡片高度
+const CARD_GAP = 24;
+const CARD_HEIGHT = 420;
+
+function ArticleSkeletons() {
+  return (
+    <div className="article-list-container min-h-[calc(100vh-200px)] overflow-auto px-4 md:px-6">
+      <div className="grid gap-6">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.2, delay: i * 0.1 }}
+            className="relative overflow-hidden rounded-xl border border-border bg-card"
+          >
+            <div className="relative">
+              <Skeleton className="h-[200px] w-full bg-muted" />
+              {/* 标签 */}
+              <div className="absolute bottom-4 left-4 flex gap-2">
+                <Skeleton className="h-6 w-16 rounded-full bg-muted" />
+                <Skeleton className="h-6 w-20 rounded-full bg-muted" />
+              </div>
+            </div>
+            <div className="p-6 space-y-4">
+              <div className="space-y-3">
+                <Skeleton className="h-7 w-3/4 bg-muted" />
+                <Skeleton className="h-5 w-1/2 bg-muted" />
+              </div>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <Skeleton className="h-10 w-10 rounded-full bg-muted" />
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-24 bg-muted" />
+                    <Skeleton className="h-3 w-16 bg-muted" />
+                  </div>
+                </div>
+                <div className="ml-auto flex items-center gap-2">
+                  <Skeleton className="h-4 w-12 bg-muted" />
+                  <Skeleton className="h-4 w-12 bg-muted" />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  );
+}
 
 type ArticleResponse = {
   items: Article[];
@@ -67,6 +115,13 @@ export default function ArticleList() {
       fetchNextPage();
     }
   }, [entry?.isIntersecting, fetchNextPage, hasNextPage, isFetchingNextPage]);
+
+  // 显示骨架屏的条件：
+  // 1. 初始加载状态
+  // 2. 或者数据加载成功但还在获取中（不包括加载更多的情况）
+  if (status === "pending" || (status === "success" && isFetching && !isFetchingNextPage)) {
+    return <ArticleSkeletons />;
+  }
 
   if (status === "error") {
     return (
