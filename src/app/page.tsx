@@ -1,15 +1,65 @@
-// import Image from "next/image";
-'use client'
-import { motion } from "motion/react";
+"use client";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+import { Search } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import SearchDialog from "@/components/search/SearchDialog";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      staleTime: Infinity,
+    },
+  },
+});
+
+const ArticleList = dynamic(() => import("@/components/article/ArticleList"), {
+  loading: () => (
+    <div className="space-y-4">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="space-y-4">
+          <Skeleton className="h-[300px] w-full rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-[250px]" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+  ssr: false,
+});
 
 export default function Home() {
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+  // 处理快捷键
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setIsSearchOpen(true);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
-    <div className="min-h-full bg-gradient-to-b from-zinc-900 to-black text-white">
+    <div className="min-h-full">
+      {/* 搜索组件 */}
+      <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+
       {/* Hero Section */}
       <motion.section 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        className="container mx-auto px-4 py-20"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="py-20"
       >
         <div className="flex flex-col items-center text-center gap-8">
           <motion.h1 
@@ -18,8 +68,8 @@ export default function Home() {
             className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text"
           >
             CodeNest
-          </motion.h1>
-          <p className="text-xl text-zinc-400 max-w-2xl">
+          </motion.h1>  
+          <p className="text-xl text-muted-foreground max-w-2xl">
             打造属于你的代码乐园，让编程更简单
           </p>
           
@@ -27,18 +77,25 @@ export default function Home() {
             <button className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 transition">
               立即开始
             </button>
-            <button className="px-8 py-3 rounded-full border border-zinc-700 hover:bg-zinc-800 transition">
-              了解更多
+            <button 
+              onClick={() => setIsSearchOpen(true)}
+              className="px-8 py-3 rounded-full border border-border hover:bg-accent hover:text-accent-foreground transition flex items-center gap-2"
+            >
+              <Search className="w-4 h-4" />
+              搜索文章
+              <kbd className="hidden md:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground ml-2">
+                <span className="text-xs">⌘</span>K
+              </kbd>
             </button>
           </div>
         </div>
       </motion.section>
 
-      {/* Features Section */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="grid md:grid-cols-3 gap-8">
-          {/* Feature cards here */}
-        </div>
+      {/* Articles Section */}
+      <section className="py-10">
+        <QueryClientProvider client={queryClient}>
+          <ArticleList />
+        </QueryClientProvider>
       </section>
     </div>
   );

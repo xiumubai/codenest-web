@@ -3,6 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import Footer from "@/components/layout/Footer";
+import Main from "@/components/layout/Main";
+import BackToTop from "@/components/ui/back-to-top";
+import { ThemeProvider } from "@/components/theme/theme-provider";
+
 import "./globals.css";
 
 const geistSans = Geist({
@@ -26,26 +30,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh">
+    <html lang="zh" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <div className="flex h-screen bg-zinc-900">
-          {/* 侧边栏 */}
-          <Sidebar />
-          
-          {/* 主内容区 */}
-          <div className="flex-1 flex flex-col min-h-screen">
-            {/* 顶部导航 */}
-            <Header />
-            
-            {/* 主要内容 */}
-            <main className="flex-1 overflow-auto">
-              {children}
-            </main>
-
-            {/* 底部 */}
-            <Footer />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex h-screen bg-background">
+            <Sidebar />
+            <div className="flex-1 flex flex-col min-h-screen">
+              <Header />
+              <Main>{children}</Main>
+              <Footer />
+            </div>
+            {/* 回到顶部按钮 */}
+            <BackToTop containerSelector="#main"/>
           </div>
-        </div>
+        </ThemeProvider>
       </body>
     </html>
   );
