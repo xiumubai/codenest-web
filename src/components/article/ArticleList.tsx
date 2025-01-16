@@ -41,6 +41,7 @@ export default function ArticleList() {
     hasNextPage,
     isFetchingNextPage,
     status,
+    isFetching
   } = useInfiniteQuery({
     queryKey: ["articles"],
     queryFn: async ({ pageParam }) => {
@@ -57,7 +58,7 @@ export default function ArticleList() {
   const rowVirtualizer = useVirtualizer({
     count: allArticles.length,
     getScrollElement: () => parentRef.current,
-    estimateSize: () => CARD_HEIGHT + CARD_GAP, // 卡片高度 + 间距
+    estimateSize: () => CARD_HEIGHT + CARD_GAP,
     overscan: 5,
   });
 
@@ -67,16 +68,12 @@ export default function ArticleList() {
     }
   }, [entry?.isIntersecting, fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  if (status === "pending") {
+  if (status === "error") {
     return (
-      <div className="flex items-center justify-center min-h-[500px]">
-        <Loader2 className="w-6 h-6 animate-spin" />
+      <div className="min-h-[500px] flex items-center justify-center text-muted-foreground">
+        加载失败，请稍后重试
       </div>
     );
-  }
-
-  if (status === "error") {
-    return <div className="min-h-[500px] flex items-center justify-center">加载失败</div>;
   }
 
   return (
@@ -114,7 +111,7 @@ export default function ArticleList() {
       </div>
       {hasNextPage && (
         <div ref={rootRef} className="flex justify-center py-8">
-          <Loader2 className="w-6 h-6 animate-spin" />
+          <Loader2 className="w-6 h-6 animate-spin text-muted-foreground" />
         </div>
       )}
     </div>

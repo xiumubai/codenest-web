@@ -2,10 +2,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 import { 
   Home,
   BookOpen,
-  Users,
+  HelpCircle,
   MessageSquare,
   Settings,
   ChevronLeft,
@@ -13,8 +15,45 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+const navItems = [
+  {
+    href: "/",
+    label: "首页",
+    icon: Home,
+    exact: true
+  },
+  {
+    href: "/community",
+    label: "问答社区",
+    icon: HelpCircle
+  },
+  {
+    href: "/courses",
+    label: "课程中心",
+    icon: BookOpen
+  },
+  {
+    href: "/chat",
+    label: "对话",
+    icon: MessageSquare
+  },
+  {
+    href: "/settings",
+    label: "设置",
+    icon: Settings
+  }
+];
+
 export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const pathname = usePathname();
+
+  const isActive = (href: string, exact = false) => {
+    if (exact) {
+      return pathname === href;
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <div className="relative flex h-full">
@@ -41,55 +80,27 @@ export default function Sidebar() {
         </div>
 
         <nav className="space-y-2">
-          <Link 
-            href="/" 
-            className="flex items-center gap-3 px-3 py-2.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition"
-          >
-            <Home className="w-6 h-6 min-w-[24px]" />
-            <span className={`whitespace-nowrap transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0' : 'opacity-100 max-w-[200px]'}`}>
-              首页
-            </span>
-          </Link>
-          
-          <Link 
-            href="/courses" 
-            className="flex items-center gap-3 px-3 py-2.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition"
-          >
-            <BookOpen className="w-6 h-6 min-w-[24px]" />
-            <span className={`whitespace-nowrap transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0' : 'opacity-100 max-w-[200px]'}`}>
-              课程中心
-            </span>
-          </Link>
-          
-          <Link 
-            href="/community" 
-            className="flex items-center gap-3 px-3 py-2.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition"
-          >
-            <Users className="w-6 h-6 min-w-[24px]" />
-            <span className={`whitespace-nowrap transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0' : 'opacity-100 max-w-[200px]'}`}>
-              社区
-            </span>
-          </Link>
-          
-          <Link 
-            href="/chat" 
-            className="flex items-center gap-3 px-3 py-2.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition"
-          >
-            <MessageSquare className="w-6 h-6 min-w-[24px]" />
-            <span className={`whitespace-nowrap transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0' : 'opacity-100 max-w-[200px]'}`}>
-              对话
-            </span>
-          </Link>
-
-          <Link 
-            href="/settings" 
-            className="flex items-center gap-3 px-3 py-2.5 text-muted-foreground hover:text-foreground hover:bg-accent rounded-lg transition"
-          >
-            <Settings className="w-6 h-6 min-w-[24px]" />
-            <span className={`whitespace-nowrap transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0' : 'opacity-100 max-w-[200px]'}`}>
-              设置
-            </span>
-          </Link>
+          {navItems.map((item) => {
+            const active = isActive(item.href, item.exact);
+            const Icon = item.icon;
+            
+            return (
+              <Link 
+                key={item.href}
+                href={item.href} 
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition",
+                  "hover:text-foreground hover:bg-accent",
+                  active ? "text-foreground bg-accent" : "text-muted-foreground"
+                )}
+              >
+                <Icon className="w-6 h-6 min-w-[24px]" />
+                <span className={`whitespace-nowrap transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0' : 'opacity-100 max-w-[200px]'}`}>
+                  {item.label}
+                </span>
+              </Link>
+            );
+          })}
         </nav>
       </motion.aside>
 
