@@ -25,6 +25,8 @@ export default function EditorPage() {
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
 
   const handleSaveDraft = async () => {
+    // TODO: 调用保存草稿的API
+    toast.success('草稿保存成功');
     if (!title.trim()) {
       toast.error('请输入文章标题');
       return;
@@ -33,8 +35,7 @@ export default function EditorPage() {
       toast.error('请输入文章内容');
       return;
     }
-    // TODO: 调用保存草稿的API
-    toast.success('草稿保存成功');
+    
   };
 
   const handlePublish = async (data: {
