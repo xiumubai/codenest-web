@@ -13,7 +13,7 @@ export default function Main({ children }: MainProps) {
       className="flex-1 overflow-auto bg-background"
       id="main"
     >
-      <div className="container mx-auto px-4 py-8">
+      <div className="w-full mx-auto px-4 py-8">
         {children}
       </div>
     </motion.main>

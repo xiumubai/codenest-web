@@ -2,9 +2,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { Search } from "lucide-react";
+import { Search, PenLine } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import SearchDialog from "@/components/search/SearchDialog";
+import Link from "next/link";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -60,9 +61,13 @@ export default function Home() {
           </p>
           
           <div className="flex gap-4 mt-8">
-            <button className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 transition">
-              立即开始
-            </button>
+            <Link 
+              href="/article/new"
+              className="px-8 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 hover:opacity-90 transition flex items-center gap-2"
+            >
+              <PenLine className="w-4 h-4" />
+              发布文章
+            </Link>
             <button 
               onClick={() => setIsSearchOpen(true)}
               className="px-8 py-3 rounded-full border border-border hover:bg-accent hover:text-accent-foreground transition flex items-center gap-2"
