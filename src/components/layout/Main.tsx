@@ -10,11 +10,17 @@ export default function Main({ children }: MainProps) {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex-1 overflow-auto bg-background"
+      className="flex-1 overflow-auto gradient-bg"
       id="main"
     >
-      <div className="w-full mx-auto px-4 py-8">
-        {children}
+      <div className="container max-w-6xl mx-auto px-6 py-8">
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.1 }}
+        >
+          {children}
+        </motion.div>
       </div>
     </motion.main>
   );

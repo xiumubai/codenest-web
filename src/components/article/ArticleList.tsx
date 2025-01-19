@@ -17,7 +17,7 @@ const CARD_HEIGHT = 420;
 function ArticleSkeletons() {
   return (
     <div className="article-list-container min-h-[calc(100vh-200px)] overflow-auto px-4 md:px-6">
-      <div className="grid gap-6">
+      <div className="grid gap-6 max-w-3xl mx-auto">
         {Array.from({ length: 3 }).map((_, i) => (
           <motion.div 
             key={i}

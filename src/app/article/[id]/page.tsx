@@ -52,19 +52,19 @@ console.log(greeting);</code></pre>
     return (
       <div className="container max-w-4xl mx-auto py-10 px-4">
         <div className="space-y-8">
-          <Skeleton className="h-8 w-3/4" />
+          <Skeleton className="h-8 w-3/4 bg-muted" />
           <div className="flex items-center gap-4">
-            <Skeleton className="h-12 w-12 rounded-full" />
+            <Skeleton className="h-12 w-12 rounded-full bg-muted" />
             <div className="space-y-2">
-              <Skeleton className="h-4 w-24" />
-              <Skeleton className="h-3 w-32" />
+              <Skeleton className="h-4 w-24 bg-muted" />
+              <Skeleton className="h-3 w-32 bg-muted" />
             </div>
           </div>
-          <Skeleton className="h-[300px] w-full rounded-xl" />
+          <Skeleton className="h-[300px] w-full rounded-xl bg-muted" />
           <div className="space-y-4">
-            <Skeleton className="h-4 w-full" />
-            <Skeleton className="h-4 w-5/6" />
-            <Skeleton className="h-4 w-4/6" />
+            <Skeleton className="h-4 w-full bg-muted" />
+            <Skeleton className="h-4 w-5/6 bg-muted" />
+            <Skeleton className="h-4 w-4/6 bg-muted" />
           </div>
         </div>
       </div>
