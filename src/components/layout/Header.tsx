@@ -37,7 +37,7 @@ export default function Header() {
             >
               CN
             </motion.div>
-            <span className={`text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text whitespace-nowrap transition-all duration-300`}>
+            <span className="text-2xl font-bold bg-gradient-to-r from-primary/80 to-primary text-transparent bg-clip-text whitespace-nowrap transition-all duration-300">
               CodeNest
             </span>
           </Link>

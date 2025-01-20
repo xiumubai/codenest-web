@@ -17,7 +17,7 @@ const queryClient = new QueryClient({
 });
 
 const ArticleList = dynamic(() => import("@/components/article/ArticleList"), {
-  ssr: false
+  ssr: false,
 });
 
 export default function Home() {
@@ -26,41 +26,44 @@ export default function Home() {
   // 处理快捷键
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setIsSearchOpen(true);
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   return (
     <div className="min-h-full">
       {/* 搜索组件 */}
-      <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+      <SearchDialog
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+      />
 
       {/* Hero Section */}
-      <motion.section 
+      <motion.section
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className="py-20"
       >
         <div className="flex flex-col items-center text-center gap-8">
-          <motion.h1 
+          <motion.h1
             initial={{ y: 20 }}
             animate={{ y: 0 }}
-            className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text"
+            className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-primary/60 via-primary to-primary/90 text-transparent bg-clip-text"
           >
             CodeNest
-          </motion.h1>  
+          </motion.h1>
           <p className="text-xl text-muted-foreground max-w-2xl">
             打造属于你的代码乐园，让编程更简单
           </p>
-          
+
           <div className="flex gap-4 mt-8">
-            <button 
+            <button
               onClick={() => setIsSearchOpen(true)}
               className="px-8 py-3 rounded-full border border-border hover:bg-accent hover:text-accent-foreground transition flex items-center gap-2"
             >
