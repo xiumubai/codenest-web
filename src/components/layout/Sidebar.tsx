@@ -59,7 +59,7 @@ export default function Sidebar() {
       <motion.aside 
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        className={`${isCollapsed ? 'w-20' : 'w-64'} border-r border-border bg-background p-4 transition-all duration-300`}
+        className={`${isCollapsed ? 'w-20' : 'w-64'} border-r border-border bg-background p-4 transition-all duration-300 shadow-[1px_0_10px_0_rgba(0,0,0,0.05)]`}
       >
         <div className="mb-8">
           <Link href="/" className="flex items-center justify-center gap-2">
