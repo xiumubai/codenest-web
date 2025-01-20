@@ -136,9 +136,8 @@ export default function LoginDialog({ onLoginSuccess }: LoginDialogProps) {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button 
-          variant="ghost" 
           size="sm"
-          className="gap-2 bg-gradient-to-r from-primary/90 to-primary text-primary-foreground shadow-sm hover:shadow-md transition-all duration-300"
+          className="gap-2 bg-primary text-primary-foreground shadow-sm hover:shadow-md hover:bg-primary/90 transition-all duration-300"
         >
           <LogIn className="w-4 h-4" />
           登录

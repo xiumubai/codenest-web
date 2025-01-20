@@ -20,14 +20,13 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       className="group relative overflow-hidden rounded-xl border border-border bg-card transition-colors hover:bg-accent/50"
     >
       {/* 封面图片 */}
-      <div className="relative aspect-[2/1] overflow-hidden">
+      <div className="relative aspect-[2/1]">
         <Image
           src={article.cover}
           alt={article.title}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
         <div className="absolute bottom-4 left-4 flex gap-2">
           <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
             {article.category}
