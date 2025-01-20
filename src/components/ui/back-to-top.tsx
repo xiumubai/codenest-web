@@ -117,9 +117,9 @@ export default function BackToTop({
           }}
           className={cn(
             "z-50 p-3 rounded-full",
-            "bg-gradient-to-r from-primary/90 to-primary",
-            "text-primary-foreground shadow-lg shadow-primary/20",
-            "hover:shadow-primary/30 hover:from-primary hover:to-primary/90",
+            "bg-background border border-border",
+            "text-foreground shadow-lg",
+            "hover:bg-muted hover:shadow-lg",
             "transition-all duration-300",
             "flex items-center justify-center",
             "relative group",
@@ -141,7 +141,7 @@ export default function BackToTop({
               ease: "easeInOut"
             }}
           >
-            <div className="w-1 h-full mx-auto bg-gradient-to-b from-primary via-orange-400 to-transparent rounded-full blur-sm" />
+            <div className="w-1 h-full mx-auto bg-gradient-to-b from-foreground via-foreground/50 to-transparent rounded-full blur-sm" />
           </motion.div>
 
           {/* 火箭图标 */}
@@ -149,15 +149,19 @@ export default function BackToTop({
             animate={{ 
               y: isScrolling ? -3 : 0,
               rotate: isScrolling ? -45 : 0,
-              transition: { 
-                y: {
-                  duration: 0.2,
-                  repeat: isScrolling ? Infinity : 0,
-                  repeatType: "reverse"
-                },
-                rotate: {
-                  duration: 0.3,
-                }
+            }}
+            whileHover={{
+              rotate: -45,
+              y: -3,
+            }}
+            transition={{ 
+              y: {
+                duration: 0.2,
+                repeat: isScrolling ? Infinity : 0,
+                repeatType: "reverse"
+              },
+              rotate: {
+                duration: 0.3,
               }
             }}
             className="flex items-center justify-center"
