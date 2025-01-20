@@ -1,68 +1,57 @@
 'use client'
-import { motion } from "framer-motion";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { 
-  Home,
-  BookOpen,
-  HelpCircle,
-  MessageSquare,
-  Settings,
-  ChevronLeft,
-  ChevronRight
-} from "lucide-react";
-import { useState } from "react";
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { Home, MessageCircle, BookOpen, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import SearchDialog from '@/components/search/SearchDialog';
+import { useState } from 'react';
 
 const navItems = [
   {
+    name: "首页",
     href: "/",
-    label: "首页",
     icon: Home,
-    exact: true
+    description: "发现优质内容"
   },
   {
+    name: "问答社区",
     href: "/community",
-    label: "问答社区",
-    icon: HelpCircle
+    icon: MessageCircle,
+    description: "技术问答交流"
   },
   {
+    name: "课程中心",
     href: "/courses",
-    label: "课程中心",
-    icon: BookOpen
+    icon: BookOpen,
+    description: "精品课程学习"
   },
   {
-    href: "/chat",
-    label: "对话",
-    icon: MessageSquare
-  },
-  {
-    href: "/settings",
-    label: "设置",
-    icon: Settings
+    name: "个人中心",
+    href: "/profile",
+    icon: User,
+    description: "个人信息管理"
   }
 ];
 
 export default function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
   const pathname = usePathname();
-
-  const isActive = (href: string, exact = false) => {
-    if (exact) {
-      return pathname === href;
-    }
-    return pathname.startsWith(href);
-  };
+  const [showSearch, setShowSearch] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   return (
     <div className="relative flex h-full">
       <motion.aside 
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        className={`${isCollapsed ? 'w-20' : 'w-64'} border-r border-border bg-background p-4 transition-all duration-300 shadow-[1px_0_10px_0_rgba(0,0,0,0.05)]`}
+        className={cn(
+          "border-r border-border bg-background transition-all duration-300 shadow-[1px_0_10px_0_rgba(0,0,0,0.05)]",
+          isCollapsed ? "w-20" : "w-64"
+        )}
       >
-        <div className="mb-8">
-          <Link href="/" className="flex items-center justify-center gap-2">
+        <div className="flex h-16 items-center gap-2 px-4">
+          <Link href="/" className="flex items-center gap-2">
             <motion.div
               className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-foreground flex items-center justify-center text-white"
               whileHover={{ scale: 1.05 }}
@@ -70,35 +59,57 @@ export default function Sidebar() {
             >
               CN
             </motion.div>
-            <span className={`text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text whitespace-nowrap transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0' : 'opacity-100 max-w-[200px]'}`}>
+            <span className={cn(
+              "text-xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text whitespace-nowrap transition-all duration-300",
+              isCollapsed ? "opacity-0 max-w-0" : "opacity-100 max-w-[200px]"
+            )}>
               CodeNest
             </span>
           </Link>
         </div>
 
-        <nav className="space-y-2">
+        <nav className="space-y-1 px-3 py-3">
           {navItems.map((item) => {
-            const active = isActive(item.href, item.exact);
             const Icon = item.icon;
-            
+            const isActive = pathname === item.href;
             return (
-              <Link 
+              <Link
                 key={item.href}
-                href={item.href} 
+                href={item.href}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2.5 rounded-lg transition",
-                  "hover:text-foreground hover:bg-accent",
-                  active ? "text-foreground bg-accent" : "text-muted-foreground"
+                  "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors relative group",
+                  isActive 
+                    ? "bg-primary/10 text-primary" 
+                    : "hover:bg-accent hover:text-accent-foreground"
                 )}
               >
-                <Icon className="w-6 h-6 min-w-[24px]" />
-                <span className={`whitespace-nowrap transition-all duration-300 ${isCollapsed ? 'opacity-0 max-w-0' : 'opacity-100 max-w-[200px]'}`}>
-                  {item.label}
-                </span>
+                <div className={cn(
+                  "p-2 rounded-md transition-colors",
+                  isActive ? "bg-primary/10" : "bg-background group-hover:bg-accent/50"
+                )}>
+                  <Icon className="w-4 h-4" />
+                </div>
+                {!isCollapsed && (
+                  <div className="flex flex-col gap-0.5 overflow-hidden">
+                    <span className="text-sm font-medium whitespace-nowrap">{item.name}</span>
+                    <span className="text-xs text-muted-foreground whitespace-nowrap">{item.description}</span>
+                  </div>
+                )}
               </Link>
             );
           })}
         </nav>
+
+        {!isCollapsed && (
+          <div className="mt-4 px-3">
+            <div className="rounded-lg bg-gradient-to-br from-primary/20 via-primary/10 to-transparent p-4">
+              <h3 className="font-medium mb-2">开始创作</h3>
+              <p className="text-sm text-muted-foreground">
+                分享你的知识和经验，帮助他人成长。
+              </p>
+            </div>
+          </div>
+        )}
       </motion.aside>
 
       <button
@@ -107,6 +118,11 @@ export default function Sidebar() {
       >
         {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
       </button>
+
+      <SearchDialog 
+        isOpen={showSearch} 
+        onClose={() => setShowSearch(false)} 
+      />
     </div>
   );
 } 
