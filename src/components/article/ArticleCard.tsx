@@ -1,10 +1,13 @@
 'use client';
-import { Article } from "@/types/article";
-import { formatDate } from "@/lib/utils";
-import Image from "next/image";
+
 import Link from "next/link";
-import { Heart } from "lucide-react";
+import Image from "next/image";
 import { motion } from "framer-motion";
+import { Calendar, Eye, ThumbsUp } from "lucide-react";
+import { Article } from "@/types/article";
+import { Badge } from "@/components/ui/badge";
+import { format } from "date-fns";
+import { zhCN } from "date-fns/locale";
 
 interface ArticleCardProps {
   article: Article;
@@ -12,68 +15,72 @@ interface ArticleCardProps {
 
 export default function ArticleCard({ article }: ArticleCardProps) {
   return (
-    <motion.div 
-      className="h-[420px] max-w-3xl mx-auto"
-      whileHover={{ scale: 1.01 }}
-      transition={{ type: "spring", stiffness: 300 }}
+    <motion.div
+      layout
+      className="group relative overflow-hidden rounded-xl border border-border bg-card transition-colors hover:bg-accent/50"
     >
-      <div className="h-full p-4 bg-card rounded-xl border shadow-sm hover:shadow-md transition-shadow flex flex-col">
-        <div className="h-[230px] relative w-full overflow-hidden rounded-lg flex-shrink-0">
-          <Image
-            src={article.coverImage}
-            alt={article.title}
-            fill
-            className="object-cover"
-            loading="lazy"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
-          />
+      {/* 封面图片 */}
+      <div className="relative aspect-[2/1] overflow-hidden">
+        <Image
+          src={article.cover}
+          alt={article.title}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+        <div className="absolute bottom-4 left-4 flex gap-2">
+          <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
+            {article.category}
+          </Badge>
+          <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
+            {article.readingTime}
+          </Badge>
+        </div>
+      </div>
+
+      {/* 文章内容 */}
+      <div className="p-6 space-y-4">
+        {/* 标题和描述 */}
+        <div className="space-y-2">
+          <Link href={`/article/${article.id}`}>
+            <h2 className="text-xl font-semibold leading-tight text-foreground truncate hover:text-primary transition-colors">
+              {article.title}
+            </h2>
+          </Link>
+          <p className="text-sm text-muted-foreground truncate">
+            {article.description}
+          </p>
         </div>
 
-        <div className="flex-1 flex flex-col mt-3">
-          <div className="flex flex-wrap gap-1.5 mb-3">
-            {article.tags.map((tag) => (
-              <span
-                key={tag.id}
-                className={`px-2 py-0.5 text-xs rounded-full ${tag.color}`}
-              >
-                {tag.name}
-              </span>
-            ))}
-          </div>
-
-          <div>
-            <Link href={`/article/${article.id}`}>
-              <h2 className="text-lg font-bold hover:text-primary transition-colors truncate mb-2" title={article.title}>
-                {article.title}
-              </h2>
-            </Link>
-            <p className="text-sm text-muted-foreground truncate" title={article.subtitle}>
-              {article.subtitle}
-            </p>
-          </div>
-
-          <div className="flex items-center justify-between pt-3 border-t mt-auto">
-            <div className="flex items-center gap-2">
-              <div className="relative w-6 h-6 rounded-full overflow-hidden">
-                <Image
-                  src={article.author.avatar}
-                  alt={article.author.name}
-                  fill
-                  className="object-cover"
-                  sizes="24px"
-                />
-              </div>
-              <span className="text-sm text-muted-foreground">
+        {/* 作者信息和统计 */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Image
+              src={article.author.avatar}
+              alt={article.author.name}
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
+            <div>
+              <div className="text-sm font-medium text-foreground">
                 {article.author.name}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <span>{formatDate(article.publishedAt)}</span>
-              <div className="flex items-center gap-1">
-                <Heart className="w-4 h-4" />
-                <span>{article.likes}</span>
               </div>
+              <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                <Calendar className="w-3 h-3" />
+                {format(new Date(article.createdAt), "MM月dd日", { locale: zhCN })}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-3 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1">
+              <Eye className="w-3 h-3" />
+              <span>{article.views}</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <ThumbsUp className="w-3 h-3" />
+              <span>{article.likes}</span>
             </div>
           </div>
         </div>

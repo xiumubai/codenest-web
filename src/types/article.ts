@@ -1,18 +1,19 @@
 export interface Article {
-  id: string;
+  id: number;
   title: string;
-  subtitle: string;
+  description: string;
+  content: string;
+  cover: string;
+  category: string;
+  readingTime: string;
+  createdAt: string;
+  updatedAt: string;
+  views: number;
+  likes: number;
   author: {
+    id: number;
     name: string;
     avatar: string;
   };
-  likes: number;
-  publishedAt: string;
-  coverImage: string;
-  tags: Array<{
-    id: string;
-    name: string;
-    color: string;
-  }>;
-  content?: string;
+  tags: string[];
 } 
