@@ -1,5 +1,5 @@
 import { Check, Copy, ChevronDown } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { NodeViewContent, NodeViewWrapper, NodeViewProps } from '@tiptap/react';
 import { Button } from '@/components/ui/button';
 import {
@@ -30,6 +30,13 @@ const languages = [
 export default function CodeBlockComponent(props: NodeViewProps) {
   const [copied, setCopied] = useState(false);
   const preRef = useRef<HTMLPreElement>(null);
+
+  useEffect(() => {
+    // 自动聚焦到代码块
+    if (props.editor.isEditable) {
+      props.editor.commands.focus();
+    }
+  }, [props.editor]);
 
   const currentLanguage = languages.find((lang) => lang.value === props.node.attrs.language) || languages[0];
 

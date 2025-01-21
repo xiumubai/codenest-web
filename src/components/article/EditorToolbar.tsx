@@ -74,6 +74,7 @@ export default function EditorToolbar({ editor, onAddImage, onAddTable, onAddLin
       .updateAttributes('codeBlock', {
         'data-language': language,
       })
+      .focus()
       .run();
   };
 

@@ -346,7 +346,8 @@ export default function ArticleEditor({
         <div className="max-w-3xl mx-auto px-8">
           <EditorContent
             editor={editor}
-            className="min-h-[500px] [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:mb-6 [&_h1]:mt-8
+            className="min-h-[calc(100vh-12rem)] [&_.ProseMirror]:min-h-[calc(100vh-12rem)] [&_.ProseMirror]:outline-none [&_.ProseMirror]:p-0 [&_h1:first-child]:text-4xl [&_h1:first-child]:font-bold [&_h1:first-child]:mb-8 [&_h1:first-child]:mt-4 [&_h1:first-child]:tracking-tight [&_h1:first-child]:text-foreground
+            [&_h1:not(:first-child)]:text-3xl [&_h1:not(:first-child)]:font-bold [&_h1:not(:first-child)]:mb-6 [&_h1:not(:first-child)]:mt-8
             [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:mb-4 [&_h2]:mt-6
             [&_h3]:text-xl [&_h3]:font-bold [&_h3]:mb-3 [&_h3]:mt-5
             [&_h4]:text-lg [&_h4]:font-bold [&_h4]:mb-4 [&_h4]:mt-6
@@ -370,7 +371,8 @@ export default function ArticleEditor({
             [&_ul[data-type=taskList]_li_label]:flex [&_ul[data-type=taskList]_li_label]:items-center [&_ul[data-type=taskList]_li_label]:gap-2
             [&_ul[data-type=taskList]_li_input]:h-4 [&_ul[data-type=taskList]_li_input]:w-4 [&_ul[data-type=taskList]_li_input]:rounded-sm [&_ul[data-type=taskList]_li_input]:border [&_ul[data-type=taskList]_li_input]:border-primary [&_ul[data-type=taskList]_li_input]:checked:bg-primary [&_ul[data-type=taskList]_li_input]:checked:border-primary [&_ul[data-type=taskList]_li_input]:focus-visible:ring-1 [&_ul[data-type=taskList]_li_input]:focus-visible:ring-primary
             [&_ul[data-type=taskList]_li_div]:min-w-0
-            [&_ul[data-type=taskList]_li_p]:my-0"
+            [&_ul[data-type=taskList]_li_p]:my-0
+            [&_p:empty]:before:content-['\00a0'] [&_p:empty]:block [&_p:empty]:min-h-[1.5em]"
           />
         </div>
       </div>

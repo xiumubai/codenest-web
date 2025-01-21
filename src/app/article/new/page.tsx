@@ -41,7 +41,7 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="h-[calc(100vh-4rem)] flex">
+    <div className="h-screen flex">
       {/* 主体内容区域 */}
       <div className="flex-1 flex flex-col min-w-0 border-r">
         {/* 顶部操作栏 */}
@@ -50,13 +50,10 @@ export default function EditorPage() {
             <Input
               type="text"
               placeholder="请输入文章标题..."
-              className="text-xl font-medium border-none shadow-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 w-full placeholder:text-muted-foreground/50"
+              className="text-5xl font-bold border-none shadow-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 w-full placeholder:text-muted-foreground/50 leading-tight"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
             />
-            <span className="text-muted-foreground text-sm whitespace-nowrap">
-              已保存 {new Date().toLocaleTimeString()}
-            </span>
           </div>
           <div className="flex items-center gap-2">
             <Button 
