@@ -79,7 +79,7 @@ export default function Sidebar() {
                 className={cn(
                   "flex items-center gap-3 px-3 py-2 rounded-lg transition-colors relative group",
                   isActive 
-                    ? "bg-primary/10 text-primary" 
+                    ? "bg-primary/5 text-primary" 
                     : "hover:bg-accent hover:text-accent-foreground"
                 )}
               >

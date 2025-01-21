@@ -82,277 +82,6 @@ async function fetchData() {
           </ul>
 
           <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构
-          <h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
-          <p>遵循这些最佳实践，将帮助你构<h2>5. CSS最佳实践</h2>
-          <p>良好的CSS架构对于项目的可维护性至关重要：</p>
-          <ul>
-            <li>使用CSS变量实现主题化</li>
-            <li>采用BEM命名规范</li>
-            <li>使用CSS Grid和Flexbox进行布局</li>
-          </ul>
-
-          <h2>总结</h2>
           <p>遵循这些最佳实践，将帮助你构建更好的Web应用。持续学习和实践是提升技能的关键。</p>
         `;
         setArticle(mockArticle);
@@ -415,11 +144,11 @@ async function fetchData() {
         className="container max-w-4xl mx-auto py-10 px-4"
       >
         {/* 文章标题 */}
-        <h1 className="text-4xl font-bold mb-6">{article.title}</h1>
+        <h1 className="text-4xl font-bold mb-6 text-foreground">{article.title}</h1>
 
         {/* 作者信息 */}
-        <div className="flex items-center gap-4 mb-8">
-          <div className="relative w-12 h-12 rounded-full overflow-hidden">
+        <div className="flex items-center gap-4 mb-8 bg-card p-4 rounded-lg shadow-sm">
+          <div className="relative w-12 h-12 rounded-full overflow-hidden ring-2 ring-primary/10">
             <Image
               src={article.author.avatar}
               alt={article.author.name}
@@ -428,7 +157,7 @@ async function fetchData() {
             />
           </div>
           <div>
-            <div className="font-medium">{article.author.name}</div>
+            <div className="font-medium text-foreground">{article.author.name}</div>
             <div className="text-sm text-muted-foreground">
               {formatDate(article.publishedAt)}
             </div>
@@ -436,7 +165,7 @@ async function fetchData() {
         </div>
 
         {/* 封面图 */}
-        <div className="relative w-full h-[300px] rounded-xl overflow-hidden mb-8">
+        <div className="relative w-full h-[300px] rounded-xl overflow-hidden mb-8 shadow-lg ring-1 ring-border">
           <Image
             src={article.coverImage}
             alt={article.title}
@@ -446,11 +175,11 @@ async function fetchData() {
         </div>
 
         {/* 标签 */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 mb-8 p-4 bg-muted/50 rounded-lg">
           {article.tags.map((tag: any) => (
             <span
               key={tag.id}
-              className={`px-3 py-1 text-sm rounded-full ${tag.color}`}
+              className={`px-3 py-1 text-sm rounded-full bg-primary/10 text-primary hover:bg-primary/20 transition-colors`}
             >
               {tag.name}
             </span>
@@ -458,7 +187,9 @@ async function fetchData() {
         </div>
 
         {/* 文章内容 */}
-        <ArticleViewer content={article.content} />
+        <div className="prose prose-neutral dark:prose-invert max-w-none">
+          <ArticleViewer content={article.content} />
+        </div>
       </motion.div>
     </>
   );
