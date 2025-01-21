@@ -3,10 +3,12 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import ArticleEditor from '@/components/article/ArticleEditor';
+import ArticleEditor from '@/components/editor/ArticleEditor';
 import { Share, History, Save, ChevronRight, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import PublishDialog from '@/components/article/PublishDialog';
+import { log } from 'util';
 
 interface OutlineItem {
   id: string;
@@ -20,17 +22,54 @@ export default function EditorPage() {
   const [content, setContent] = useState('');
   const [outline, setOutline] = useState<OutlineItem[]>([]);
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
+  const [showPublishDialog, setShowPublishDialog] = useState(false);
 
   const handleSaveDraft = async () => {
     if (!title.trim()) {
-      toast.error('请输入文章标题');
+      toast.error('请输入文章标题', {
+        position: 'top-center'
+      });
       return;
     }
     if (!content.trim()) {
-      toast.error('请输入文章内容');
+      toast.error('请输入文章内容', {
+        position: 'top-center'
+      });
       return;
     }
-    toast.success('草稿保存成功');
+
+    try {
+      // TODO: 调用保存草稿的 API
+      // 这里应该调用实际的保存草稿 API
+      // const response = await saveDraft({ title, content });
+      
+      toast.success('草稿保存成功', {
+        position: 'top-center'
+      });
+    } catch (error) {
+      toast.error('草稿保存失败', {
+        position: 'top-center'
+      });
+    }
+  };
+
+  const handlePublish = async (data: {
+    title: string;
+    content: string;
+    description: string;
+    cover: string;
+    tags: string[];
+  }) => {
+    try {
+      // TODO: 调用发布文章的 API
+      // 这里应该调用实际的发布文章 API
+      // const response = await publishArticle(data);
+      console.log(data);
+      
+      toast.success('文章发布成功');
+    } catch (error) {
+      throw error;
+    }
   };
 
   const handleOutlineClick = (id: string) => {
@@ -60,26 +99,33 @@ export default function EditorPage() {
               variant="ghost" 
               size="sm"
               className="gap-1"
-            >
-              <Share className="h-4 w-4" />
-              分享
-            </Button>
-            <Button 
-              variant="ghost"
-              size="sm"
-              className="gap-1"
-            >
-              <History className="h-4 w-4" />
-              历史
-            </Button>
-            <Button 
-              variant="ghost"
-              size="sm"
-              className="gap-1"
               onClick={handleSaveDraft}
             >
               <Save className="h-4 w-4" />
-              保存
+              存为草稿
+            </Button>
+            <Button 
+              variant="ghost"
+              size="sm"
+              className="gap-1"
+              onClick={() => {
+                if (!title.trim()) {
+                  toast.error('请输入文章标题', {
+                    position: 'top-center'
+                  });
+                  return;
+                }
+                if (!content.trim()) {
+                  toast.error('请输入文章内容', {
+                    position: 'top-center'
+                  });
+                  return;
+                }
+                setShowPublishDialog(true);
+              }}
+            >
+              <Share className="h-4 w-4" />
+              去发布
             </Button>
           </div>
         </div>
@@ -151,6 +197,14 @@ export default function EditorPage() {
           </Button>
         )}
       </div>
+
+      <PublishDialog
+        open={showPublishDialog}
+        onOpenChange={setShowPublishDialog}
+        title={title}
+        content={content}
+        onPublish={handlePublish}
+      />
     </div>
   );
 } 

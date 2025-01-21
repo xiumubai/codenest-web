@@ -1,0 +1,17 @@
+export const CODE_LANGUAGES = [
+  { label: '纯文本', value: 'plaintext' },
+  { label: 'HTML', value: 'html' },
+  { label: 'CSS', value: 'css' },
+  { label: 'JavaScript', value: 'javascript' },
+  { label: 'TypeScript', value: 'typescript' },
+  { label: 'Python', value: 'python' },
+  { label: 'Java', value: 'java' },
+  { label: 'C++', value: 'cpp' },
+  { label: 'Go', value: 'go' },
+  { label: 'Rust', value: 'rust' },
+  { label: 'SQL', value: 'sql' },
+  { label: 'JSON', value: 'json' },
+  { label: 'Markdown', value: 'markdown' },
+  { label: 'YAML', value: 'yaml' },
+  { label: 'Shell', value: 'shell' },
+] as const; 

@@ -6,6 +6,7 @@ import Footer from "@/components/layout/Footer";
 import Main from "@/components/layout/Main";
 import BackToTop from "@/components/ui/back-to-top";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { Providers } from "./providers";
 
 import "./globals.css";
 
@@ -32,23 +33,25 @@ export default function RootLayout({
   return (
     <html lang="zh" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex h-screen bg-background">
-            <Sidebar />
-            <div className="flex-1 flex flex-col min-h-screen">
-              <Header />
-              <Main>{children}</Main>
-              <Footer />
+        <Providers>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex h-screen bg-background">
+              <Sidebar />
+              <div className="flex-1 flex flex-col min-h-screen">
+                <Header />
+                <Main>{children}</Main>
+                <Footer />
+              </div>
+              {/* 回到顶部按钮 */}
+              <BackToTop containerSelector="#main"/>
             </div>
-            {/* 回到顶部按钮 */}
-            <BackToTop containerSelector="#main"/>
-          </div>
-        </ThemeProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

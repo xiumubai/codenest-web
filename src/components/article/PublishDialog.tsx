@@ -1,12 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { ImagePlus, Loader2 } from 'lucide-react';
+import { ImagePlus, Loader2, RefreshCw } from 'lucide-react';
 import { toast } from 'sonner';
+import { cn } from '@/lib/utils';
 
 interface PublishDialogProps {
   open: boolean;
@@ -30,11 +31,29 @@ export default function PublishDialog({
   onPublish,
 }: PublishDialogProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const [title] = useState(initialTitle);
+  const [isImageLoading, setIsImageLoading] = useState(false);
   const [description, setDescription] = useState('');
   const [cover, setCover] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
+
+  // 重置所有状态
+  const resetState = () => {
+    setDescription('');
+    setCover('');
+    setTags([]);
+    setTagInput('');
+    setIsImageLoading(false);
+  };
+
+  // 监听弹窗打开状态
+  useEffect(() => {
+    if (open) {
+      generateRandomCover();
+    } else {
+      resetState();
+    }
+  }, [open]); // 只在 open 状态变化时触发
 
   const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && tagInput.trim()) {
@@ -56,26 +75,17 @@ export default function PublishDialog({
     setTags(tags.filter((t) => t !== tag));
   };
 
-  const handleUploadCover = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        toast.error('图片大小不能超过2MB');
-        return;
-      }
-      // 这里应该调用实际的图片上传API
-      // 现在我们用 base64 演示
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const base64 = e.target?.result as string;
-        setCover(base64);
-      };
-      reader.readAsDataURL(file);
-    }
+  const generateRandomCover = () => {
+    setIsImageLoading(true);
+    // 使用 Picsum Photos 生成随机图片
+    // 设置一个固定的尺寸，比如 1200x630 (常见的社交媒体封面图尺寸)
+    const timestamp = new Date().getTime(); // 添加时间戳防止缓存
+    const coverUrl = `https://picsum.photos/800/400?random=${timestamp}`;
+    setCover(coverUrl);
   };
 
   const handlePublish = async () => {
-    if (!title.trim()) {
+    if (!initialTitle.trim()) {
       toast.error('请输入文章标题');
       return;
     }
@@ -88,7 +98,7 @@ export default function PublishDialog({
       return;
     }
     if (!cover) {
-      toast.error('请上传封面图');
+      toast.error('请生成封面图');
       return;
     }
     if (tags.length === 0) {
@@ -99,7 +109,7 @@ export default function PublishDialog({
     try {
       setIsLoading(true);
       await onPublish({
-        title,
+        title: initialTitle,
         content,
         description,
         cover,
@@ -123,48 +133,72 @@ export default function PublishDialog({
         <div className="space-y-6 py-4">
           <div className="space-y-2">
             <Label>文章标题</Label>
-            <Input value={title} disabled />
+            <Input value={initialTitle} disabled />
           </div>
           <div className="space-y-2">
             <Label>文章摘要</Label>
             <Textarea
-              placeholder="请输入文章摘要，建议100字以内"
+              placeholder="请输入文章摘要，建议200字以内"
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              maxLength={100}
+              onChange={(e) => {
+                setDescription(e.target.value);
+                // 自动调整高度
+                e.target.style.height = 'auto';
+                e.target.style.height = `${e.target.scrollHeight}px`;
+              }}
+              maxLength={200}
+              className="min-h-[100px] resize-none"
+              style={{ overflow: 'hidden' }}
             />
           </div>
           <div className="space-y-2">
             <Label>封面图</Label>
             <div className="flex items-center gap-4">
               {cover ? (
-                <div className="relative w-40 h-24 rounded-lg overflow-hidden">
-                  <Image src={cover} alt="cover" width={160} height={96} className="w-full h-full object-cover" />
+                <div className="relative w-full aspect-[2/1] rounded-lg overflow-hidden bg-muted">
+                  {isImageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-muted/50 backdrop-blur-sm">
+                      <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                    </div>
+                  )}
+                  <Image 
+                    src={cover} 
+                    alt="cover" 
+                    fill
+                    className="object-cover"
+                    unoptimized // 因为是外部图片，需要添加这个属性
+                    onLoadingComplete={() => setIsImageLoading(false)}
+                  />
                   <Button
-                    variant="ghost"
+                    variant="secondary"
                     size="icon"
-                    className="absolute top-1 right-1"
-                    onClick={() => setCover('')}
+                    className="absolute top-2 right-2"
+                    onClick={generateRandomCover}
+                    disabled={isImageLoading}
                   >
-                    <ImagePlus className="h-4 w-4" />
+                    <RefreshCw className={cn("h-4 w-4", isImageLoading && "animate-spin")} />
                   </Button>
                 </div>
               ) : (
-                <div className="w-40 h-24 rounded-lg border-2 border-dashed flex items-center justify-center">
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    className="hidden"
-                    id="cover-upload"
-                    onChange={handleUploadCover}
-                  />
-                  <Label
-                    htmlFor="cover-upload"
-                    className="flex flex-col items-center gap-2 cursor-pointer"
+                <div className="w-full aspect-[1.9/1] rounded-lg border-2 border-dashed flex items-center justify-center">
+                  <Button
+                    variant="ghost"
+                    className="flex flex-col items-center gap-2"
+                    onClick={generateRandomCover}
+                    disabled={isImageLoading}
                   >
-                    <ImagePlus className="h-6 w-6 text-muted-foreground" />
-                    <span className="text-sm text-muted-foreground">点击上传</span>
-                  </Label>
+                    {isImageLoading ? (
+                      <>
+                        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">生成中...</span>
+                      </>
+                    ) : (
+                      <>
+                        <ImagePlus className="h-6 w-6 text-muted-foreground" />
+                        <span className="text-sm text-muted-foreground">点击生成随机封面图</span>
+                      </>
+                    )}
+                  </Button>
                 </div>
               )}
             </div>
@@ -199,7 +233,7 @@ export default function PublishDialog({
           <Button variant="outline" onClick={() => onOpenChange(false)}>
             取消
           </Button>
-          <Button onClick={handlePublish} disabled={isLoading}>
+          <Button onClick={handlePublish} disabled={isLoading || isImageLoading}>
             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             发布文章
           </Button>

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { motion, useScroll } from "motion/react";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import ArticleViewer from "@/components/article/ArticleViewer";
+import ArticleViewer from "@/components/editor/ArticleViewer";
 import { generateMockArticles } from "@/lib/mock/articles";
 
 export default function ArticlePage() {
