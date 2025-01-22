@@ -57,6 +57,7 @@ export function generateMockArticles(count: number): Article[] {
       name: `作者${i + 1}`,
       avatar: generateAvatarUrl(`作者${i + 1}`),
     },
+    bookmarks: getNumberFromIndex(i, 100, 999),
     likes: getNumberFromIndex(i, 100, 999),
     publishedAt: getDateFromIndex(i),
     coverImage: `https://picsum.photos/seed/${i + 1}/800/400`,

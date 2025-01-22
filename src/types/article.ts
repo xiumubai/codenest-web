@@ -10,6 +10,7 @@ export interface Article {
   updatedAt: string;
   views: number;
   likes: number;
+  bookmarks?: number;
   author: {
     id: number;
     name: string;

@@ -2,115 +2,104 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { formatDate } from '@/lib/utils';
-import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
+import { Comment } from '@/types/comment';
+import CommentEditor from '../editor/CommentEditor';
 
-interface Comment {
-  id: string;
-  content: string;
-  author: {
-    name: string;
-    avatar: string;
-  };
-  createdAt: string;
+interface CommentItemProps {
+  comment: Comment;
+  onReply: (commentId: string, content: string) => void;
+  level?: number;
 }
 
-// 模拟评论数据
-const mockComments: Comment[] = [
-  {
-    id: '1',
-    content: '这篇文章写得非常好，对我很有帮助！',
-    author: {
-      name: '张三',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=1',
-    },
-    createdAt: '2024-01-15T10:00:00Z',
-  },
-  {
-    id: '2',
-    content: '文章的代码示例很清晰，让我更好地理解了这个概念。',
-    author: {
-      name: '李四',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=2',
-    },
-    createdAt: '2024-01-15T11:30:00Z',
-  },
-  {
-    id: '3',
-    content: '期待作者的下一篇文章！',
-    author: {
-      name: '王五',
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=3',
-    },
-    createdAt: '2024-01-15T14:20:00Z',
-  },
-];
-
-export default function CommentList() {
-  const [comments, setComments] = useState<Comment[]>(mockComments);
-  const [newComment, setNewComment] = useState('');
-
-  const handleSubmitComment = () => {
-    if (!newComment.trim()) return;
-
-    const comment: Comment = {
-      id: String(Date.now()),
-      content: newComment,
-      author: {
-        name: '访客用户',
-        avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${Date.now()}`,
-      },
-      createdAt: new Date().toISOString(),
-    };
-
-    setComments([comment, ...comments]);
-    setNewComment('');
-  };
+function CommentItem({ comment, onReply, level = 0 }: CommentItemProps) {
+  const [showReplyEditor, setShowReplyEditor] = useState(false);
+  const maxLevel = 3; // 最大嵌套层级
 
   return (
-    <div className="w-80 h-[calc(100vh-5rem)] sticky top-20 space-y-6 overflow-y-auto p-4">
-      <div className="font-medium">评论列表</div>
-      
-      {/* 评论输入框 */}
-      <div className="space-y-4 bg-card rounded-lg p-4">
-        <Textarea
-          placeholder="写下你的评论..."
-          value={newComment}
-          onChange={(e) => setNewComment(e.target.value)}
-          className="resize-none"
-          rows={3}
+    <div className="py-4">
+      <div className="flex items-start gap-3">
+        <Image
+          src={comment.author.avatar}
+          alt={comment.author.username}
+          width={40}
+          height={40}
+          className="rounded-full object-cover"
         />
-        <Button 
-          onClick={handleSubmitComment}
-          className="w-full"
-        >
-          发表评论
-        </Button>
+        <div className="flex-1">
+          <div className="flex items-center gap-2">
+            <span className="font-medium">{comment.author.username}</span>
+            {comment.replyTo && (
+              <>
+                <span className="text-muted-foreground">回复</span>
+                <span className="font-medium">@{comment.replyTo.username}</span>
+              </>
+            )}
+            <span className="text-sm text-muted-foreground">{comment.createdAt}</span>
+          </div>
+          <p className="mt-2 text-sm">{comment.content}</p>
+          {level < maxLevel && (
+            <div className="mt-2 flex items-center gap-4">
+              <button
+                onClick={() => setShowReplyEditor(!showReplyEditor)}
+                className="text-sm text-muted-foreground hover:text-foreground"
+              >
+                {showReplyEditor ? '取消回复' : '回复'}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* 评论列表 */}
-      <div className="space-y-4">
+      {showReplyEditor && (
+        <div className="mt-4 ml-1">
+          <CommentEditor
+            replyTo={{
+              id: comment.id,
+              username: comment.author.username
+            }}
+            onSubmit={(content) => {
+              onReply(comment.id, content);
+              setShowReplyEditor(false);
+            }}
+            onCancelReply={() => setShowReplyEditor(false)}
+          />
+        </div>
+      )}
+
+      {comment.replies && comment.replies.length > 0 && (
+        <div className={`mt-4 ${level < maxLevel ? 'ml-12' : 'ml-0'}`}>
+          {comment.replies.map((reply) => (
+            <CommentItem
+              key={reply.id}
+              comment={reply}
+              onReply={onReply}
+              level={level + 1}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+interface CommentListProps {
+  comments: Comment[];
+  onAddComment: (content: string) => void;
+  onReplyComment: (commentId: string, content: string) => void;
+}
+
+export default function CommentList({ comments, onAddComment, onReplyComment }: CommentListProps) {
+  return (
+    <div className="space-y-4">
+      <CommentEditor onSubmit={onAddComment} />
+      
+      <div className="divide-y">
         {comments.map((comment) => (
-          <div key={comment.id} className="bg-card rounded-lg p-4 space-y-3">
-            <div className="flex items-center gap-3">
-              <div className="relative w-8 h-8 rounded-full overflow-hidden">
-                <Image
-                  src={comment.author.avatar}
-                  alt={comment.author.name}
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div>
-                <div className="text-sm font-medium">{comment.author.name}</div>
-                <div className="text-xs text-muted-foreground">
-                  {formatDate(comment.createdAt)}
-                </div>
-              </div>
-            </div>
-            <p className="text-sm text-muted-foreground">{comment.content}</p>
-          </div>
+          <CommentItem
+            key={comment.id}
+            comment={comment}
+            onReply={onReplyComment}
+          />
         ))}
       </div>
     </div>
