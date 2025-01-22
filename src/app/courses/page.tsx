@@ -1,9 +1,12 @@
 // import Image from "next/image";
 'use client'
+
+import UnderConstruction from '@/components/common/UnderConstruction';
+
 export default function Page() {
   return (
-    <div className="h-[5000px]">
-      123
+    <div>
+      <UnderConstruction />
     </div>
   );
 }

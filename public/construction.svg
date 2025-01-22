@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
+    <defs>
+        <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#0d9488" />
+            <stop offset="100%" style="stop-color:#5eead4" />
+        </linearGradient>
+        <linearGradient id="secondaryGradient" x1="0%" y1="100%" x2="0%" y2="0%">
+            <stop offset="0%" style="stop-color:#0d9488" />
+            <stop offset="100%" style="stop-color:#2dd4bf" />
+        </linearGradient>
+    </defs>
+
+    <!-- 背景建筑框架 -->
+    <g transform="translate(250, 280)">
+        <!-- 建筑框架线条 -->
+        <path fill="none" stroke="url(#primaryGradient)" stroke-width="8" stroke-linecap="round" d="
+            M-120,-100 L120,-100
+            M-100,-140 L100,-140
+            M-80,-180 L80,-180
+            M-60,0 L-60,-220
+            M60,0 L60,-220
+            M0,0 L0,-240
+        ">
+            <animate attributeName="stroke-dasharray" values="0,1000;1000,0" dur="3s" repeatCount="1"/>
+        </path>
+        
+        <!-- 移动的小方块装饰 -->
+        <rect x="-8" y="-240" width="16" height="16" fill="url(#primaryGradient)">
+            <animateMotion path="M0,0 L0,240" dur="2s" repeatCount="indefinite" />
+        </rect>
+        <rect x="-68" y="-220" width="16" height="16" fill="url(#primaryGradient)">
+            <animateMotion path="M0,0 L0,220" dur="2.5s" begin="0.5s" repeatCount="indefinite" />
+        </rect>
+        <rect x="52" y="-220" width="16" height="16" fill="url(#primaryGradient)">
+            <animateMotion path="M0,0 L0,220" dur="1.8s" begin="1s" repeatCount="indefinite" />
+        </rect>
+    </g>
+
+    <!-- 底部平台 -->
+    <path fill="url(#secondaryGradient)" d="M50,280 L450,280 L400,320 L100,320 Z"/>
+
+    <!-- 工作中的笔记本电脑 -->
+    <g transform="translate(250, 200)">
+        <!-- 屏幕 -->
+        <rect x="-40" y="-30" width="80" height="60" rx="5" fill="url(#primaryGradient)"/>
+        <!-- 键盘部分 -->
+        <path fill="url(#secondaryGradient)" d="M-50,30 L50,30 L40,50 L-40,50 Z"/>
+        
+        <!-- 代码线条动画 -->
+        <g stroke="white" stroke-width="2" opacity="0.6">
+            <line x1="-30" y1="-20" x2="20" y2="-20">
+                <animate attributeName="x2" values="-30;20;20;-30" dur="2s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" dur="2s" repeatCount="indefinite"/>
+            </line>
+            <line x1="-30" y1="-10" x2="30" y2="-10">
+                <animate attributeName="x2" values="-30;30;30;-30" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" dur="2s" begin="0.5s" repeatCount="indefinite"/>
+            </line>
+            <line x1="-30" y1="0" x2="25" y2="0">
+                <animate attributeName="x2" values="-30;25;25;-30" dur="2s" begin="1s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" dur="2s" begin="1s" repeatCount="indefinite"/>
+            </line>
+            <line x1="-30" y1="10" x2="15" y2="10">
+                <animate attributeName="x2" values="-30;15;15;-30" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+                <animate attributeName="opacity" values="0;1;1;0" dur="2s" begin="1.5s" repeatCount="indefinite"/>
+            </line>
+        </g>
+    </g>
+
+    <!-- 进度指示器 -->
+    <g transform="translate(250, 380)">
+        <rect x="-100" y="-10" width="200" height="20" rx="10" fill="#0d948833"/>
+        <rect x="-100" y="-10" width="200" height="20" rx="10" fill="url(#primaryGradient)">
+            <animate attributeName="width" values="0;200" dur="2s" repeatCount="indefinite"/>
+        </rect>
+    </g>
+</svg> 

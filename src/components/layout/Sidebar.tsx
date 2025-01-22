@@ -28,10 +28,10 @@ const navItems = [
     description: "精品课程学习"
   },
   {
-    name: "个人中心",
+    name: "我的主页",
     href: "/profile",
     icon: User,
-    description: "个人信息管理"
+    description: "个人主页管理"
   }
 ];
 

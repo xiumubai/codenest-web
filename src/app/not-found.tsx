@@ -26,7 +26,7 @@ export default function NotFound() {
 
         {/* 标题和描述 */}
         <div className="space-y-4">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 text-transparent bg-clip-text">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-primary/60 text-transparent bg-clip-text">
             页面未找到
           </h1>
           <p className="text-muted-foreground">
@@ -37,7 +37,7 @@ export default function NotFound() {
         {/* 返回首页按钮 */}
         <Link 
           href="/"
-          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-opacity"
+          className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-primary to-primary/80 text-primary-foreground hover:opacity-90 transition-opacity"
         >
           <Home className="w-4 h-4" />
           <span>返回首页</span>
