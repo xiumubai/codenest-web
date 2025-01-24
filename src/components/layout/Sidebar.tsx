@@ -13,7 +13,7 @@ const navItems = [
     name: "首页",
     href: "/",
     icon: Home,
-    description: "发现优质内容"
+    description: "发现优质文章"
   },
   {
     name: "问答社区",
