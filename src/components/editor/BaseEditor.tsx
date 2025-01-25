@@ -18,7 +18,7 @@ export default function BaseEditor({
   onChange,
   editable = true,
   className,
-  minHeight = 'calc(100vh-12rem)',
+  minHeight = '6rem',
   editor,
 }: BaseEditorProps) {
   const internalEditor = useEditor({
@@ -30,7 +30,10 @@ export default function BaseEditor({
     },
   });
 
-  const styles = baseEditorStyles.replace('100vh-12rem', minHeight);
+  const styles = baseEditorStyles
+    .replace(/min-height:\s*[^;]+;/, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
   return (
     <EditorContent
@@ -40,6 +43,7 @@ export default function BaseEditor({
         styles,
         className
       )}
+      style={{ minHeight }}
     />
   );
 } 

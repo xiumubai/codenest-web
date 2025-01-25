@@ -160,7 +160,7 @@ export default function ArticleEditor({
       {/* 编辑器内容区域 */}
       <div className="flex gap-8 flex-1 py-8">
         {showOutline && <ArticleOutline editor={editor} />}
-        <div className="flex-1 max-w-3xl mx-auto px-8">
+        <div className="flex-1 mx-auto px-8">
           <BaseEditor
             content={content}
             onChange={onChange}

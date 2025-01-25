@@ -1,6 +1,7 @@
+// min-h-[calc(100vh-12rem)] 
+// [&_.ProseMirror]:min-h-[calc(100vh-12rem)] 
+  
 export const baseEditorStyles = `
-  min-h-[calc(100vh-12rem)] 
-  [&_.ProseMirror]:min-h-[calc(100vh-12rem)] 
   [&_.ProseMirror]:outline-none 
   [&_.ProseMirror]:p-0 
   [&_h1:first-child]:text-4xl 

@@ -7,6 +7,7 @@ import { PlusCircle, Search } from "lucide-react";
 import { QuestionList } from "@/components/community/QuestionList";
 import { Question } from "@/types/question";
 import { useCallback, useState } from "react";
+import Link from "next/link";
 
 // 模拟数据
 const mockQuestions: Question[] = Array.from({ length: 50 }).map((_, index) => ({
@@ -75,10 +76,12 @@ export default function CommunityPage() {
                 className="pl-10"
               />
             </div>
-            <Button className="gap-2 shrink-0">
-              <PlusCircle className="h-4 w-4" />
-              提问
-            </Button>
+            <Link href="/community/ask">
+              <Button className="gap-2 shrink-0">
+                <PlusCircle className="h-4 w-4" />
+                提问
+              </Button>
+            </Link>
           </div>
 
           {/* 问题列表 */}

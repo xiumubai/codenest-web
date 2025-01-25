@@ -17,4 +17,11 @@ export interface Question {
   answersCount: number;
   likesCount: number;
   isLiked?: boolean;
+}
+
+export interface QuestionForm {
+  title: string;
+  description: string;
+  expectation: string;
+  tags: Tag[];
 } 

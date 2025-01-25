@@ -4,15 +4,13 @@ import BaseEditor from '@/components/editor/BaseEditor';
 
 interface ArticleViewerProps {
   content: string;
+  className?: string;
 }
 
-export default function ArticleViewer({ content }: ArticleViewerProps) {
-
+export default function ArticleViewer({ content, className }: ArticleViewerProps) {
   return (
-    <div className="flex gap-8">
-      <div className="flex-1">
-        <BaseEditor content={content} editable={false} />
-      </div>
+    <div className={className}>
+      <BaseEditor content={content} editable={false} minHeight="auto" />
     </div>
   );
 } 
