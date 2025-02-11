@@ -1,12 +1,8 @@
+'use client';
 import QuestionDetail from '@/components/community/QuestionDetail';
 import { Suspense } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
-
-interface PageProps {
-  params: {
-    id: string;
-  };
-}
+import { useParams } from "next/navigation";
 
 // 加载状态组件
 function QuestionDetailSkeleton() {
@@ -40,10 +36,12 @@ function QuestionDetailSkeleton() {
   );
 }
 
-export default function QuestionPage({ params }: PageProps) {
+export default function QuestionPage() {
+  const { id } = useParams();
+
   return (
     <Suspense fallback={<QuestionDetailSkeleton />}>
-      <QuestionDetail questionId={params.id} />
+      <QuestionDetail questionId={id as string} />
     </Suspense>
   );
-} 
+}

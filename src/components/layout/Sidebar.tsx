@@ -4,15 +4,21 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Home, MessageCircle, BookOpen, User, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, MessageCircle, BookOpen, ChevronLeft, ChevronRight, FileText } from 'lucide-react';
 import SearchDialog from '@/components/search/SearchDialog';
 import { useState } from 'react';
 
 const navItems = [
   {
-    name: "首页",
+    name: "我的主页",
     href: "/",
     icon: Home,
+    description: "个人主页管理"
+  },
+  {
+    name: "文章中心",
+    href: "/article",
+    icon: FileText,
     description: "发现优质文章"
   },
   {
@@ -27,12 +33,7 @@ const navItems = [
     icon: BookOpen,
     description: "精品课程学习"
   },
-  {
-    name: "我的主页",
-    href: "/profile",
-    icon: User,
-    description: "个人主页管理"
-  }
+  
 ];
 
 export default function Sidebar() {
@@ -115,7 +116,7 @@ export default function Sidebar() {
 
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-background border border-border text-muted-foreground hover:text-foreground transition-colors shadow-lg"
+        className="absolute -right-4 top-1/4 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-background border border-border text-muted-foreground hover:text-foreground transition-colors shadow-lg"
       >
         {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
       </button>

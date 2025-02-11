@@ -1,20 +1,14 @@
 "use client";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
-import LoginDialog from "../auth/LoginDialog";
 import UserAvatar from "../auth/UserAvatar";
 import { ThemeToggle } from "../theme/ThemeToggle";
 import { Button } from "../ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
-import { PenLine, MessageCircle, ChevronDown } from "lucide-react";
+import { LogIn } from "lucide-react";
 
 export default function Header() {
   const [user, setUser] = useState<any>(null);
-
-  const handleLoginSuccess = (userData: any) => {
-    setUser(userData);
-  };
 
   const handleLogout = () => {
     setUser(null);
@@ -43,48 +37,19 @@ export default function Header() {
           </Link>
 
           <div className="ml-auto flex items-center gap-4">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  className="bg-gradient-to-r from-primary/90 to-primary shadow-lg shadow-primary/20 hover:shadow-primary/30 hover:from-primary hover:to-primary/90 transition-all duration-300 gap-2"
-                >
-                  去创作
-                  <ChevronDown className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="end" 
-                className="w-56 p-2 bg-background/80 backdrop-blur-xl border border-border/50 shadow-lg"
-              >
-                <Link href="/article/new">
-                  <DropdownMenuItem className="flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg hover:bg-primary/10 hover:text-primary transition-colors group">
-                    <div className="p-2 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                      <PenLine className="w-4 h-4 text-primary" />
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="font-medium">写文章</span>
-                      <span className="text-xs text-muted-foreground">分享你的技术见解</span>
-                    </div>
-                  </DropdownMenuItem>
-                </Link>
-                <Link href="/community/ask">
-                  <DropdownMenuItem className="flex items-center gap-3 px-4 py-3 cursor-pointer rounded-lg hover:bg-primary/10 hover:text-primary transition-colors group mt-1">
-                    <div className="p-2 rounded-md bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                      <MessageCircle className="w-4 h-4 text-primary" />
-                    </div>
-                    <div className="flex flex-col gap-0.5">
-                      <span className="font-medium">提问题</span>
-                      <span className="text-xs text-muted-foreground">寻求开发者的帮助</span>
-                    </div>
-                  </DropdownMenuItem>
-                </Link>
-              </DropdownMenuContent>
-            </DropdownMenu>
             <ThemeToggle />
             {user ? (
               <UserAvatar user={user} onLogout={handleLogout} />
             ) : (
-              <LoginDialog onLoginSuccess={handleLoginSuccess} />
+              <Link href="/auth/login" prefetch>
+                <Button 
+                  size="sm"
+                  className="gap-2 bg-primary text-primary-foreground shadow-sm hover:shadow-md hover:bg-primary/90 transition-all duration-300"
+                >
+                  <LogIn className="w-4 h-4" />
+                  登录
+                </Button>
+              </Link>
             )}
           </div>
         </div>

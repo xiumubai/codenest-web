@@ -1,5 +1,5 @@
 "use client";
-
+// 登陆弹窗，用于登录和注册，暂时不使用
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,10 @@ import { cn } from "@/lib/utils";
 interface LoginDialogProps {
   onLoginSuccess: (userData: any) => void;
 }
+
+// 添加 GitHub OAuth 配置
+const GITHUB_CLIENT_ID = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
+const GITHUB_REDIRECT_URI = process.env.NEXT_PUBLIC_GITHUB_REDIRECT_URI;
 
 export default function LoginDialog({ onLoginSuccess }: LoginDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -92,24 +96,14 @@ export default function LoginDialog({ onLoginSuccess }: LoginDialogProps) {
     setPasswordError("");
   };
 
-  // GitHub登录
-  const handleGithubLogin = async () => {
-    setIsLoading(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      const mockUserData = {
-        id: 2,
-        name: "GitHub User",
-        email: "github@example.com",
-        avatar: "https://api.dicebear.com/7.x/avatars/svg?seed=2",
-      };
-      onLoginSuccess(mockUserData);
-      setIsOpen(false);
-    } catch (error) {
-      console.error("GitHub login failed:", error);
-    } finally {
-      setIsLoading(false);
-    }
+  // 修改 handleGithubLogin 函数
+  const handleGitHubLogin = () => {
+    // 获取当前页面 URL 作为重定向地址
+    const currentPath = window.location.pathname + window.location.search;
+    const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}&redirect_uri=${encodeURIComponent(
+      `${window.location.origin}/api/auth/github?redirect_uri=${encodeURIComponent(currentPath)}`
+    )}`;
+    window.location.href = githubAuthUrl;
   };
 
   // 微信登录
@@ -281,7 +275,7 @@ export default function LoginDialog({ onLoginSuccess }: LoginDialogProps) {
 
               <div className="space-y-3">
                 <button
-                  onClick={handleGithubLogin}
+                  onClick={handleGitHubLogin}
                   className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-muted hover:bg-muted/80 text-foreground rounded-md border border-border transition-colors"
                 >
                   <Github className="w-4 h-4" />
@@ -290,10 +284,12 @@ export default function LoginDialog({ onLoginSuccess }: LoginDialogProps) {
                 
                 <button
                   onClick={handleWechatLogin}
-                  className="w-full flex items-center justify-center gap-2 py-2 px-4 bg-muted hover:bg-muted/80 text-foreground rounded-md border border-border transition-colors"
+                  disabled={true}
+                  className={`w-full flex items-center justify-center gap-2 py-2 px-4 rounded-md border transition-colors
+                    ${true ? 'bg-muted/60 text-muted-foreground cursor-not-allowed' : 'bg-muted hover:bg-muted/80 text-foreground border-border'}`}
                 >
                   <svg className="w-4 h-4 text-[#07C160]" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.29.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.045c.133 0 .24-.11.24-.246 0-.06-.024-.12-.04-.177l-.325-1.233a.492.492 0 0 1 .177-.553c1.53-1.124 2.496-2.826 2.496-4.714 0-3.352-3.218-6.018-7.055-6.029zm-2.012 3.958c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
+                    <path d="M8.691 2.188C3.891 2.188 0 5.476 0 9.53c0 2.212 1.17 4.203 3.002 5.55a.59.59 0 0 1 .213.665l-.39 1.48c-.019.07-.048.141-.048.213 0 .163.13.295.295.295a.326.326 0 0 0 .167-.054l1.903-1.114a.864.864 0 0 1 .717-.098 10.16 10.16 0 0 0 2.837.403c.276 0 .543-.027.811-.05-.857-2.578.157-4.972 1.932-6.446 1.703-1.415 3.882-1.98 5.853-1.838-.576-3.583-4.196-6.348-8.596-6.348zM5.785 5.991c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178A1.17 1.17 0 0 1 4.623 7.17c0-.651.52-1.18 1.162-1.18zm5.813 0c.642 0 1.162.529 1.162 1.18a1.17 1.17 0 0 1-1.162 1.178 1.17 1.17 0 0 1-1.162-1.178c0-.651.52-1.18 1.162-1.18zm5.34 2.867c-1.797-.052-3.746.512-5.28 1.786-1.72 1.428-2.687 3.72-1.78 6.22.942 2.453 3.666 4.229 6.884 4.229.826 0 1.622-.12 2.361-.336a.722.722 0 0 1 .598.082l1.584.926a.272.272 0 0 0 .14.045c.133 0 .24-.11.24-.246 0-.06-.024-.12-.04-.177l-.325-1.233a.492.492 0 0 1 .177-.553c1.53-1.124 2.496-2.826 2.496-4.714 0-3.352-3.218-6.018-7.055-6.029zm-2.012 3.958c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.97-.982zm4.844 0c.535 0 .969.44.969.982a.976.976 0 0 1-.969.983.976.976 0 0 1-.969-.983c0-.542.434-.982.969-.982z"/>
                   </svg>
                   <span>通过 微信 继续</span>
                 </button>
@@ -309,4 +305,4 @@ export default function LoginDialog({ onLoginSuccess }: LoginDialogProps) {
       </DialogContent>
     </Dialog>
   );
-} 
+}

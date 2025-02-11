@@ -11,21 +11,17 @@ import { Skeleton } from "@/components/ui/skeleton";
 // 骨架屏组件
 function ArticleSkeleton() {
   return (
-    <div className="group relative overflow-hidden rounded-xl border border-border bg-card">
-      {/* 封面图片骨架屏 */}
-      <div className="relative aspect-[2/1] overflow-hidden">
-        <Skeleton className="h-full w-full bg-muted" />
-        <div className="absolute bottom-4 left-4 flex gap-2">
-          <Skeleton className="h-5 w-16 rounded-full bg-muted" />
-          <Skeleton className="h-5 w-16 rounded-full bg-muted" />
-        </div>
-      </div>
-
+    <div className="group relative overflow-hidden rounded-xl border border-border bg-card flex">
       {/* 文章内容骨架屏 */}
-      <div className="p-6 space-y-4">
+      <div className="flex-1 p-6 space-y-4">
         <div className="space-y-2">
           <Skeleton className="h-7 w-4/5 bg-muted" />
           <Skeleton className="h-5 w-2/3 bg-muted" />
+        </div>
+
+        <div className="flex gap-2">
+          <Skeleton className="h-5 w-16 rounded-full bg-muted" />
+          <Skeleton className="h-5 w-16 rounded-full bg-muted" />
         </div>
 
         <div className="flex items-center justify-between">
@@ -43,6 +39,11 @@ function ArticleSkeleton() {
           </div>
         </div>
       </div>
+
+      {/* 封面图片骨架屏 */}
+      <div className="relative w-[240px] shrink-0">
+        <Skeleton className="absolute inset-0 bg-muted" />
+      </div>
     </div>
   );
 }
@@ -50,7 +51,7 @@ function ArticleSkeleton() {
 // 骨架屏列表
 function ArticleSkeletons() {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="flex flex-col gap-6">
       {Array.from({ length: 6 }).map((_, index) => (
         <motion.div
           key={index}
@@ -180,7 +181,7 @@ export default function ArticleList() {
         {status === "pending" ? (
           <ArticleSkeletons />
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-6">
             {data.pages.map((group, i) => (
               <motion.div
                 key={i}
@@ -197,7 +198,7 @@ export default function ArticleList() {
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     whileHover={{ 
-                      scale: 1.02,
+                      scale: 1.01,
                       transition: { duration: 0.2 }
                     }}
                     whileTap={{ scale: 0.98 }}

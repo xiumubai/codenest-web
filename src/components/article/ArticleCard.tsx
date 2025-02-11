@@ -17,38 +17,30 @@ export default function ArticleCard({ article }: ArticleCardProps) {
   return (
     <motion.div
       layout
-      className="group relative overflow-hidden rounded-xl border border-border bg-card transition-colors hover:bg-accent/50"
+      className="group relative overflow-hidden rounded-xl border border-border bg-card transition-colors hover:bg-accent/50 flex"
     >
-      {/* 封面图片 */}
-      <div className="relative aspect-[2/1]">
-        <Image
-          src={article.cover}
-          alt={article.title}
-          fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105 rounded-t-xl"
-        />
-        <div className="absolute bottom-4 left-4 flex gap-2">
-          <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
-            {article.category}
-          </Badge>
-          <Badge variant="secondary" className="bg-background/80 backdrop-blur-sm">
-            {article.readingTime}
-          </Badge>
-        </div>
-      </div>
-
       {/* 文章内容 */}
-      <div className="p-6 space-y-4">
+      <div className="flex-1 p-6 space-y-4">
         {/* 标题和描述 */}
         <div className="space-y-2">
           <Link href={`/article/${article.id}`} prefetch>
-            <h2 className="text-xl font-semibold leading-tight text-foreground truncate hover:text-primary transition-colors">
+            <h2 className="text-xl font-semibold leading-tight text-foreground hover:text-primary transition-colors line-clamp-2">
               {article.title}
             </h2>
           </Link>
-          <p className="text-sm text-muted-foreground truncate">
+          <p className="text-sm text-muted-foreground line-clamp-2">
             {article.description}
           </p>
+        </div>
+
+        {/* 标签 */}
+        <div className="flex gap-2">
+          <Badge variant="secondary" className="bg-background/80">
+            {article.category}
+          </Badge>
+          <Badge variant="secondary" className="bg-background/80">
+            {article.readingTime}
+          </Badge>
         </div>
 
         {/* 作者信息和统计 */}
@@ -83,6 +75,16 @@ export default function ArticleCard({ article }: ArticleCardProps) {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* 封面图片 */}
+      <div className="relative w-[240px] shrink-0">
+        <Image
+          src={article.cover}
+          alt={article.title}
+          fill
+          className="object-cover transition-transform duration-300 group-hover:scale-105"
+        />
       </div>
     </motion.div>
   );
