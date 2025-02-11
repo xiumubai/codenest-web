@@ -41,7 +41,7 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       <div className="p-6 space-y-4">
         {/* 标题和描述 */}
         <div className="space-y-2">
-          <Link href={`/article/${article.id}`}>
+          <Link href={`/article/${article.id}`} prefetch>
             <h2 className="text-xl font-semibold leading-tight text-foreground truncate hover:text-primary transition-colors">
               {article.title}
             </h2>

@@ -51,7 +51,7 @@ export default function Sidebar() {
         )}
       >
         <div className="flex h-16 items-center gap-2 px-4">
-          <Link href="/" className="flex items-center gap-2">
+          <Link href="/" className="flex items-center gap-2" prefetch>
             <motion.div
               className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-foreground flex items-center justify-center text-white"
               whileHover={{ scale: 1.05 }}
@@ -74,6 +74,7 @@ export default function Sidebar() {
             const isActive = pathname === item.href;
             return (
               <Link
+                prefetch
                 key={item.href}
                 href={item.href}
                 className={cn(

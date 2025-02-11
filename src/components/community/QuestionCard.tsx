@@ -16,7 +16,7 @@ interface QuestionCardProps {
 
 export function QuestionCard({ question, index }: QuestionCardProps) {
   return (
-    <Link href={`/community/question/${question.id}`}>
+    <Link href={`/community/question/${question.id}`} prefetch>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
