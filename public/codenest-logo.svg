@@ -1,33 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- 渐变定义 -->
-  <defs>
-    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#00bebd" />
-      <stop offset="100%" style="stop-color:#00bebd" />
-    </linearGradient>
-  </defs>
-
   <!-- 背景圆角矩形 -->
   <rect
     x="32"
     y="32"
     width="448"
     height="448"
-    rx="64"
-    ry="64"
-    fill="url(#primaryGradient)"
+    rx="128"
+    ry="128"
+    fill="#00bebd"
   />
 
-  <!-- CN 字母设计 -->
+  <!-- CN 字母 -->
   <text
     x="256"
     y="300"
     fill="white"
     font-family="Arial"
-    font-weight="bold"
-    font-size="300"
-    letter-spacing="10"
+    font-weight="900"
+    font-size="240"
+    letter-spacing="-10"
     text-anchor="middle"
     dominant-baseline="middle"
   >
