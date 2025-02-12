@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import UserAvatar from "../auth/UserAvatar";
 import { ThemeToggle } from "../theme/ThemeToggle";
@@ -23,13 +24,19 @@ export default function Header() {
         className="relative border-b bg-background/50 backdrop-blur-xl shadow-sm"
       >
         <div className="flex h-16 items-center px-6">
-          <Link href="/" className="flex items-center gap-2 font-bold text-xl mr-8">
+          <Link href="/" className="flex items-center gap-3 font-bold text-xl mr-8">
             <motion.div
-              className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-foreground flex items-center justify-center text-white"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
+              className="relative w-9 h-9"
             >
-              CN
+              <Image
+                src="/codenest-logo.svg"
+                alt="CodeNest Logo"
+                fill
+                className="object-contain"
+                priority
+              />
             </motion.div>
             <span className="text-2xl font-bold bg-gradient-to-r from-primary/80 to-primary text-transparent bg-clip-text whitespace-nowrap transition-all duration-300">
               CodeNest

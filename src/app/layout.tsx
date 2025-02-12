@@ -20,6 +20,15 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "CodeNest - 打造属于你的代码乐园",
   description: "让编程更简单，让学习更有趣",
+  icons: {
+    icon: [
+      {
+        url: "/codenest-logo.svg",
+        type: "image/svg+xml",
+      }
+    ],
+    shortcut: "/codenest-logo.svg",
+  },
 };
 
 export default function RootLayout({
