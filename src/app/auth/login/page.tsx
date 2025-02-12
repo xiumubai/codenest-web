@@ -2,10 +2,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Github, LogIn, Eye, EyeOff } from "lucide-react";
+import { Github, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { generateNickname, generateAvatar } from "@/lib/utils/user";
+import { toast } from 'sonner';
+import { http } from '@/lib/http';
+import type { LoginResponse, RegisterResponse } from '@/types/user';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -62,18 +66,57 @@ export default function LoginPage() {
 
     setIsLoading(true);
     try {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      const mockUserData = {
-        id: 1,
-        name: isRegister ? "新用户" : "测试用户",
-        email: "test@example.com",
-        avatar: "https://api.dicebear.com/7.x/avatars/svg?seed=1",
-      };
-      // 这里应该调用实际的登录 API
-      // 登录成功后跳转回首页
-      router.push("/");
-    } catch (error) {
+      if (isRegister) {
+        // 使用手机号生成昵称和头像
+        const username = generateNickname(phone);
+        const avatar = generateAvatar(phone);
+        
+        // 调用注册 API
+        const data = await http.post<RegisterResponse>('/api/auth/register', {
+          username,
+          avatar,
+          password,
+          phone,
+        });
+
+        // 注册成功
+        console.log('注册成功:', data);
+        
+        // 可以选择自动登录或跳转到登录页
+        setIsRegister(false);
+        setPhone("");
+        setPassword("");
+        setConfirmPassword("");
+        
+        toast.success('注册成功', {
+          description: '请使用新账号登录',
+        });
+        
+      } else {
+        // 调用登录 API
+        const res = await http.post<LoginResponse>('/api/auth/login', {
+          phone,
+          password,
+        });
+        // 保存 token
+        localStorage.setItem('token', res.data.access_token);
+        
+        // 保存用户信息
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+        
+        // toast.success('登录成功', {
+        //   description: '正在跳转到首页...',
+        // });
+        
+        // 登录成功后跳转回首页
+        router.push("/");
+      }
+    } catch (error: any) {
       console.error(isRegister ? "Register failed:" : "Login failed:", error);
+      // 使用 sonner 显示错误信息
+      toast.error(isRegister ? '注册失败' : '登录失败', {
+        description: error.message || '服务器错误，请稍后重试',
+      });
     } finally {
       setIsLoading(false);
     }
@@ -99,8 +142,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-[425px] space-y-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-primary/10 p-4">
+      <div className="w-full max-w-[425px] space-y-8 bg-background/80 backdrop-blur-lg rounded-2xl p-8 shadow-[0_0_40px_-10px] shadow-primary/20">
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold">{isRegister ? "注册新账号" : "登录你的账号"}</h1>
           <p className="text-sm text-muted-foreground">
@@ -116,7 +159,7 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-1">
-            <div className="flex rounded-md bg-muted border border-border focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all duration-200">
+            <div className="flex overflow-hidden rounded-lg border border-border focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all duration-200">
               <span className="flex items-center px-3 text-sm text-muted-foreground border-r border-border">
                 +86
               </span>
@@ -128,7 +171,7 @@ export default function LoginPage() {
                   if (phoneError) validatePhone(e.target.value);
                 }}
                 placeholder="请输入手机号"
-                className="flex-1 bg-transparent border-0 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground py-2 px-3 outline-none [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-foreground"
+                className="flex-1 border-0 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground py-2 px-3 outline-none [&:-webkit-autofill]:text-foreground"
                 autoComplete="tel"
               />
             </div>
@@ -138,7 +181,7 @@ export default function LoginPage() {
           </div>
 
           <div className="space-y-1">
-            <div className="relative rounded-md bg-muted border border-border focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all duration-200">
+            <div className="relative overflow-hidden rounded-lg border border-border focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all duration-200">
               <input
                 type={showPassword ? "text" : "password"}
                 value={password}
@@ -147,7 +190,7 @@ export default function LoginPage() {
                   if (passwordError) validatePassword();
                 }}
                 placeholder="请输入密码"
-                className="w-full bg-transparent border-0 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground py-2 pl-3 pr-10 outline-none [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-foreground"
+                className="w-full border-0 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground py-2 pl-3 pr-10 outline-none [&:-webkit-autofill]:text-foreground"
                 autoComplete="current-password"
               />
               <button
@@ -168,7 +211,7 @@ export default function LoginPage() {
           </div>
 
           {isRegister && (
-            <div className="relative rounded-md bg-muted border border-border focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all duration-200">
+            <div className="relative overflow-hidden rounded-lg border border-border focus-within:ring-1 focus-within:ring-primary focus-within:border-primary transition-all duration-200">
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 value={confirmPassword}
@@ -177,7 +220,7 @@ export default function LoginPage() {
                   if (passwordError) validatePassword();
                 }}
                 placeholder="请确认密码"
-                className="w-full bg-transparent border-0 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground py-2 pl-3 pr-10 outline-none [&:-webkit-autofill]:bg-transparent [&:-webkit-autofill]:text-foreground"
+                className="w-full border-0 focus:ring-0 text-sm text-foreground placeholder:text-muted-foreground py-2 pl-3 pr-10 outline-none [&:-webkit-autofill]:text-foreground"
                 autoComplete="new-password"
               />
               <button

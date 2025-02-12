@@ -2,17 +2,41 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import UserAvatar from "../auth/UserAvatar";
 import { ThemeToggle } from "../theme/ThemeToggle";
 import { Button } from "../ui/button";
 import { LogIn } from "lucide-react";
+import { http } from "@/lib/http";
+import type { User } from "@/types/user";
 
 export default function Header() {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  const handleLogout = () => {
-    setUser(null);
+  const fetchUserInfo = async () => {
+    try {
+      console.log('Token:', localStorage.getItem('token'));
+      const { data } = await http.get<User>('/api/auth/info');
+      setUser(data || null);
+    } catch (error) {
+      console.error('Failed to fetch user info:', error);
+      setUser(null);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      fetchUserInfo();
+    }
+  }, []);
+
+  const handleLogout = async () => {
+    try {
+      await http.post('/api/auth/logout');
+      setUser(null);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   return (

@@ -14,8 +14,7 @@ import { motion } from "framer-motion";
 
 interface UserAvatarProps {
   user: {
-    name: string;
-    email: string;
+    username: string;
     avatar: string;
   };
   onLogout: () => void;
@@ -35,9 +34,9 @@ export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
             className="relative"
           >
             <Avatar className="h-8 w-8 ring-2 ring-offset-2 ring-offset-background ring-transparent transition-all group-hover:ring-primary">
-              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarImage src={user.avatar} alt={user.username} />
               <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-primary-foreground">
-                {user.name[0]}
+                {user.username[0]}
               </AvatarFallback>
             </Avatar>
             <span className="absolute -bottom-1 -right-1 flex h-3 w-3">
@@ -50,10 +49,7 @@ export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{user.name}</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {user.email}
-            </p>
+            <p className="text-sm font-medium leading-none">{user.username}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
