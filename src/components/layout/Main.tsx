@@ -10,7 +10,7 @@ export default function Main({ children }: MainProps) {
     <motion.main
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex-1 overflow-auto pt-16"
+      className="flex-1 overflow-auto bg-background/50"
       id="main"
     >
       <div className="w-full mx-auto px-4 py-8">
@@ -24,4 +24,4 @@ export default function Main({ children }: MainProps) {
       </div>
     </motion.main>
   );
-} 
+}

@@ -5,7 +5,7 @@ import type { User } from "@/types/user";
 export async function GET() {
   try {
     // 调用后端接口获取用户信息
-    const data = await http.get<User>("/user/info");
+    const data = await http.get<User>("/user/info", { showError: false });
 
     return NextResponse.json(data);
   } catch (error: any) {

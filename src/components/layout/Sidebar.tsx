@@ -4,71 +4,55 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Home, MessageCircle, BookOpen, ChevronLeft, ChevronRight, FileText } from 'lucide-react';
-import SearchDialog from '@/components/search/SearchDialog';
+import { LayoutDashboard, LogOut } from 'lucide-react';
 import { useState } from 'react';
+import UserAvatar from '../auth/UserAvatar';
+import { http } from '@/lib/http';
+import type { User } from '@/types/user';
+import { deleteCookie } from 'cookies-next';
 
 const navItems = [
   {
-    name: "我的主页",
-    href: "/",
-    icon: Home,
-    description: "个人主页管理"
+    name: "工作台",
+    href: "/workbench",
+    icon: LayoutDashboard,
+    description: "个人工作台管理"
   },
-  {
-    name: "文章中心",
-    href: "/article",
-    icon: FileText,
-    description: "发现优质文章"
-  },
-  {
-    name: "问答社区",
-    href: "/community",
-    icon: MessageCircle,
-    description: "技术问答交流"
-  },
-  {
-    name: "课程中心",
-    href: "/courses",
-    icon: BookOpen,
-    description: "精品课程学习"
-  },
-  
 ];
 
 export default function Sidebar() {
   const pathname = usePathname();
-  const [showSearch, setShowSearch] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [user, setUser] = useState<User | null>({
+    id: 1,
+    username: 'MockUser',
+    phone: '1234567890',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
+  });
+
+  const handleLogout = async () => {
+    try {
+      await http.post('/api/auth/logout');
+      localStorage.removeItem('token');
+      deleteCookie('token');
+      setUser(null);
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
 
   return (
     <div className="relative flex h-full">
-      <motion.aside 
-        initial={{ x: -20, opacity: 0 }}
-        animate={{ x: 0, opacity: 1 }}
+      <motion.aside
+        initial={{ width: '5.5rem' }}
+        animate={{ width: isCollapsed ? '5.5rem' : '16rem' }}
+        onMouseEnter={() => setIsCollapsed(false)}
+        onMouseLeave={() => setIsCollapsed(true)}
         className={cn(
-          "border-r border-border bg-background transition-all duration-300 shadow-[1px_0_10px_0_rgba(0,0,0,0.05)]",
-          isCollapsed ? "w-20" : "w-64"
+          "h-full border-border bg-[#091221] shadow-[1px_0_10px_0_rgba(0,0,0,0.05)]",
         )}
+        transition={{ duration: 0.3 }}
       >
-        <div className="flex h-16 items-center gap-2 px-4">
-          <Link href="/" className="flex items-center gap-2" prefetch>
-            <motion.div
-              className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary-foreground flex items-center justify-center text-white"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              CN
-            </motion.div>
-            <span className={cn(
-              "text-xl font-bold bg-gradient-to-r from-primary/80 to-primary text-transparent bg-clip-text whitespace-nowrap transition-all duration-300",
-              isCollapsed ? "opacity-0 max-w-0" : "opacity-100 max-w-[200px]"
-            )}>
-              CodeNest
-            </span>
-          </Link>
-        </div>
-
         <nav className="space-y-1 px-3 py-3">
           {navItems.map((item) => {
             const Icon = item.icon;
@@ -86,45 +70,42 @@ export default function Sidebar() {
                 )}
               >
                 <div className={cn(
-                  "p-2 rounded-md transition-colors",
+                  "p-3 rounded-md transition-colors",
                   isActive ? "bg-primary/10" : "bg-background group-hover:bg-accent/50"
                 )}>
-                  <Icon className="w-4 h-4" />
+                  <Icon className="w-6 h-6" />
                 </div>
                 {!isCollapsed && (
                   <div className="flex flex-col gap-0.5 overflow-hidden">
-                    <span className="text-sm font-medium whitespace-nowrap">{item.name}</span>
-                    <span className="text-xs text-muted-foreground whitespace-nowrap">{item.description}</span>
+                    <span className="text-base font-medium whitespace-nowrap">{item.name}</span>
+                    <span className="text-sm text-muted-foreground whitespace-nowrap">{item.description}</span>
                   </div>
                 )}
               </Link>
             );
           })}
         </nav>
-
-        {!isCollapsed && (
-          <div className="mt-4 px-3">
-            <div className="rounded-lg bg-gradient-to-br from-primary/20 via-primary/10 to-transparent p-4">
-              <h3 className="font-medium mb-2">开始创作</h3>
-              <p className="text-sm text-muted-foreground">
-                分享你的知识和经验，帮助他人成长。
-              </p>
+        <div className="absolute bottom-0 left-0 w-full px-3 py-3">
+          {user && (
+            <div className="gap-3">
+              <div className="flex items-center gap-3 px-3 py-3 hover:bg-accent hover:text-accent-foreground rounded-lg cursor-pointer">
+                <div className='py-3 px-3'>
+                  <LogOut className="w-6 h-6" />
+                </div>
+                {!isCollapsed && (
+                  <div className="flex flex-col gap-0.5 overflow-hidden">
+                    <span className="text-base font-medium whitespace-nowrap">退出登录</span>
+                  </div>
+                )}
+              </div>
+              <div className="flex items-center gap-3 px-3 py-3 hover:bg-accent hover:text-accent-foreground rounded-lg">
+                <UserAvatar user={user} onLogout={handleLogout} />
+                {!isCollapsed && <span className="text-white">{user.username}</span>}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </motion.aside>
-
-      <button
-        onClick={() => setIsCollapsed(!isCollapsed)}
-        className="absolute -right-4 top-1/4 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-background border border-border text-muted-foreground hover:text-foreground transition-colors shadow-lg"
-      >
-        {isCollapsed ? <ChevronRight className="w-5 h-5" /> : <ChevronLeft className="w-5 h-5" />}
-      </button>
-
-      <SearchDialog 
-        isOpen={showSearch} 
-        onClose={() => setShowSearch(false)} 
-      />
     </div>
   );
-} 
+}

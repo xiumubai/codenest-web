@@ -1,6 +1,5 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -24,27 +23,17 @@ export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button 
-          variant="ghost" 
-          className="relative h-8 w-8 rounded-full group"
-        >
+        <div className="relative h-12 w-12 rounded-full group cursor-pointer">
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             className="relative"
           >
-            <Avatar className="h-8 w-8 ring-2 ring-offset-2 ring-offset-background ring-transparent transition-all group-hover:ring-primary">
+            <Avatar className="h-12 w-12 ring-4 ring-offset-2">
               <AvatarImage src={user.avatar} alt={user.username} />
-              <AvatarFallback className="bg-gradient-to-r from-purple-500 to-pink-500 text-primary-foreground">
-                {user.username[0]}
-              </AvatarFallback>
             </Avatar>
-            <span className="absolute -bottom-1 -right-1 flex h-3 w-3">
-              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-75"></span>
-              <span className="relative inline-flex h-3 w-3 rounded-full bg-primary"></span>
-            </span>
           </motion.div>
-        </Button>
+        </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">

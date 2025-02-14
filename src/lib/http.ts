@@ -5,7 +5,6 @@ interface RequestOptions extends RequestInit {
   showError?: boolean;
 }
 
-
 interface RequestResponse<T> {
   data: T;
   message?: string;
@@ -19,10 +18,9 @@ interface ErrorResponse {
 
 // 获取 token
 const getToken = () => {
-  if (typeof window !== 'undefined') {
-    return localStorage.getItem('token');
-  }
-  return null;
+  const token = localStorage.getItem('token');
+  if (!token) return null;
+  return token.startsWith('Bearer ') ? token : `Bearer ${token}`;
 };
 
 // 超时控制
@@ -67,12 +65,7 @@ class Http {
   private baseURL: string;
 
   constructor() {
-    // 判断是否在服务端环境
-    const isServer = typeof window === 'undefined';
-    
-    // 服务端使用环境变量中的 API 地址
-    // 客户端使用相对路径
-    this.baseURL = isServer ? (process.env.NEXT_PUBLIC_API_URL || '') : '';
+    this.baseURL = '';
   }
 
   // 请求方法
@@ -93,8 +86,7 @@ class Http {
     // 添加 token
     const token = getToken();
     if (token) {
-      // 如果 token 本身已经包含 Bearer 前缀，就直接使用
-      headers.set('Authorization', token.startsWith('Bearer ') ? token : `Bearer ${token}`);
+      headers.set('Authorization', token);
     }
 
     try {

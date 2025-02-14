@@ -4,41 +4,8 @@
 
 @layer base {
   :root {
-    /* 亮色模式 */
-    --background: 0 0% 100%;
-    --foreground: 229 50% 5%;
-    
-    --card: 0 0% 100%;
-    --card-foreground: 229 50% 5%;
-    
-    --popover: 0 0% 100%;
-    --popover-foreground: 229 50% 5%;
-    
-    --primary: 180 100% 37%;
-    --primary-foreground: 0 0% 100%;
-    
-    --secondary: 210 30% 96.1%;
-    --secondary-foreground: 229 50% 5%;
-    
-    --muted: 210 30% 96.1%;
-    --muted-foreground: 215 35% 40%;
-    
-    --accent: 210 30% 96.1%;
-    --accent-foreground: 229 50% 5%;
-    
-    --destructive: 0 75% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    
-    --border: 214.3 25% 91.4%;
-    --input: 214.3 25% 91.4%;
-    --ring: 166 65% 40%;
-    
-    --radius: 0.5rem;
-  }
-
-  .dark {
-    /* 暗色模式 */
-    --background: 229 35% 8%;
+    /* 颜色主题 */
+    --background: 210 50% 20%;
     --foreground: 210 40% 100%;
     
     --card: 229 35% 8%;
@@ -47,7 +14,7 @@
     --popover: 229 35% 8%;
     --popover-foreground: 210 40% 100%;
     
-    --primary: 180 100% 47%;
+    --primary: 158 100% 40%;
     --primary-foreground: 0 0% 100%;
     
     --secondary: 217 25% 20%;
@@ -65,6 +32,8 @@
     --border: 217 25% 20%;
     --input: 217 25% 20%;
     --ring: 166 60% 50%;
+    
+    --radius: 0.5rem;
   }
 }
 
@@ -79,7 +48,7 @@
 
 /* 自定义滚动条样式 */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
   height: 8px;
 }
 
@@ -88,12 +57,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted-foreground) / 0.3);
+  background: #00cf79;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground) / 0.5);
+  background: #00cf79;
 }
 
 /* 毛玻璃效果 */
