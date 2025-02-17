@@ -23,13 +23,13 @@ export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="relative h-12 w-12 rounded-full group cursor-pointer">
+        <div className="relative w-8 h-8 rounded-full group cursor-pointer">
           <motion.div
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             className="relative"
           >
-            <Avatar className="h-12 w-12 ring-4 ring-offset-2">
+            <Avatar className="w-8 h-8 ring-4 ring-offset-2">
               <AvatarImage src={user.avatar} alt={user.username} />
             </Avatar>
           </motion.div>

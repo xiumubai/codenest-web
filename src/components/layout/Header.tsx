@@ -1,15 +1,15 @@
 "use client";
-import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import UserAvatar from "../auth/UserAvatar";
-import { Button } from "../ui/button";
-import { LogIn } from "lucide-react";
+import { useState } from "react";
 import { http } from "@/lib/http";
-import type { User } from "@/types/user";
+import { LogIn } from "lucide-react";
+import { motion } from "framer-motion";
+import { Button } from "../ui/button";
 import { deleteCookie } from 'cookies-next';
-import Logo from './Logo';
 import { usePathname } from 'next/navigation';
+import Logo from './Logo';
+import UserAvatar from "../auth/UserAvatar";
+import type { User } from "@/types/user";
 
 const navItems = [
   { name: '首页', href: '/article' },
@@ -18,8 +18,12 @@ const navItems = [
 ];
 
 export default function Header() {
-  const [user, setUser] = useState<User | null>(null);
-  const [mounted, setMounted] = useState(false);
+  const [user, setUser] = useState<User | null>({
+    id: 1,
+    username: 'MockUser',
+    phone: '1234567890',
+    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
+  });
   const pathname = usePathname();
 
   const fetchUserInfo = async () => {
@@ -40,17 +44,6 @@ export default function Header() {
       setUser(null);
     }
   };
-
-  // 仅在客户端执行的初始化
-  useEffect(() => {
-    setMounted(true);
-    fetchUserInfo();
-  }, []);
-
-  // 避免服务端渲染闪烁
-  if (!mounted) {
-    return null; // 或者返回一个加载占位符
-  }
 
   const handleLogout = async () => {
     try {
@@ -79,7 +72,7 @@ export default function Header() {
                 <span className={`relative transition-colors duration-300 font-semibold tracking-wide ${
                   pathname === item.href 
                   ? 'text-primary' 
-                  : 'bg-gradient-to-r from-purple-400 to-pink-500 text-transparent bg-clip-text hover:text-primary'
+                  : 'bg-gradient-to-r bg-clip-text hover:text-primary'
                 } shadow-lg`}>
                   {item.name}
                   <span className="absolute left-0 bottom-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>

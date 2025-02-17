@@ -9,7 +9,7 @@ export default function Footer() {
           </div>
           <div className="flex items-center gap-6">
             <a 
-              href="#" 
+              href="#"
               className="text-sm text-white hover:text-white transition-colors"
             >
               关于我们
