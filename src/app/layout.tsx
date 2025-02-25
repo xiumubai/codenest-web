@@ -1,8 +1,7 @@
-
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import ClientLayout from "@/components/layout/ClientLayout";
-
+import { UserProvider } from "@/components/providers/user-provider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
       {
         url: "/codenest-logo.svg",
         type: "image/svg+xml",
-      }
+      },
     ],
     shortcut: "/codenest-logo.svg",
   },
@@ -36,8 +35,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <ClientLayout>{children}</ClientLayout>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        <UserProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </UserProvider>
       </body>
     </html>
   );

@@ -1,7 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="relative bg-gradient-to-r from-[#041830] to-[#080117]">
-      <div className="absolute inset-0 -top-8 bg-gradient-to-b from-transparent to-background/50" />
+    <footer className="relative bg-[#1e293b]">
       <div className="relative py-6 px-6 shadow-[0_-1px_12px_rgba(0,0,0,0.08)]">
         <div className="container max-w-6xl mx-auto flex items-center justify-between">
           <div className="text-sm text-white">

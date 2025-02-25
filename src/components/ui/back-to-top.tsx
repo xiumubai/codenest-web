@@ -166,7 +166,7 @@ export default function BackToTop({
             }}
             className="flex items-center justify-center"
           >
-            <Rocket className="w-5 h-5" />
+            <Rocket className="w-5 h-5 text-primary" />
           </motion.div>
 
           {/* 悬浮提示 */}

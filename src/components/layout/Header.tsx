@@ -1,15 +1,16 @@
 "use client";
 import Link from "next/link";
-import { useState } from "react";
-import { http } from "@/lib/http";
 import { LogIn } from "lucide-react";
 import { motion } from "framer-motion";
 import { Button } from "../ui/button";
-import { deleteCookie } from 'cookies-next';
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import UserAvatar from "../auth/UserAvatar";
 import type { User } from "@/types/user";
+import { useUserStore } from '@/store/user';
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+
 
 const navItems = [
   { name: '首页', href: '/article' },
@@ -18,39 +19,15 @@ const navItems = [
 ];
 
 export default function Header() {
-  const [user, setUser] = useState<User | null>({
-    id: 1,
-    username: 'MockUser',
-    phone: '1234567890',
-    avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=4',
-  });
+  const router = useRouter();
+  const { userInfo, logout } = useUserStore();
   const pathname = usePathname();
-
-  const fetchUserInfo = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        setUser(null);
-        return;
-      }
-      const response = await fetch('/api/auth/user');
-      if (!response.ok) {
-        throw new Error('获取用户信息失败');
-      }
-      const data = await response.json();
-      setUser(data.data || null);
-    } catch (error) {
-      console.error('Failed to fetch user info:', error);
-      setUser(null);
-    }
-  };
 
   const handleLogout = async () => {
     try {
-      await http.post('/api/auth/logout');
-      localStorage.removeItem('token');
-      deleteCookie('token');
-      setUser(null);
+      await logout()
+      toast.success("退出成功");
+      router.push("/auth/login");
     } catch (error) {
       console.error('Logout failed:', error);
     }
@@ -62,7 +39,7 @@ export default function Header() {
       <motion.header
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
-        className="relative bg-[#091221] backdrop-blur-xl shadow-sm"
+        className="relative bg-[#091221] shadow-sm"
       >
         <div className="flex h-16 items-center px-6">
           <Logo />
@@ -75,14 +52,13 @@ export default function Header() {
                   : 'bg-gradient-to-r bg-clip-text hover:text-primary'
                 } shadow-lg`}>
                   {item.name}
-                  <span className="absolute left-0 bottom-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></span>
                 </span>
               </Link>
             ))}
           </nav>
           <div className="ml-auto flex items-center gap-4">
-            {user ? (
-              <UserAvatar user={user} onLogout={handleLogout} />
+            {userInfo ? (
+              <UserAvatar user={userInfo} onLogout={handleLogout} />
             ) : (
               <Link href="/auth/login" prefetch>
                 <Button 
