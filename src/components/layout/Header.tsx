@@ -6,7 +6,6 @@ import { Button } from "../ui/button";
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import UserAvatar from "../auth/UserAvatar";
-import type { User } from "@/types/user";
 import { useUserStore } from '@/store/user';
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
