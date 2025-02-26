@@ -10,7 +10,7 @@ export default function Logo({
 }) {
   return (
     <div className="flex h-16 items-center gap-2 px-4">
-      <Link href="/article" className="flex items-center gap-2" prefetch>
+      <Link href="/" className="flex items-center gap-2" prefetch>
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

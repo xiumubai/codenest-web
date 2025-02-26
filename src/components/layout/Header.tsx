@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
 const navItems = [
-  { name: '首页', href: '/article' },
+  { name: '文章', href: '/article' },
   // { name: '课程中心', href: '/courses' },
   { name: '问答社区', href: '/community' },
   { name: '渡劫秘籍', href: '/tutorial' },
@@ -32,26 +32,27 @@ export default function Header() {
   };
 
   return (
-    <div className="sticky top-0 left-20 right-0 z-40 container mx-auto">
+    <div className="sticky top-0 left-20 right-0 z-40 shadow-sm bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <header
-        className="relative"
+        className="relative container mx-auto"
       >
-        <div className="flex h-16 items-center px-6">
+        <div className="flex h-16 items-center">
           <Logo />
-          <nav className="flex gap-6 ml-6">
-            {navItems.map((item) => (
-              <Link key={item.name} href={item.href} prefetch>
-                <span className={`relative transition-colors duration-300 font-semibold tracking-wide ${
-                  pathname === item.href 
-                  ? 'text-primary' 
-                  : 'bg-clip-text hover:text-primary'
-                }`}>
-                  {item.name}
-                </span>
-              </Link>
-            ))}
-          </nav>
+          
           <div className="ml-auto flex items-center gap-4">
+            <nav className="flex gap-6 mr-6">
+              {navItems.map((item) => (
+                <Link key={item.name} href={item.href} prefetch>
+                  <span className={`relative duration-300 font-mono font-medium tracking-wide ${
+                    pathname === item.href 
+                    ? 'text-primary'
+                    : 'bg-clip-text hover:text-primary'
+                  }`}>
+                    {item.name}
+                  </span>
+                </Link>
+              ))}
+            </nav>
             {userInfo ? (
               <UserAvatar user={userInfo} onLogout={handleLogout} />
             ) : (
