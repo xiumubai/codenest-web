@@ -8,6 +8,7 @@ import EditorBubbleMenu from './EditorBubbleMenu';
 import ArticleOutline from '../article/ArticleOutline';
 import { getBaseExtensions } from './extensions';
 import { toast } from 'sonner';
+import { clientFetch } from '@/lib/fetch/clientFetch';
 
 interface ArticleEditorProps {
   content: string;

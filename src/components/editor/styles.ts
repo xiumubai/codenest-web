@@ -47,7 +47,11 @@ export const baseEditorStyles = `
   [&_blockquote]:bg-muted/50 
   [&_blockquote]:rounded-r-lg 
   [&_blockquote]:py-4 
-  [&_blockquote_p]:my-0 
+  [&_blockquote_p]:my-0
+  [&_img]:rounded-lg
+  [&_img]:max-w-full
+  [&_img]:h-auto
+  [&_img]:my-4 
   [&_blockquote_p]:leading-7
   [&_pre]:relative
   [&_pre]:font-mono 
@@ -107,4 +111,4 @@ export const baseEditorStyles = `
   [&_ul[data-type=taskList]_li_input]:focus-visible:ring-primary
   [&_ul[data-type=taskList]_li_div]:min-w-0
   [&_ul[data-type=taskList]_li_p]:my-0
-`; 
+`;

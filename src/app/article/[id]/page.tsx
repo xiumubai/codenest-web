@@ -33,27 +33,6 @@ export default function ArticlePage() {
   const [outline, setOutline] = useState<Array<{ id: string; text: string; level: number }>>([]);
 
   useEffect(() => {
-    // 监听滚动，更新当前阅读的标题
-    const headings = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveHeading(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.5 }
-    );
-
-    headings.forEach((heading) => observer.observe(heading));
-
-    return () => {
-      headings.forEach((heading) => observer.unobserve(heading));
-    };
-  }, [article]);
-
-  useEffect(() => {
     const fetchArticle = async () => {
       try {
         const res = await clientFetch(`/article/${id}`);
@@ -166,12 +145,6 @@ export default function ArticlePage() {
 
   return (
     <>
-      <motion.div
-        id="scroll-indicator"
-        style={{ scaleX: scrollYProgress }}
-        className="fixed top-0 left-0 right-0 h-1.5 bg-primary origin-[0%] z-50"
-      />
-
       <div className="container mx-auto py-10 px-4">
         <div className="grid grid-cols-[200px_1fr_250px] gap-8">
           {/* 左侧操作区 */}

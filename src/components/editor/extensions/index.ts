@@ -37,6 +37,8 @@ export const getBaseExtensions = (isEditable = true) => [
     },
   }),
   Image.configure({
+    inline: true,
+    allowBase64: true,
     HTMLAttributes: {
       class:
         'rounded-lg border border-gray-200 dark:border-gray-800 my-6 max-w-full',
@@ -76,4 +78,4 @@ export const getBaseExtensions = (isEditable = true) => [
   }),
   TextStyle,
   Color,
-]; 
+];
