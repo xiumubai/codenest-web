@@ -37,7 +37,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-full">
+    <div className="min-h-full container">
       {/* 搜索组件 */}
       <SearchDialog
         isOpen={isSearchOpen}

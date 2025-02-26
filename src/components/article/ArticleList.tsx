@@ -7,6 +7,8 @@ import ArticleCard from "./ArticleCard";
 import BackToTop from "@/components/ui/back-to-top";
 import { Article } from "@/types/article";
 import { Skeleton } from "@/components/ui/skeleton";
+import { clientFetch } from '@/lib/fetch/clientFetch';
+
 
 // 骨架屏组件
 function ArticleSkeleton() {
@@ -66,48 +68,6 @@ function ArticleSkeletons() {
   );
 }
 
-// 生成头像URL的函数
-function getAvatarUrl(name: string) {
-  // 使用 DiceBear API 生成头像
-  // 支持多种风格：avataaars, bottts, pixel-art, identicon 等
-  return `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(name)}`;
-}
-
-// 模拟获取文章列表数据
-const fetchArticles = async (page: number): Promise<Article[]> => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  
-  const authors = [
-    { id: 1, name: "张三" },
-    { id: 2, name: "李四" },
-    { id: 3, name: "王五" },
-    { id: 4, name: "赵六" },
-  ];
-  
-  return Array.from({ length: 6 }, (_, i) => {
-    const author = authors[Math.floor(Math.random() * authors.length)];
-    return {
-      id: page * 6 + i + 1,
-      title: `文章标题 ${page * 6 + i + 1}`,
-      description: "这是一段文章描述，介绍了文章的主要内容和核心观点。",
-      content: "文章内容",
-      cover: `https://picsum.photos/800/400?random=${page * 6 + i + 1}`,
-      category: "技术",
-      readingTime: "5 min",
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      views: Math.floor(Math.random() * 1000),
-      likes: Math.floor(Math.random() * 100),
-      author: {
-        id: author.id,
-        name: author.name,
-        avatar: getAvatarUrl(author.name),
-      },
-      tags: ["前端", "React", "Next.js"],
-    };
-  });
-};
-
 // 加载动画组件
 function LoadingDots() {
   return (
@@ -145,6 +105,18 @@ export default function ArticleList() {
   const { ref, inView } = useInView();
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // 获取文章列表数据
+  const fetchArticles = async (page: number): Promise<Article[]> => {
+    const res = await clientFetch('/article/list', {
+      method: 'POST',
+      body: JSON.stringify({
+        page,
+        pageSize: 10,
+      })
+    });
+    return res.data.items;
+  };
+
   const {
     data,
     error,
@@ -154,11 +126,11 @@ export default function ArticleList() {
     status,
   } = useInfiniteQuery({
     queryKey: ["articles"],
-    queryFn: ({ pageParam = 0 }) => fetchArticles(pageParam),
+    queryFn: ({ pageParam = 1 }) => fetchArticles(pageParam),
     getNextPageParam: (lastPage, allPages) => {
-      return lastPage.length === 6 ? allPages.length : undefined;
+      return lastPage.length === 10 ? allPages.length : undefined;
     },
-    initialPageParam: 0,
+    initialPageParam: 1,
   });
 
   useEffect(() => {

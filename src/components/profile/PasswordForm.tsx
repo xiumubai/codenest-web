@@ -7,7 +7,11 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { clientFetch } from '@/lib/fetch/clientFetch';
+import { useUserStore } from "@/store/user";
+import { useRouter } from "next/navigation";
+
 
 const passwordSchema = z.object({
   oldPassword: z.string().min(6, "密码至少6个字符"),
@@ -38,11 +42,12 @@ interface PasswordFormProps {
 }
 
 export function PasswordForm({ registrationType, hasPassword }: PasswordFormProps) {
-  const { toast } = useToast();
   const [isResetting, setIsResetting] = useState(false);
   const [isSendingCode, setIsSendingCode] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [tempPassword, setTempPassword] = useState("");
+  const { logout } = useUserStore();
+  const router = useRouter();
 
   const passwordForm = useForm<PasswordFormValues>({
     resolver: zodResolver(passwordSchema),
@@ -82,17 +87,10 @@ export function PasswordForm({ registrationType, hasPassword }: PasswordFormProp
     try {
       // TODO: 调用后端API发送验证码
       await new Promise(resolve => setTimeout(resolve, 1000));
-      toast({
-        title: "成功",
-        description: "验证码已发送到您的手机"
-      });
+      toast.success('验证码已发送到您的手机');
       startCountdown();
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "错误",
-        description: "验证码发送失败，请重试"
-      });
+      toast.error('验证码发送失败，请重试');
     } finally {
       setIsSendingCode(false);
     }
@@ -101,17 +99,17 @@ export function PasswordForm({ registrationType, hasPassword }: PasswordFormProp
   const onPasswordSubmit = async (data: PasswordFormValues) => {
     try {
       // TODO: 调用后端API修改密码
-      toast({
-        title: "成功",
-        description: "密码修改成功"
+      await clientFetch(`/user/change-password`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
       });
+      toast.success('密码修改成功');
       passwordForm.reset();
+      // 退出
+      await logout();
+      router.push("/auth/login");
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "错误",
-        description: "密码修改失败，请重试"
-      });
+      toast.error('密码修改失败，请重试');
     }
   };
 
@@ -120,16 +118,9 @@ export function PasswordForm({ registrationType, hasPassword }: PasswordFormProp
       // TODO: 调用后端API重置密码
       const randomPassword = Math.random().toString(36).slice(-6);
       setTempPassword(randomPassword);
-      toast({
-        title: "成功",
-        description: `临时密码已生成：${randomPassword}，请使用此密码重新设置新密码`
-      });
+      toast.success(`临时密码已生成：${randomPassword}，请使用此密码重新设置新密码`);
     } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "错误",
-        description: "密码重置失败，请重试"
-      });
+      toast.error('密码重置失败，请重试');
     }
   };
 

@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { LogIn } from "lucide-react";
-import { motion } from "framer-motion";
 import { Button } from "../ui/button";
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
@@ -10,11 +9,11 @@ import { useUserStore } from '@/store/user';
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 
-
 const navItems = [
   { name: '首页', href: '/article' },
-  { name: '课程中心', href: '/courses' },
+  // { name: '课程中心', href: '/courses' },
   { name: '问答社区', href: '/community' },
+  { name: '渡劫秘籍', href: '/tutorial' },
 ];
 
 export default function Header() {
@@ -33,12 +32,9 @@ export default function Header() {
   };
 
   return (
-    <div className="sticky top-0 left-20 right-0 z-40">
-      <div className="absolute inset-0 bg-gradient-to-b from-background/50 to-background/0 backdrop-blur-[1px]" />
-      <motion.header
-        initial={{ y: -20, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className="relative bg-[#091221] shadow-sm"
+    <div className="sticky top-0 left-20 right-0 z-40 container mx-auto">
+      <header
+        className="relative"
       >
         <div className="flex h-16 items-center px-6">
           <Logo />
@@ -48,8 +44,8 @@ export default function Header() {
                 <span className={`relative transition-colors duration-300 font-semibold tracking-wide ${
                   pathname === item.href 
                   ? 'text-primary' 
-                  : 'bg-gradient-to-r bg-clip-text hover:text-primary'
-                } shadow-lg`}>
+                  : 'bg-clip-text hover:text-primary'
+                }`}>
                   {item.name}
                 </span>
               </Link>
@@ -71,7 +67,7 @@ export default function Header() {
             )}
           </div>
         </div>
-      </motion.header>
+      </header>
     </div>
   );
 }

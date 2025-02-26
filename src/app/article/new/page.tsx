@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import ArticleEditor from '@/components/editor/ArticleEditor';
-import { Share, History, Save, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Share, Save, ChevronRight, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import PublishDialog from '@/components/article/PublishDialog';
-import { log } from 'util';
+import { clientFetch } from '@/lib/fetch/clientFetch';
+
 
 interface OutlineItem {
   id: string;
@@ -43,6 +44,7 @@ export default function EditorPage() {
       // 这里应该调用实际的保存草稿 API
       // const response = await saveDraft({ title, content });
       
+
       toast.success('草稿保存成功', {
         position: 'top-center'
       });
@@ -61,11 +63,15 @@ export default function EditorPage() {
     tags: string[];
   }) => {
     try {
-      // TODO: 调用发布文章的 API
-      // 这里应该调用实际的发布文章 API
-      // const response = await publishArticle(data);
       console.log(data);
-      
+      await clientFetch('/article/create', {
+        method: 'POST',
+        body: JSON.stringify({
+          ...data,
+          tags: JSON.stringify(data.tags),
+        })
+      });
+
       toast.success('文章发布成功');
     } catch (error) {
       throw error;
