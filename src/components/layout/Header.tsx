@@ -8,6 +8,7 @@ import UserAvatar from "../auth/UserAvatar";
 import { useUserStore } from '@/store/user';
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import SearchBar from '../search/SearchBar';
 
 const navItems = [
   { name: '文章', href: '/article' },
@@ -20,7 +21,6 @@ export default function Header() {
   const router = useRouter();
   const { userInfo, logout } = useUserStore();
   const pathname = usePathname();
-
   const handleLogout = async () => {
     try {
       await logout()
@@ -40,6 +40,7 @@ export default function Header() {
           <Logo />
           
           <div className="ml-auto flex items-center gap-4">
+            <SearchBar />
             <nav className="flex gap-6 mr-6">
               {navItems.map((item) => (
                 <Link key={item.name} href={item.href} prefetch>

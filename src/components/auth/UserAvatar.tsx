@@ -25,7 +25,7 @@ export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="flex items-center gap-3 cursor-pointer group px-2 py-1 rounded-full bg-muted/60 transition-all duration-300">
+        <div className="flex items-center gap-3 cursor-pointer group px-2 py-1 rounded-full hover:bg-muted/60 transition-all duration-300">
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary rounded-full blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <motion.div

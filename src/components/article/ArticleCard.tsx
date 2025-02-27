@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Calendar, Eye, ThumbsUp } from "lucide-react";
@@ -11,23 +12,22 @@ import { zhCN } from "date-fns/locale";
 
 interface ArticleCardProps {
   article: Article;
+  onClose?: () => void;
 }
 
-export default function ArticleCard({ article }: ArticleCardProps) {
+export default function ArticleCard({ article, onClose }: ArticleCardProps) {
   return (
     <motion.div
       layout
-      className="group relative overflow-hidden rounded-xl border border-border bg-card transition-colors hover:bg-accent/50 flex"
+      className="cursor-pointer group relative overflow-hidden rounded-xl border border-border bg-card transition-colors hover:bg-accent/50 flex"
     >
       {/* 文章内容 */}
       <div className="flex-1 p-6 space-y-4">
         {/* 标题和描述 */}
         <div className="space-y-2">
-          <Link href={`/article/${article.id}`} prefetch>
-            <h2 className="text-xl font-semibold leading-tight text-foreground hover:text-primary transition-colors line-clamp-2">
-              {article.title}
-            </h2>
-          </Link>
+          <h2 className="text-xl font-semibold leading-tight text-foreground hover:text-primary transition-colors line-clamp-2">
+            {article.title}
+          </h2>
           <p className="text-sm text-muted-foreground line-clamp-2">
             {article.description}
           </p>
@@ -88,4 +88,4 @@ export default function ArticleCard({ article }: ArticleCardProps) {
       </div>
     </motion.div>
   );
-} 
+}
