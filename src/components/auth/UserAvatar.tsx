@@ -11,17 +11,23 @@ import {
 import { LogOut, User, Settings, Bell } from "lucide-react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { useUserStore } from '@/store/user';
+import { toast } from "sonner";
 
-interface UserAvatarProps {
-  user: {
-    username: string;
-    avatar: string;
-  };
-  onLogout: () => void;
-}
 
-export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
+export default function UserAvatar() {
   const router = useRouter();
+  const { userInfo, logout } = useUserStore();
+  const handleLogout = async () => {
+    try {
+      await logout()
+      toast.success("退出成功");
+      router.push("/auth/login");
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -34,13 +40,13 @@ export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
               className="relative"
             >
               <Avatar className="w-10 h-10 ring-2 ring-background shadow-[0_0_0_2px] shadow-primary/20">
-                <AvatarImage src={user.avatar} alt={user.username} />
+                <AvatarImage src={userInfo.avatar} alt={userInfo.username} />
               </Avatar>
             </motion.div>
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-              {user.username}
+              {userInfo.username}
             </span>
             <span className="text-xs text-muted-foreground group-hover:text-primary/60 transition-colors duration-300">
               点击查看更多
@@ -59,7 +65,7 @@ export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
       >
         <DropdownMenuLabel className="p-2 bg-muted/50 rounded-lg mb-1">
           <div className="flex flex-col space-y-1.5">
-            <p className="text-sm font-semibold">{user.username}</p>
+            <p className="text-sm font-semibold">{userInfo.username}</p>
             <p className="text-xs text-muted-foreground">朽木白哥</p>
           </div>
         </DropdownMenuLabel>
@@ -105,7 +111,7 @@ export default function UserAvatar({ user, onLogout }: UserAvatarProps) {
         <DropdownMenuSeparator className="bg-border/50" />
         <div className="p-1">
           <DropdownMenuItem 
-            onClick={onLogout}
+            onClick={handleLogout}
             className="flex items-center gap-2 p-2 cursor-pointer rounded-md group hover:bg-destructive/5"
           >
             <div className="p-1.5 rounded-md bg-destructive/10 text-destructive group-hover:bg-destructive/20 transition-colors">

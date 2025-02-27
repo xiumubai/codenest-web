@@ -22,9 +22,9 @@ export const baseEditorStyles = `
   [&_h3]:font-bold 
   [&_h3]:mb-3 
   [&_h3]:mt-5
-  [&_h4]:text-lg 
+  [&_h4]:text-lg
   [&_h4]:font-bold 
-  [&_h4]:mb-4 
+  [&_h4]:mb-4
   [&_h4]:mt-6
   [&_h5]:text-base 
   [&_h5]:font-bold 
@@ -32,7 +32,6 @@ export const baseEditorStyles = `
   [&_h5]:mt-6
   [&_p]:mb-4 
   [&_p]:leading-7 
-  [&_p]:text-muted-foreground
   [&_ul]:list-disc 
   [&_ul]:pl-6 
   [&_ul]:mb-4
@@ -41,7 +40,7 @@ export const baseEditorStyles = `
   [&_ol]:mb-4
   [&_li]:mb-2
   [&_blockquote]:border-l-4 
-  [&_blockquote]:border-primary/20 
+  [&_blockquote]:border-primary
   [&_blockquote]:pl-4 
   [&_blockquote]:my-4 
   [&_blockquote]:bg-muted/50 

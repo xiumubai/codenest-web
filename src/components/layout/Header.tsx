@@ -6,8 +6,6 @@ import { usePathname } from 'next/navigation';
 import Logo from './Logo';
 import UserAvatar from "../auth/UserAvatar";
 import { useUserStore } from '@/store/user';
-import { toast } from "sonner";
-import { useRouter } from "next/navigation";
 import SearchBar from '../search/SearchBar';
 
 const navItems = [
@@ -18,18 +16,9 @@ const navItems = [
 ];
 
 export default function Header() {
-  const router = useRouter();
-  const { userInfo, logout } = useUserStore();
+  const { userInfo } = useUserStore();
   const pathname = usePathname();
-  const handleLogout = async () => {
-    try {
-      await logout()
-      toast.success("退出成功");
-      router.push("/auth/login");
-    } catch (error) {
-      console.error('Logout failed:', error);
-    }
-  };
+  
 
   return (
     <div className="sticky top-0 left-20 right-0 z-40 shadow-sm bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -55,7 +44,7 @@ export default function Header() {
               ))}
             </nav>
             {userInfo ? (
-              <UserAvatar user={userInfo} onLogout={handleLogout} />
+              <UserAvatar />
             ) : (
               <Link href="/auth/login" prefetch>
                 <Button 

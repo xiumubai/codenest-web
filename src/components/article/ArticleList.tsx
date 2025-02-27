@@ -180,9 +180,12 @@ export default function ArticleList() {
                     <motion.div
                       className="absolute -inset-0.5 rounded-xl bg-gradient-to-r from-primary/20 to-primary/0 opacity-0 blur-sm group-hover:opacity-100 transition-all duration-500"
                       style={{ zIndex: -1 }}
-                      onClick={() => router.push(`/article/${article.id}`)}
+                      
                     />
-                    <div className="relative transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/5">
+                    <div 
+                      onClick={() => router.push(`/article/${article.id}`)} 
+                      className="relative transition-all duration-300 group-hover:shadow-lg group-hover:shadow-primary/5"
+                    >
                       <ArticleCard article={article} />
                     </div>
                   </motion.div>
@@ -204,4 +207,4 @@ export default function ArticleList() {
       <BackToTop />
     </div>
   );
-} 
+}

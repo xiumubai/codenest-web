@@ -2,14 +2,13 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import ArticleEditor from '@/components/editor/ArticleEditor';
-import { Share, Save, ChevronRight, ChevronLeft } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Share, Save } from 'lucide-react';
 import { toast } from 'sonner';
 import PublishDialog from '@/components/article/PublishDialog';
 import { clientFetch } from '@/lib/fetch/clientFetch';
-
+import Outline from '@/components/article/Outline';
+import UserAvatar from '@/components/auth/UserAvatar';
 
 interface OutlineItem {
   id: string;
@@ -18,7 +17,6 @@ interface OutlineItem {
 }
 
 export default function EditorPage() {
-  const [showOutline, setShowOutline] = useState(true);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [outline, setOutline] = useState<OutlineItem[]>([]);
@@ -43,7 +41,6 @@ export default function EditorPage() {
       // TODO: 调用保存草稿的 API
       // 这里应该调用实际的保存草稿 API
       // const response = await saveDraft({ title, content });
-      
 
       toast.success('草稿保存成功', {
         position: 'top-center'
@@ -63,7 +60,6 @@ export default function EditorPage() {
     tags: string[];
   }) => {
     try {
-      console.log(data);
       await clientFetch('/article/create', {
         method: 'POST',
         body: JSON.stringify({
@@ -86,122 +82,77 @@ export default function EditorPage() {
   };
 
   return (
-    <div className="h-screen flex">
-      {/* 主体内容区域 */}
-      <div className="flex-1 flex flex-col min-w-0 border-r">
-        {/* 顶部操作栏 */}
-        <div className="h-14 flex items-center justify-between px-6 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
-          <div className="flex items-center gap-2 flex-1 max-w-[800px]">
-            <Input
-              type="text"
-              placeholder="请输入文章标题..."
-              className="text-5xl font-bold border-none shadow-none bg-transparent focus-visible:ring-0 focus-visible:ring-offset-0 px-0 w-full placeholder:text-muted-foreground/50 leading-tight"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </div>
-          <div className="flex items-center gap-2">
-            <Button 
-              variant="ghost" 
-              size="sm"
-              className="gap-1"
-              onClick={handleSaveDraft}
-            >
-              <Save className="h-4 w-4" />
-              存为草稿
-            </Button>
-            <Button 
-              variant="ghost"
-              size="sm"
-              className="gap-1"
-              onClick={() => {
-                if (!title.trim()) {
-                  toast.error('请输入文章标题', {
-                    position: 'top-center'
-                  });
-                  return;
-                }
-                if (!content.trim()) {
-                  toast.error('请输入文章内容', {
-                    position: 'top-center'
-                  });
-                  return;
-                }
-                setShowPublishDialog(true);
-              }}
-            >
-              <Share className="h-4 w-4" />
-              去发布
-            </Button>
-          </div>
-        </div>
-
-        {/* 编辑器 */}
-        <div className="flex-1 overflow-y-auto">
-          <ArticleEditor
-            content={content}
-            onChange={setContent}
-            onOutlineChange={setOutline}
+    <div className="h-screen flex flex-col overflow-hidden">
+      {/* 顶部操作栏 */}
+      <div className="flex items-center justify-between px-6 py-2 border-b">
+        <div className="flex items-center gap-2 flex-1 pr-2">
+          <input
+            type="text"
+            placeholder="请输入文章标题..."
+            className="text-2xl font-medium border-none focus:outline-none w-full"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
           />
+        </div>
+        <div className="flex items-center gap-3">
+          <Button
+            variant="outline"
+            size="default"
+            className="gap-2 hover:bg-accent/90 transition-colors duration-200"
+            onClick={handleSaveDraft}
+          >
+            <Save className="h-4 w-4" />
+            存为草稿
+          </Button>
+          <Button 
+            variant="default"
+            size="default"
+            className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-all duration-200 hover:shadow-md"
+            onClick={() => {
+              if (!title.trim()) {
+                toast.error('请输入文章标题', {
+                  position: 'top-center'
+                });
+                return;
+              }
+              if (!content.trim()) {
+                toast.error('请输入文章内容', {
+                  position: 'top-center'
+                });
+                return;
+              }
+              setShowPublishDialog(true);
+            }}
+          >
+            <Share className="h-4 w-4" />
+            发布文章
+          </Button>
+          <div className="w-px h-6 bg-border mx-1" />
+          <UserAvatar />
         </div>
       </div>
 
-      {/* 右侧大纲 */}
-      <div
-        className={cn(
-          "w-64 transition-all duration-300",
-          !showOutline && "w-0"
-        )}
-      >
-        {showOutline && (
-          <div className="h-full flex flex-col">
-            <div className="h-14 flex items-center justify-between px-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <h3 className="font-medium">大纲</h3>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={() => setShowOutline(false)}
-              >
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </div>
-            <div className="flex-1 overflow-y-auto">
-              <div className="p-4 space-y-1.5">
-                {outline.map((item) => (
-                  <div
-                    key={item.id}
-                    className={cn(
-                      "text-sm cursor-pointer py-1 transition-colors rounded hover:bg-muted/50 px-2",
-                      "ml-" + (item.level - 1) * 3,
-                      activeHeadingId === item.id
-                        ? "text-primary font-medium bg-muted/30"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                    onClick={() => handleOutlineClick(item.id)}
-                  >
-                    {item.text}
-                  </div>
-                ))}
-                {outline.length === 0 && (
-                  <div className="text-sm text-muted-foreground text-center py-4">
-                    暂无大纲
-                  </div>
-                )}
-              </div>
-            </div>
+      <div className="flex-1 flex min-h-0 overflow-hidden">
+        {/* 主体内容区域 */}
+        <div className="flex-1 flex flex-col min-w-0 border-r overflow-hidden">
+          {/* 编辑器 */}
+          <div className="flex-1 overflow-y-auto">
+            <ArticleEditor
+              content={content}
+              onChange={setContent}
+              onOutlineChange={setOutline}
+            />
           </div>
-        )}
-        {!showOutline && (
-          <Button
-            variant="ghost"
-            size="icon"
-            className="fixed right-0 top-1/2 -translate-y-1/2 h-8 w-8 opacity-50 hover:opacity-100"
-            onClick={() => setShowOutline(true)}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-        )}
+        </div>
+
+        {/* 右侧大纲 */}
+        <div className="flex flex-col">
+          <Outline
+            outline={outline}
+            activeHeadingId={activeHeadingId}
+            onOutlineClick={handleOutlineClick}
+          />
+        </div>
       </div>
 
       <PublishDialog
@@ -213,4 +164,4 @@ export default function EditorPage() {
       />
     </div>
   );
-} 
+}

@@ -151,17 +151,19 @@ export default function ArticleEditor({
   return (
     <div className="flex flex-col h-full">
       {/* 工具栏 */}
-      <EditorToolbar
-        editor={editor}
-        onAddImage={handleAddImage}
-        onAddTable={handleAddTable}
-        onAddLink={handleAddLink}
-      />
+      <div className="sticky top-0 z-50 bg-background">
+        <EditorToolbar
+          editor={editor}
+          onAddImage={handleAddImage}
+          onAddTable={handleAddTable}
+          onAddLink={handleAddLink}
+        />
+      </div>
 
       {/* 编辑器内容区域 */}
-      <div className="flex gap-8 flex-1 py-8">
+      <div className="flex gap-8 flex-1 py-8 overflow-y-auto">
         {showOutline && <ArticleOutline editor={editor} />}
-        <div className="flex-1 mx-auto px-8">
+        <div className="flex-1 mx-auto px-8 container">
           <BaseEditor
             content={content}
             onChange={onChange}

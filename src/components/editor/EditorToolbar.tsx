@@ -97,8 +97,8 @@ export default function EditorToolbar({ editor, onAddImage, onAddTable, onAddLin
   ];
 
   return (
-    <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="flex flex-wrap items-center gap-0.5 p-1">
+    <div className="border-b sticky top-[57px] z-10">
+      <div className="h-12 flex flex-wrap items-center gap-1.5">
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleBold().run()}
           icon={Bold}
@@ -273,4 +273,4 @@ export default function EditorToolbar({ editor, onAddImage, onAddTable, onAddLin
       </div>
     </div>
   );
-} 
+}
