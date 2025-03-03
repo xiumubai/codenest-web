@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import { motion, useScroll } from "framer-motion";
 import { formatDate } from "@/lib/utils";
@@ -19,6 +20,7 @@ import { clientFetch } from '@/lib/fetch/clientFetch';
 
 export default function ArticlePage() {
   const { id } = useParams();
+  const router = useRouter();
   const [article, setArticle] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { scrollYProgress } = useScroll();
@@ -31,6 +33,33 @@ export default function ArticlePage() {
 
   // 提取文章大纲
   const [outline, setOutline] = useState<Array<{ id: string; text: string; level: number }>>([]);
+  const headingRefs = useRef<{ [key: string]: HTMLElement }>({});
+
+  // 处理大纲点击事件
+  const handleOutlineClick = (id: string) => {
+    const element = headingRefs.current[id];
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  // 使用 Intersection Observer 监测标题的可见性
+  const observerCallback = (entries: IntersectionObserverEntry[]) => {
+    // 找到最大交叉比例的标题
+    let maxRatio = 0;
+    let maxId = '';
+    
+    entries.forEach((entry) => {
+      if (entry.intersectionRatio > maxRatio) {
+        maxRatio = entry.intersectionRatio;
+        maxId = entry.target.id;
+      }
+    });
+    
+    if (maxId) {
+      setActiveHeading(maxId);
+    }
+  };
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -44,12 +73,37 @@ export default function ArticlePage() {
         const parser = new DOMParser();
         const doc = parser.parseFromString(res.data?.content, 'text/html');
         const headings = Array.from(doc.querySelectorAll('h1, h2, h3'));
+        // 为每个标题添加 id
+        headings.forEach((heading, index) => {
+          const id = `heading-${index}`;
+          heading.id = id;
+        });
+
         const outlineData = headings.map((heading, index) => ({
           id: `heading-${index}`,
           text: heading.textContent || '',
           level: parseInt(heading.tagName[1])
         }));
         setOutline(outlineData);
+
+        // 设置标题元素的引用
+        headings.forEach((heading, index) => {
+          const id = `heading-${index}`;
+          headingRefs.current[id] = heading as HTMLElement;
+        });
+
+        // 创建 Intersection Observer
+        const observer = new IntersectionObserver(observerCallback, {
+          rootMargin: '-10% 0px -70% 0px',
+          threshold: [0, 0.5, 1]
+        });
+
+        // 观察所有标题元素
+        headings.forEach(heading => {
+          observer.observe(heading);
+        });
+
+        return () => observer.disconnect();
       } catch (error) {
         console.error("获取文章失败:", error);
       } finally {
@@ -172,15 +226,27 @@ export default function ArticlePage() {
                     {formatDate(article.publishedAt)}
                   </div>
                 </div>
-                <button className="w-full bg-primary/10 text-primary hover:bg-primary/15 active:bg-primary/20 transition-colors rounded-lg py-2.5 px-4 font-medium flex items-center justify-center gap-2">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                    <circle cx="9" cy="7" r="4" />
-                    <line x1="19" x2="19" y1="8" y2="14" />
-                    <line x1="22" x2="16" y1="11" y2="11" />
-                  </svg>
-                  关注作者
-                </button>
+                <div className="flex gap-2 w-full">
+                  <button className="flex-1 bg-primary/10 text-primary hover:bg-primary/15 active:bg-primary/20 transition-colors rounded-lg py-2.5 px-4 font-medium flex items-center justify-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <line x1="19" x2="19" y1="8" y2="14" />
+                      <line x1="22" x2="16" y1="11" y2="11" />
+                    </svg>
+                    关注作者
+                  </button>
+                  <button 
+                    onClick={() => router.push(`/article/${id}/edit`)}
+                    className="flex-1 bg-primary/10 text-primary hover:bg-primary/15 active:bg-primary/20 transition-colors rounded-lg py-2.5 px-4 font-medium flex items-center justify-center gap-2"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                    </svg>
+                    编辑
+                  </button>
+                </div>
               </div>
             </div>
 

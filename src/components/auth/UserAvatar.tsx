@@ -40,13 +40,13 @@ export default function UserAvatar() {
               className="relative"
             >
               <Avatar className="w-10 h-10 ring-2 ring-background shadow-[0_0_0_2px] shadow-primary/20">
-                <AvatarImage src={userInfo.avatar} alt={userInfo.username} />
+                <AvatarImage src={userInfo?.avatar} alt={userInfo?.username} />
               </Avatar>
             </motion.div>
           </div>
           <div className="flex flex-col">
             <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-              {userInfo.username}
+              {userInfo?.username}
             </span>
             <span className="text-xs text-muted-foreground group-hover:text-primary/60 transition-colors duration-300">
               点击查看更多

@@ -17,7 +17,9 @@ export default function CodeBlockComponent(props: NodeViewProps) {
   useEffect(() => {
     // 自动聚焦到代码块
     if (props.editor.isEditable) {
-      props.editor.commands.focus();
+      Promise.resolve().then(() => {
+        props.editor.commands.focus();
+      });
     }
   }, [props.editor]);
 
