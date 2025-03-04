@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Github, Eye, EyeOff } from "lucide-react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { generateNickname, generateAvatar } from "@/lib/utils/user";
 import { toast } from "sonner";
 import { clientFetch } from '@/lib/fetch/clientFetch';
@@ -13,14 +13,27 @@ import { useUserStore } from '@/store/user';
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { isAuth } = useUserStore();
+  // 获取 returnUrl 参数
+  const returnUrl = searchParams.get('returnUrl');
 
+  const redirect = () => {
+    // 如果有 returnUrl 参数，则解码并跳转到该地址，否则跳转到首页
+    if (returnUrl) {
+      const decodedUrl = decodeURIComponent(returnUrl);
+      router.replace(decodedUrl);
+    } else {
+      router.replace('/');
+    }
+  }
   // 检查登录状态并重定向
   useEffect(() => {
     if (isAuth) {
-      router.push('/');
+      redirect()
     }
   }, [isAuth, router]);
+
 
   const [isLoading, setIsLoading] = useState(false);
   const [isRegister, setIsRegister] = useState(false);
@@ -157,7 +170,7 @@ export default function LoginPage() {
         setToken(access_token);
         // 获取用户信息
 
-        router.push("/");
+        redirect();
       } else {
         // 登录逻辑
         // 调用登录服务
@@ -175,8 +188,7 @@ export default function LoginPage() {
 
         toast.success('登录成功');
 
-        // 登录成功后跳转回首页
-        router.push("/");
+        redirect();
       }
     } catch (error: any) {
       console.error(isRegister ? "Register failed:" : "Login failed:", error);

@@ -7,7 +7,6 @@ import Logo from './Logo';
 import UserAvatar from "../auth/UserAvatar";
 import { useUserStore } from '@/store/user';
 import SearchBar from '../search/SearchBar';
-
 const navItems = [
   { name: '文章', href: '/article' },
   // { name: '课程中心', href: '/courses' },
@@ -18,7 +17,7 @@ const navItems = [
 export default function Header() {
   const { userInfo } = useUserStore();
   const pathname = usePathname();
-  
+  const returnUrl = encodeURIComponent(pathname);
 
   return (
     <div className="sticky top-0 left-20 right-0 z-40 shadow-sm bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -46,7 +45,7 @@ export default function Header() {
             {userInfo ? (
               <UserAvatar />
             ) : (
-              <Link href="/auth/login" prefetch>
+              <Link href={`/auth/login?returnUrl=${returnUrl}`} prefetch>
                 <Button 
                   size="sm"
                   className="gap-2 bg-primary text-primary-foreground shadow-sm hover:shadow-md hover:bg-primary/90 transition-all duration-300"

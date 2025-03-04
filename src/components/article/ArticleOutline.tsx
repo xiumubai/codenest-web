@@ -78,7 +78,7 @@ export default function ArticleOutline({ editor }: ArticleOutlineProps) {
   if (headings.length === 0) return null;
 
   return (
-    <div className="hidden lg:block sticky top-20 w-64 h-[calc(100vh-5rem)] overflow-y-auto p-4 space-y-2 text-sm">
+    <div className="hidden lg:block sticky top-0 w-64 h-[calc(100vh-5rem)] overflow-y-auto p-4 space-y-2 text-sm">
       <div className="font-medium mb-4">文章目录</div>
       {headings.map((heading) => (
         <button
@@ -97,4 +97,4 @@ export default function ArticleOutline({ editor }: ArticleOutlineProps) {
       ))}
     </div>
   );
-} 
+}

@@ -1,26 +1,28 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { useParams } from "next/navigation";
 import { useRouter } from 'next/navigation';
-import Image from "next/image";
 import { motion, useScroll } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import ArticleViewer from "@/components/editor/ArticleViewer";
-import { generateMockArticles } from "@/lib/mock/articles";
 import { LikeButton } from "@/components/article/LikeButton";
 import { BookmarkButton } from "@/components/article/BookmarkButton";
-import CommentSection from "@/components/article/CommentSection";
 import { mockComments } from "@/lib/mock/comments";
 import { Comment } from "@/types/comment";
 import { Calendar } from "lucide-react";
 import { clientFetch } from '@/lib/fetch/clientFetch';
+import { useUserStore } from '@/store/user';
+import ArticleViewer from "@/components/editor/ArticleViewer";
+import CommentSection from "@/components/article/CommentSection";
+import WithAuth from '@/components/auth/withAuth';
 
 
 export default function ArticlePage() {
   const { id } = useParams();
   const router = useRouter();
+  const { userInfo } = useUserStore();
   const [article, setArticle] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const { scrollYProgress } = useScroll();
@@ -120,23 +122,26 @@ export default function ArticlePage() {
   }, []);
 
   const handleLike = (liked: boolean) => {
+    
     // 这里可以添加点赞的API调用
     console.log('点赞状态:', liked);
   };
 
   const handleBookmark = (bookmarked: boolean) => {
+    
     // 这里可以添加收藏的API调用
     console.log('收藏状态:', bookmarked);
   };
 
   const handleAddComment = (content: string, replyTo?: { id: string; username: string }) => {
+
     const newComment: Comment = {
       id: Date.now().toString(),
       content,
       author: {
-        id: "current-user",
-        username: "当前用户",
-        avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=current",
+        id: userInfo.id,
+        username: userInfo.name,
+        avatar: userInfo.avatar,
       },
       createdAt: new Date().toISOString(),
       likes: 0,
@@ -144,7 +149,6 @@ export default function ArticlePage() {
     };
 
     if (replyTo) {
-      // 添加回复
       setComments(prev => prev.map(comment => {
         if (comment.id === replyTo.id) {
           return {
@@ -155,7 +159,6 @@ export default function ArticlePage() {
         return comment;
       }));
     } else {
-      // 添加新评论
       setComments(prev => [newComment, ...prev]);
     }
   };
@@ -227,25 +230,37 @@ export default function ArticlePage() {
                   </div>
                 </div>
                 <div className="flex gap-2 w-full">
-                  <button className="flex-1 bg-primary/10 text-primary hover:bg-primary/15 active:bg-primary/20 transition-colors rounded-lg py-2.5 px-4 font-medium flex items-center justify-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <line x1="19" x2="19" y1="8" y2="14" />
-                      <line x1="22" x2="16" y1="11" y2="11" />
-                    </svg>
-                    关注作者
-                  </button>
-                  <button 
-                    onClick={() => router.push(`/article/${id}/edit`)}
-                    className="flex-1 bg-primary/10 text-primary hover:bg-primary/15 active:bg-primary/20 transition-colors rounded-lg py-2.5 px-4 font-medium flex items-center justify-center gap-2"
+                  <WithAuth
+                    onAuth={() => {
+                      // 关注作者的逻辑
+                    }}
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                    </svg>
-                    编辑
-                  </button>
+                    <button 
+                      className="flex-1 bg-primary/10 text-primary hover:bg-primary/15 active:bg-primary/20 transition-colors rounded-lg py-2.5 px-4 font-medium flex items-center justify-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+                        <circle cx="9" cy="7" r="4" />
+                        <line x1="19" x2="19" y1="8" y2="14" />
+                        <line x1="22" x2="16" y1="11" y2="11" />
+                      </svg>
+                      关注作者
+                    </button>
+                  </WithAuth>
+                  {userInfo && userInfo.id === article.author.id && (
+                    <button 
+                      onClick={() => {
+                        router.push(`/article/edit?id=${id}`);
+                      }}
+                      className="flex-1 bg-primary/10 text-primary hover:bg-primary/15 active:bg-primary/20 transition-colors rounded-lg py-2.5 px-4 font-medium flex items-center justify-center gap-2"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+                      </svg>
+                      编辑
+                    </button>
+                  )}
                 </div>
               </div>
             </div>

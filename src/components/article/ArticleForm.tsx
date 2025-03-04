@@ -1,15 +1,18 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { Editor } from '@tiptap/react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import ArticleEditor from '@/components/editor/ArticleEditor';
 import { Share, Save } from 'lucide-react';
 import { toast } from 'sonner';
-import PublishDialog from '@/components/article/PublishDialog';
+import { useUserStore } from '@/store/user';
 import { clientFetch } from '@/lib/fetch/clientFetch';
-import Outline from '@/components/article/Outline';
+import { getBaseExtensions } from '@/components/editor/extensions';
 import UserAvatar from '@/components/auth/UserAvatar';
+import Outline from '@/components/article/Outline';
+import ArticleEditor from '@/components/editor/ArticleEditor';
+import PublishDialog from '@/components/article/PublishDialog';
 
 interface OutlineItem {
   id: string;
@@ -31,12 +34,16 @@ export default function ArticleForm({
   initialContent = ''
 }: ArticleFormProps) {
   const router = useRouter();
+  const { userInfo } = useUserStore();
   const [title, setTitle] = useState(initialTitle);
   const [content, setContent] = useState(initialContent);
   const [outline, setOutline] = useState<OutlineItem[]>([]);
   const [activeHeadingId, setActiveHeadingId] = useState<string | null>(null);
   const [showPublishDialog, setShowPublishDialog] = useState(false);
   const [isLoading, setIsLoading] = useState(mode === 'edit');
+  const [cover, setCover] = useState('');
+  const [tagId, setTagId] = useState<number | null>(null);
+  const [description, setDescription] = useState('');
 
   // 加载文章数据（仅编辑模式）
   useEffect(() => {
@@ -47,6 +54,33 @@ export default function ArticleForm({
           const article = response.data;
           setTitle(article.title);
           setContent(article.content);
+          setCover(article.cover || '');
+          setTagId(article.tagId || null);
+          setDescription(article.description || '');
+          
+          // 更新大纲信息
+          // 使用临时编辑器实例解析大纲
+          const tempEditor = new Editor({
+            extensions: getBaseExtensions(true),
+            content: article.content,
+            editable: false
+          });
+          
+          const headings: OutlineItem[] = [];
+          tempEditor.state.doc.descendants((node: any, pos: number) => {
+            if (node.type.name === 'heading') {
+              const id = `heading-${pos}`;
+              headings.push({
+                id,
+                level: node.attrs.level,
+                text: node.textContent,
+              });
+            }
+          });
+          setOutline(headings);
+          
+          // 销毁临时编辑器实例
+          tempEditor.destroy();
         } catch (error) {
           toast.error('加载文章失败');
           router.push('/article');
@@ -109,7 +143,7 @@ export default function ArticleForm({
     content: string;
     description: string;
     cover: string;
-    tags: string[];
+    tagId: number;
   }) => {
     try {
       if (mode === 'edit' && articleId) {
@@ -117,8 +151,8 @@ export default function ArticleForm({
           method: 'PUT',
           body: JSON.stringify({
             ...data,
-            id: articleId,
-            tags: JSON.stringify(data.tags),
+            id: Number(articleId),
+            tagId: data.tagId,
             isDraft: false
           })
         });
@@ -129,7 +163,7 @@ export default function ArticleForm({
           method: 'POST',
           body: JSON.stringify({
             ...data,
-            tags: JSON.stringify(data.tags),
+            tagId: data.tagId,
             isDraft: false
           })
         });
@@ -197,7 +231,7 @@ export default function ArticleForm({
             {mode === 'edit' ? '更新文章' : '发布文章'}
           </Button>
           <div className="w-px h-6 bg-border mx-1" />
-          <UserAvatar />
+          {userInfo && <UserAvatar /> }
         </div>
       </div>
 
@@ -234,6 +268,9 @@ export default function ArticleForm({
         onOpenChange={setShowPublishDialog}
         title={title}
         content={content}
+        initialCover={cover}
+        initialTagId={tagId}
+        initialDescription={description}
         onPublish={handlePublish}
       />
     </div>

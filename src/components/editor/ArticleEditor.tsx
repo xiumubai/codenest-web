@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
 import { useEditor } from '@tiptap/react';
 import BaseEditor from './BaseEditor';
 import EditorToolbar from './EditorToolbar';
 import EditorBubbleMenu from './EditorBubbleMenu';
-import ArticleOutline from '../article/ArticleOutline';
+// import ArticleOutline from '../article/ArticleOutline';
 import { getBaseExtensions } from './extensions';
 import { toast } from 'sonner';
-import { clientFetch } from '@/lib/fetch/clientFetch';
 
 interface ArticleEditorProps {
   content: string;
@@ -27,7 +26,7 @@ export default function ArticleEditor({
   onChange,
   onOutlineChange,
 }: ArticleEditorProps) {
-  const [showOutline, setShowOutline] = useState(true);
+  // const [showOutline, setShowOutline] = useState(true);
 
   // 创建编辑器实例
   const editor = useEditor({
@@ -162,7 +161,7 @@ export default function ArticleEditor({
 
       {/* 编辑器内容区域 */}
       <div className="flex gap-8 flex-1 py-8 overflow-y-auto">
-        {showOutline && <ArticleOutline editor={editor} />}
+        {/* {showOutline && <ArticleOutline editor={editor} />} */}
         <div className="flex-1 mx-auto px-8 container">
           <BaseEditor
             content={content}

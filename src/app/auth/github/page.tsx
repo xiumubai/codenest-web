@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function GitHubSuccess() {
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     try {
@@ -30,14 +31,22 @@ export default function GitHubSuccess() {
       // 将用户数据保存到 localStorage（如果需要的话）
       localStorage.setItem('userData', JSON.stringify(userData));
 
-      // 直接跳转到首页或指定页面
-      router.replace('/');
+      // 获取 returnUrl 参数
+      const returnUrl = searchParams.get('returnUrl');
+      
+      // 如果有 returnUrl 参数，则解码并跳转到该地址，否则跳转到首页
+      if (returnUrl) {
+        const decodedUrl = decodeURIComponent(returnUrl);
+        router.replace(decodedUrl);
+      } else {
+        router.replace('/');
+      }
 
     } catch (error) {
       console.error('处理用户数据时出错:', error);
       router.replace('/login?error=process_user_data_failed');
     }
-  }, [router]);
+  }, [router, searchParams]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
