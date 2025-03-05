@@ -1,11 +1,15 @@
 "use client";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { Flame, Clock, ThumbsUp, BookMarked } from "lucide-react";
+import { Flame, Clock, ThumbsUp, BookMarked, PenLine } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
+import Link from "next/link";
+import { useUserStore } from "@/store/user";
+import CategorySidebar from "@/components/article/CategorySidebar";
+import { log } from "console";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,60 +43,20 @@ const hotArticles = [
   }
 ];
 
-const categories = [
-  { name: "全部", value: "all" },
-  { name: "前端", value: "frontend" },
-  { name: "后端", value: "backend" },
-  { name: "移动端", value: "mobile" },
-  { name: "人工智能", value: "ai" },
-  { name: "运维", value: "ops" },
-];
-
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("newest");
-
+  const { userInfo } = useUserStore();
+  const onTagSelect = (id: number | null) => {
+    console.log(id);
+  }
   return (
-    <div className="min-h-full py-8">
-      <div className="grid grid-cols-4 gap-6 mt-8">
+    <div className="min-h-full py-8 container">
+      <div className="grid grid-cols-7 gap-4">
         {/* 左侧边栏 */}
-        <div className="col-span-1 space-y-6">
-          {/* 分类导航 */}
-          <div className="rounded-xl border bg-card p-4">
-            <h3 className="font-semibold mb-3">分类导航</h3>
-            <div className="space-y-1">
-              {categories.map((category) => (
-                <Button
-                  key={category.value}
-                  variant="ghost"
-                  className="w-full justify-start"
-                >
-                  {category.name}
-                </Button>
-              ))}
-            </div>
-          </div>
+        <div className="sticky top-8">
+          <CategorySidebar onTagSelect={onTagSelect} />
         </div>
-
         {/* 中间文章列表 */}
-        <div className="col-span-2 space-y-6">
-          {/* 排序选项 */}
-          <Tabs defaultValue={activeTab} className="w-full" onValueChange={setActiveTab}>
-            <TabsList>
-              <TabsTrigger value="newest" className="gap-2">
-                <Clock className="w-4 h-4" />
-                最新
-              </TabsTrigger>
-              <TabsTrigger value="hottest" className="gap-2">
-                <Flame className="w-4 h-4" />
-                最热
-              </TabsTrigger>
-              <TabsTrigger value="recommended" className="gap-2">
-                <ThumbsUp className="w-4 h-4" />
-                推荐
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-
+        <div className="col-span-4 overflow-y-auto">
           {/* 文章列表 */}
           <QueryClientProvider client={queryClient}>
             <ArticleList />
@@ -100,7 +64,33 @@ export default function Home() {
         </div>
 
         {/* 右侧边栏 */}
-        <div className="col-span-1 space-y-6">
+        <div className="col-span-2 sticky top-8">
+          {/* 问候语和写文章按钮 */}
+          <div className="rounded-xl border bg-card p-4">
+            <div className="mb-4">
+              <h3 className="font-semibold text-lg mb-2">
+                {userInfo ? `欢迎回来，${userInfo?.username}` : "👋 欢迎来到 CodeNest"}
+              </h3>
+              <p className="text-sm text-muted-foreground">
+                {userInfo ? "开始分享你的技术见解吧" : "登录后即可发布文章"}
+              </p>
+            </div>
+            {userInfo ? (
+              <Link href="/article/new">
+                <Button className="w-full gap-2">
+                  <PenLine className="w-4 h-4" />
+                  写文章
+                </Button>
+              </Link>
+            ) : (
+              <Link href="/auth/login">
+                <Button variant="outline" className="w-full">
+                  登录
+                </Button>
+              </Link>
+            )}
+          </div>
+
           {/* 热门文章 */}
           <div className="rounded-xl border bg-card p-4">
             <h3 className="font-semibold mb-3 flex items-center gap-2">
@@ -131,15 +121,34 @@ export default function Home() {
             </div>
           </div>
 
-          {/* 收藏夹 */}
+          {/* 公众号 */}
+          <div className="rounded-xl border bg-card p-4 hover:shadow-md transition-shadow duration-200">
+            <div className="flex items-center gap-6">
+              <div className="relative w-28 h-28 shrink-0 overflow-hidden ring-2 ring-border/10">
+                <Image
+                  src="/weixin.png"
+                  alt="公众号二维码"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-300"
+                />
+              </div>
+              <div className="flex-1 space-y-3">
+                <h3 className="font-semibold text-lg text-foreground/90">白哥私人微信</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  欢迎添加白哥微信，邀你进群，一起学习技术，交流经验。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 联系信息 */}
           <div className="rounded-xl border bg-card p-4">
-            <h3 className="font-semibold mb-3 flex items-center gap-2">
-              <BookMarked className="w-4 h-4 text-primary" />
-              我的收藏
-            </h3>
-            <Button variant="outline" className="w-full">
-              登录查看收藏
-            </Button>
+            <h3 className="font-semibold mb-3">联系我们</h3>
+            <div className="text-sm text-muted-foreground space-y-2">
+              <p>邮箱：1547702880@qq.com</p>
+              <p>微信：xiumubai01</p>
+              <p>GitHub：github.com/xiumubai</p>
+            </div>
           </div>
         </div>
       </div>

@@ -25,13 +25,15 @@ interface ArticleFormProps {
   articleId?: string;
   initialTitle?: string;
   initialContent?: string;
+  isDraft?: boolean;
 }
 
 export default function ArticleForm({
   mode,
   articleId,
   initialTitle = '',
-  initialContent = ''
+  initialContent = '',
+  isDraft = false
 }: ArticleFormProps) {
   const router = useRouter();
   const { userInfo } = useUserStore();
@@ -44,6 +46,7 @@ export default function ArticleForm({
   const [cover, setCover] = useState('');
   const [tagId, setTagId] = useState<number | null>(null);
   const [description, setDescription] = useState('');
+  const [isArticleDraft, setIsArticleDraft] = useState(isDraft);
 
   // 加载文章数据（仅编辑模式）
   useEffect(() => {
@@ -57,6 +60,7 @@ export default function ArticleForm({
           setCover(article.cover || '');
           setTagId(article.tagId || null);
           setDescription(article.description || '');
+          setIsArticleDraft(article.isDraft || false);
           
           // 更新大纲信息
           // 使用临时编辑器实例解析大纲
@@ -93,41 +97,48 @@ export default function ArticleForm({
     }
   }, [mode, articleId, router]);
 
-  const handleSaveDraft = async () => {
+  const validateForm = () => {
     if (!title.trim()) {
       toast.error('请输入文章标题', {
         position: 'top-center'
       });
-      return;
+      return false;
     }
     if (!content.trim()) {
       toast.error('请输入文章内容', {
         position: 'top-center'
       });
-      return;
+      return false;
     }
+    return true;
+  };
+
+  const handleSaveDraft = async () => {
+    if (!validateForm()) return;
 
     try {
+      const payload = {
+        title,
+        content,
+        isDraft: true
+      };
+
       if (mode === 'edit' && articleId) {
-        await clientFetch(`/article/${articleId}`, {
-          method: 'PUT',
+        await clientFetch('/article/save-draft', {
+          method: 'POST',
           body: JSON.stringify({
-            title,
-            content,
-            isDraft: true
+            ...payload,
+            id: Number(articleId)
           })
         });
       } else {
-        await clientFetch('/article/create', {
+        await clientFetch('/article/save-draft', {
           method: 'POST',
-          body: JSON.stringify({
-            title,
-            content,
-            isDraft: true
-          })
+          body: JSON.stringify(payload)
         });
       }
 
+      setIsArticleDraft(true);
       toast.success('草稿保存成功', {
         position: 'top-center'
       });
@@ -145,8 +156,33 @@ export default function ArticleForm({
     cover: string;
     tagId: number;
   }) => {
+    if (!data.description.trim()) {
+      toast.error('请输入文章摘要');
+      return;
+    }
+    if (!data.cover) {
+      toast.error('请上传封面图');
+      return;
+    }
+    if (!data.tagId) {
+      toast.error('请选择文章标签');
+      return;
+    }
+
     try {
-      if (mode === 'edit' && articleId) {
+      if (isArticleDraft) {
+        // 发布草稿
+        await clientFetch('/article/publish-draft', {
+          method: 'POST',
+          body: JSON.stringify({
+            ...data,
+            id: articleId ? Number(articleId) : undefined
+          })
+        });
+        toast.success('草稿发布成功');
+        router.push(`/article/${articleId}`);
+      } else if (mode === 'edit' && articleId) {
+        // 更新已发布的文章
         await clientFetch(`/article/update`, {
           method: 'PUT',
           body: JSON.stringify({
@@ -159,6 +195,7 @@ export default function ArticleForm({
         toast.success('文章更新成功');
         router.push(`/article/${articleId}`);
       } else {
+        // 创建新文章
         const res = await clientFetch('/article/create', {
           method: 'POST',
           body: JSON.stringify({
@@ -167,9 +204,9 @@ export default function ArticleForm({
             isDraft: false
           })
         });
-        const { articleId } = res.data;
+        const { id } = res.data;
         toast.success('文章发布成功');
-        router.push(`/article/${articleId}`);
+        router.push(`/article/${id}`);
       }
     } catch (error) {
       throw error;
@@ -212,23 +249,12 @@ export default function ArticleForm({
             size="default"
             className="gap-2 bg-primary hover:bg-primary/90 text-primary-foreground shadow-sm transition-all duration-200 hover:shadow-md"
             onClick={() => {
-              if (!title.trim()) {
-                toast.error('请输入文章标题', {
-                  position: 'top-center'
-                });
-                return;
-              }
-              if (!content.trim()) {
-                toast.error('请输入文章内容', {
-                  position: 'top-center'
-                });
-                return;
-              }
+              if (!validateForm()) return;
               setShowPublishDialog(true);
             }}
           >
             <Share className="h-4 w-4" />
-            {mode === 'edit' ? '更新文章' : '发布文章'}
+            {isArticleDraft ? '发布草稿' : (mode === 'edit' ? '更新文章' : '发布文章')}
           </Button>
           <div className="w-px h-6 bg-border mx-1" />
           {userInfo && <UserAvatar /> }

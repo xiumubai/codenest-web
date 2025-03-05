@@ -150,8 +150,8 @@ export default function ArticleList() {
   }
 
   return (
-    <div ref={containerRef} className="article-list-container min-h-[calc(100vh-200px)] px-4 md:px-6">
-      <div className="py-6">
+    <div ref={containerRef} className="article-list-container min-h-[calc(100vh-200px)] md:px-6">
+      <div>
         {status === "pending" ? (
           <ArticleSkeletons />
         ) : (

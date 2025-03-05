@@ -10,8 +10,8 @@ interface OutlineItem {
 
 interface OutlineProps {
   outline: OutlineItem[];
-  activeHeadingId: string | null;
-  onOutlineClick: (id: string) => void;
+  activeHeadingId?: string | null;
+  onOutlineClick?: (id: string) => void;
 }
 
 export default function Outline({
@@ -41,7 +41,7 @@ export default function Outline({
               style={{
                 paddingLeft: `${(item.level - 1) * 16 + 12}px`,
               }}
-              onClick={() => onOutlineClick(item.id)}
+              onClick={() => onOutlineClick?.(item.id)}
             >
               {activeHeadingId === item.id && (
                 <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1.5 h-5 bg-primary rounded-full" />

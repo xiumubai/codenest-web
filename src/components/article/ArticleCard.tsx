@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Calendar, Eye, ThumbsUp } from "lucide-react";
+import { Calendar, Eye, ThumbsUp, MessageCircle } from "lucide-react";
 import { Article } from "@/types/article";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
@@ -65,13 +65,17 @@ export default function ArticleCard({ article, onClose }: ArticleCardProps) {
           </div>
 
           <div className="flex items-center gap-3 text-xs text-muted-foreground">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" title="阅读数">
               <Eye className="w-3 h-3" />
               <span>{article.views}</span>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-1" title="点赞数">
               <ThumbsUp className="w-3 h-3" />
               <span>{article.likes}</span>
+            </div>
+            <div className="flex items-center gap-1" title="评论数">
+              <MessageCircle className="w-3 h-3" />
+              <span>{article.comments?.length || 0}</span>
             </div>
           </div>
         </div>
