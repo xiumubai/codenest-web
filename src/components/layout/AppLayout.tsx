@@ -19,14 +19,12 @@ export default function AppLayout({ children }: AppLayoutProps) {
   }
 
   return (
-    <div className="flex h-screen">
-      <div className="flex-1 flex flex-col min-h-screen">
+    <div className="flex min-h-screen flex-col">
         {config.showHeader && <Header />}
-        <Main>{children}</Main>
+        <Main >{children}</Main>
         {config.showFooter && <Footer />}
-      </div>
-      {/* 回到顶部按钮 */}
-      <BackToTop containerSelector="#main"/>
+        {/* 回到顶部按钮 */}
+        <BackToTop containerSelector="#main"/>
     </div>
   );
 } 

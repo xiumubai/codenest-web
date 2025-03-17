@@ -10,6 +10,7 @@ import { generateNickname, generateAvatar } from "@/lib/utils/user";
 import { toast } from "sonner";
 import { clientFetch } from '@/lib/fetch/clientFetch';
 import { useUserStore } from '@/store/user';
+import Link from "next/link";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -218,8 +219,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 via-background to-primary/10 p-4">
-      <div className="w-full max-w-[425px] space-y-8 bg-background/80 backdrop-blur-lg rounded-2xl p-8 shadow-[0_0_40px_-10px] shadow-primary/20">
+    <div className="h-full flex items-center justify-center from-primary/5 via-background to-primary/10 p-4">
+      <div className="w-full mt-10 max-w-[425px] space-y-8 bg-background/80 backdrop-blur-lg rounded-2xl p-8 shadow-[0_0_40px_-10px] shadow-primary/20">
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold">
             {isRegister ? "注册新账号" : "登录你的账号"}
@@ -415,7 +416,7 @@ export default function LoginPage() {
           <Button
             type="submit"
             className={cn(
-              "w-full bg-gradient-to-r from-primary/90 to-primary text-primary-foreground",
+              "w-full",
               "hover:from-primary hover:to-primary/90 transition-all duration-300"
             )}
             disabled={isLoading}
@@ -439,36 +440,32 @@ export default function LoginPage() {
         {!isRegister && (
           <>
             <div className="flex items-center justify-center mb-4">
-              <input
-                type="checkbox"
-                id="agreement"
-                className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
-              />
               <label
                 htmlFor="agreement"
                 className="ml-2 text-xs text-muted-foreground"
               >
-                我已阅读并同意
-                <a
+                登录注册即表示同意
+                <Link
                   href="#"
-                  className="text-primary hover:text-primary/90 transition-colors"
+                  className="px-1 text-primary hover:text-primary/90 transition-colors"
                 >
                   服务协议
-                </a>
+                </Link>
                 和
-                <a
+                <Link
                   href="#"
-                  className="text-primary hover:text-primary/90 transition-colors"
+                  className="px-1 text-primary hover:text-primary/90 transition-colors"
                 >
                   隐私权政策
-                </a>
+                </Link>
               </label>
             </div>
 
             <div className="flex items-center justify-center gap-4">
               <button
                 onClick={handleGitHubLogin}
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-muted hover:bg-muted/80 hover:scale-105 transition-all duration-300"
+                disabled={true}
+                className="flex items-center cursor-not-allowed justify-center w-10 h-10 rounded-full bg-muted hover:bg-muted/80 hover:scale-105 transition-all duration-300"
                 title="GitHub 登录"
               >
                 <Github className="w-5 h-5" />

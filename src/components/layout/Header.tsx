@@ -55,7 +55,6 @@ export default function Header() {
             <Link href={`/auth/login?returnUrl=${returnUrl}`} prefetch>
               <Button 
                 size="sm"
-                className="bg-primary/90 text-primary-foreground hover:bg-primary"
               >
                 登录
               </Button>
