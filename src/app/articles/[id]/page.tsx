@@ -7,16 +7,15 @@ import { useRouter } from "next/navigation";
 import { useScroll } from "framer-motion";
 import { formatDate } from "@/lib/utils";
 import { Skeleton } from "@/components/ui/skeleton";
-import { mockComments } from "@/lib/mock/comments";
 import { Comment } from "@/types/comment";
-import { Calendar } from "lucide-react";
 import { clientFetch } from "@/lib/fetch/clientFetch";
 import { useUserStore } from "@/store/user";
 import ArticleViewer from "@/components/editor/ArticleViewer";
-import CommentSection from "@/components/article/CommentSection";
+import CommentList from "@/components/article/comment/CommentList";
 import WithAuth from "@/components/auth/withAuth";
 import Outline from "@/components/article/Outline";
 import LikeButton from "@/components/article/ActionButtons/LikeButton";
+import EditButton from "@/components/article/ActionButtons/EditButton";
 import CommentButton from "@/components/article/ActionButtons/CommentButton";
 import ShareButton from "@/components/article/ActionButtons/ShareButton";
 
@@ -31,6 +30,95 @@ export default function ArticlePage() {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
   const [comments, setComments] = useState<Comment[]>([]);
+  const [commentPage, setCommentPage] = useState(1);
+  const [hasMoreComments, setHasMoreComments] = useState(true);
+  const [isLoadingComments, setIsLoadingComments] = useState(false);
+
+  // 加载评论数据
+  const fetchComments = async (page: number) => {
+    try {
+      setIsLoadingComments(true);
+      const res = await clientFetch(`/comments/${id}?page=${page}&pageSize=10`, {
+        method: 'GET'
+      });
+      
+      const newComments = res.data.items;
+      setHasMoreComments(newComments.length === 10);
+      
+      if (page === 1) {
+        setComments(newComments);
+      } else {
+        setComments(prev => [...prev, ...newComments]);
+      }
+    } catch (error) {
+      console.error('加载评论失败:', error);
+    } finally {
+      setIsLoadingComments(false);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchComments(1);
+    }
+  }, [id]);
+
+  const handleLoadMoreComments = () => {
+    if (!isLoadingComments && hasMoreComments) {
+      const nextPage = commentPage + 1;
+      setCommentPage(nextPage);
+      fetchComments(nextPage);
+    }
+  };
+
+  const handleAddComment = async (content: string, replyTo?: { id: string; username: string }) => {
+    if (!userInfo) return;
+
+    try {
+      const response = await clientFetch('/comments', {
+        method: 'POST',
+        body: JSON.stringify({
+          articleId: id,
+          content,
+          parentId: replyTo?.id
+        })
+      });
+
+      if (response.data) {
+        const newComment = response.data;
+        
+        if (!replyTo) {
+          // 普通评论，添加到列表最前面
+          setComments(prev => [newComment, ...prev]);
+        } else {
+          // 回复评论，找到父评论并添加到其replies数组最前面
+          setComments(prev => {
+            const updateComments = (comments: Comment[]): Comment[] => {
+              return comments.map(comment => {
+                if (comment.id === replyTo.id) {
+                  return {
+                    ...comment,
+                    replies: [newComment, ...(comment.replies || [])]
+                  };
+                }
+                if (comment.replies) {
+                  return {
+                    ...comment,
+                    replies: updateComments(comment.replies)
+                  };
+                }
+                return comment;
+              });
+            };
+            
+            return updateComments(prev);
+          });
+        }
+      }
+    } catch (error) {
+      console.error('发表评论失败:', error);
+    }
+  };
 
   // 提取文章大纲
   const [outline, setOutline] = useState<
@@ -117,45 +205,6 @@ export default function ArticlePage() {
     fetchArticle();
   }, [id]);
 
-  useEffect(() => {
-    // 加载评论数据
-    setComments(mockComments);
-  }, []);
-
-  const handleAddComment = (
-    content: string,
-    replyTo?: { id: string; username: string }
-  ) => {
-    const newComment: Comment = {
-      id: Date.now().toString(),
-      content,
-      author: {
-        id: userInfo.id,
-        username: userInfo.name,
-        avatar: userInfo.avatar,
-      },
-      createdAt: new Date().toISOString(),
-      likes: 0,
-      replyTo,
-    };
-
-    if (replyTo) {
-      setComments((prev) =>
-        prev.map((comment) => {
-          if (comment.id === replyTo.id) {
-            return {
-              ...comment,
-              replies: [...(comment.replies || []), newComment],
-            };
-          }
-          return comment;
-        })
-      );
-    } else {
-      setComments((prev) => [newComment, ...prev]);
-    }
-  };
-
   if (isLoading) {
     return (
       <div className="container mx-auto py-10 px-4">
@@ -207,30 +256,9 @@ export default function ArticlePage() {
                 initialLiked={isLiked}
               />
               {userInfo && userInfo.id === article.author.id && (
-                <button
-                  onClick={() => {
-                    router.push(`/article/edit?id=${id}`);
-                  }}
-                  className="w-12 h-12 rounded-full bg-background border-2 border-border flex items-center justify-center hover:border-primary/30 hover:bg-primary/5 transition-colors"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="22"
-                    height="22"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="text-foreground hover:text-primary transition-colors"
-                  >
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
-                  </svg>
-                </button>
+                <EditButton id={id} />
               )}
-              {/* <CommentButton
+              <CommentButton
                 count={article.comments?.length || 0}
                 onClick={() => {
                   document
@@ -238,7 +266,7 @@ export default function ArticlePage() {
                     ?.scrollIntoView({ behavior: "smooth" });
                 }}
               />
-              <ShareButton onClick={() => void 0} /> */}
+              <ShareButton onClick={() => void 0} />
             </div>
           </div>
 
@@ -259,7 +287,9 @@ export default function ArticlePage() {
                   height={24}
                   className="rounded-full"
                 />
-                <span className="text-sm font-medium">{article?.author?.name}</span>
+                <span className="text-sm font-medium">
+                  {article?.author?.name}
+                </span>
               </div>
               <span className="text-muted-foreground text-sm">
                 {formatDate(article?.createdAt)}
@@ -287,9 +317,10 @@ export default function ArticlePage() {
             </div>
 
             {/* 评论区 */}
-            <CommentSection
+            <CommentList
               comments={comments}
               onAddComment={handleAddComment}
+              articleId={id as string}
             />
           </div>
 
@@ -313,7 +344,7 @@ export default function ArticlePage() {
                     {article.author.username}
                   </div>
                 </div>
-                <div className="flex gap-2 w-full">
+                <div className="flex gap-2 w-full justify-center">
                   <WithAuth
                     onAuth={() => {
                       // 关注作者的逻辑
@@ -339,7 +370,6 @@ export default function ArticlePage() {
                       关注作者
                     </button>
                   </WithAuth>
-
                 </div>
               </div>
             </div>

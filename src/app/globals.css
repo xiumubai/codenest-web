@@ -4,36 +4,65 @@
 
 @layer base {
   :root {
-    /* 颜色主题 */
-    --background: 204 100% 99%;
-    --foreground: 204 20% 20%;
-    
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
     --card: 0 0% 100%;
-    --card-foreground: 204 20% 20%;
-    
+    --card-foreground: 240 10% 3.9%;
+
     --popover: 0 0% 100%;
-    --popover-foreground: 204 20% 20%;
-    
-    --primary: 160 84% 39%;
-    --primary-foreground: 0 0% 100%;  
-    
-    --secondary: 204 5% 96%;
-    --secondary-foreground: 204 20% 20%;
-    
-    --muted: 204 5% 96%;
-    --muted-foreground: 204 20% 50%;
-    
-    --accent: 204 5% 96%;
-    --accent-foreground: 204 20% 20%;
-    
-    --destructive: 0 84% 60%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 153 60% 53%;
+    --primary-foreground: 155 40% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    
-    --border: 204 20% 92%;
-    --input: 204 20% 92%;
-    --ring: 160 84% 39%;
-    
-    --radius: 0.75rem;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 153 60% 53%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 153 60% 53%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 153 60% 53%;
   }
 }
 
@@ -42,9 +71,46 @@
     @apply border-border;
   }
   body {
-    @apply text-foreground;
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  h1 {
+    @apply text-3xl font-semibold tracking-tight md:text-4xl;
+  }
+  h2 {
+    @apply text-2xl font-semibold tracking-tight;
+  }
+  h3 {
+    @apply text-xl font-semibold tracking-tight;
+  }
+  p {
+    @apply leading-7;
   }
 }
+
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .container-fluid {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+
 
 /* 自定义滚动条样式 */
 ::-webkit-scrollbar {
@@ -90,15 +156,4 @@
 .hover-card:hover {
   transform: translateY(-2px);
   box-shadow: 0 12px 24px -10px hsl(var(--foreground) / 0.1);
-}
-
-
-
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
 }

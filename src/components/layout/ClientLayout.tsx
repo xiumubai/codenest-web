@@ -17,7 +17,7 @@ export default function ClientLayout({ children }: ClientLayoutProps) {
           {children}
         </AppLayout>
       </LayoutProvider>
-      <ProgressBar 
+      <ProgressBar
         height="2px"
         color="#00cf79"
         options={{ showSpinner: false }}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, JetBrains_Mono, Inter } from "next/font/google";
 import ClientLayout from "@/components/layout/ClientLayout";
+import { ThemeProvider } from "./theme-provider"
 import { UserProvider } from "@/components/providers/user-provider";
 import "./globals.css";
 
@@ -13,6 +14,19 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jetbrains-mono",
+  display: "swap",
+})
+
 
 export const metadata: Metadata = {
   title: "CodeNest - 打造属于你的代码乐园",
@@ -34,13 +48,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="zh" suppressHydrationWarning>
+    <html lang="zh" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className="font-sans antialiased"
       >
-        <UserProvider>
-          <ClientLayout>{children}</ClientLayout>
-        </UserProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <UserProvider>
+            <ClientLayout>{children}</ClientLayout>
+          </UserProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

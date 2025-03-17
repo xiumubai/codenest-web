@@ -1,15 +1,13 @@
 "use client";
 import { useState } from "react";
 import dynamic from "next/dynamic";
-import { Flame, Clock, ThumbsUp, BookMarked, PenLine } from "lucide-react";
+import { Flame, PenLine } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import Link from "next/link";
 import { useUserStore } from "@/store/user";
 import CategorySidebar from "@/components/article/CategorySidebar";
-import { log } from "console";
 
 const queryClient = new QueryClient({
   defaultOptions: {

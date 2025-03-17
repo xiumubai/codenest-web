@@ -23,14 +23,14 @@ export default function SearchBar() {
   return (
     <>
       <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-      <div className="flex flex-col items-center text-center">
+      <div className="w-full flex flex-col items-center text-center">
         <div className="flex">
           <button
             onClick={() => setIsSearchOpen(true)}
-            className="px-4 py-2 rounded-3xl border border-border hover:bg-accent hover:text-accent-foreground transition flex items-center gap-2"
+            className="px-4 py-1 rounded-3xl border border-border hover:bg-accent hover:text-accent-foreground transition flex items-center gap-2"
           >
             <Search className="w-4 h-4" />
-            搜索文章
+            搜索
             <kbd className="hidden md:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground ml-2">
               <span className="text-xs">⌘</span>K
             </kbd>

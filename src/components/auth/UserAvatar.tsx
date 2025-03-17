@@ -14,7 +14,6 @@ import { useRouter } from "next/navigation";
 import { useUserStore } from '@/store/user';
 import { toast } from "sonner";
 
-
 export default function UserAvatar() {
   const router = useRouter();
   const { userInfo, logout } = useUserStore();
@@ -39,18 +38,10 @@ export default function UserAvatar() {
               whileTap={{ scale: 0.95 }}
               className="relative"
             >
-              <Avatar className="w-10 h-10 ring-2 ring-background shadow-[0_0_0_2px] shadow-primary/20">
+              <Avatar className="w-8 h-8 ring-2 ring-background shadow-[0_0_0_2px] shadow-primary/20">
                 <AvatarImage src={userInfo?.avatar} alt={userInfo?.username} />
               </Avatar>
             </motion.div>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors duration-300">
-              {userInfo?.username}
-            </span>
-            <span className="text-xs text-muted-foreground group-hover:text-primary/60 transition-colors duration-300">
-              点击查看更多
-            </span>
           </div>
         </div>
       </DropdownMenuTrigger>
@@ -66,7 +57,7 @@ export default function UserAvatar() {
         <DropdownMenuLabel className="p-2 bg-muted/50 rounded-lg mb-1">
           <div className="flex flex-col space-y-1.5">
             <p className="text-sm font-semibold">{userInfo?.username}</p>
-            <p className="text-xs text-muted-foreground">朽木白哥</p>
+            {/* <p className="text-xs text-muted-foreground">朽木白哥</p> */}
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator className="bg-border/50" />
@@ -119,7 +110,7 @@ export default function UserAvatar() {
             </div>
             <div className="flex flex-col gap-0.5">
               <span className="text-sm font-medium text-destructive">退出登录</span>
-              <span className="text-xs text-destructive/60">退出当前账号</span>
+              <span className="text-xs text-destructive">退出当前账号</span>
             </div>
           </DropdownMenuItem>
         </div>

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Comment } from '@/types/comment';
-import CommentEditor from '../editor/CommentEditor';
+import CommentEditor from '../../editor/CommentEditor';
 
 interface CommentItemProps {
   comment: Comment;
@@ -11,7 +11,7 @@ interface CommentItemProps {
   level?: number;
 }
 
-function CommentItem({ comment, onReply, level = 0 }: CommentItemProps) {
+export default function CommentItem({ comment, onReply, level = 0 }: CommentItemProps) {
   const [showReplyEditor, setShowReplyEditor] = useState(false);
   const maxLevel = 3; // 最大嵌套层级
 
@@ -81,27 +81,3 @@ function CommentItem({ comment, onReply, level = 0 }: CommentItemProps) {
     </div>
   );
 }
-
-interface CommentListProps {
-  comments: Comment[];
-  onAddComment: (content: string) => void;
-  onReplyComment: (commentId: string, content: string) => void;
-}
-
-export default function CommentList({ comments, onAddComment, onReplyComment }: CommentListProps) {
-  return (
-    <div className="space-y-4">
-      <CommentEditor onSubmit={onAddComment} />
-      
-      <div className="divide-y">
-        {comments.map((comment) => (
-          <CommentItem
-            key={comment.id}
-            comment={comment}
-            onReply={onReplyComment}
-          />
-        ))}
-      </div>
-    </div>
-  );
-} 
