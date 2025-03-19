@@ -2,7 +2,7 @@
 
 import { Comment } from '@/types/comment';
 import CommentEditor from '../../editor/CommentEditor';
-import CommentItem from './CommentItem';
+import CommentItem from './comment-item';
 import { clientFetch } from "@/lib/fetch/clientFetch";
 
 interface CommentListProps {

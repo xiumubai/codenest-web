@@ -1,7 +1,7 @@
 'use client';
 
-import { ArticleList } from "@/components/article/ArticleList"
-import { CategoryFilter } from "@/components/article/CategoryFilter"
+import { ArticleList } from "@/components/article/article-list"
+import { CategoryFilter } from "@/components/article/category-filter"
 import { SearchBar } from "@/components/common/search-bar"
 
 export default function ArticlesPage() {

@@ -1,6 +1,6 @@
 'use client';
 
-import ArticleForm from '@/components/article/ArticleForm';
+import ArticleForm from '@/components/article/article-form';
 
 export default function NewArticlePage() {
   return (

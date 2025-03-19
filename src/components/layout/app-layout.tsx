@@ -2,9 +2,9 @@
 
 import { ReactNode } from "react";
 import { useLayout } from "@/contexts/layout-context";
-import Header from "./Header";
-import Footer from "./Footer";
-import Main from "./Main";
+import Header from "./header";
+import Footer from "./footer";
+import Main from "./main";
 import BackToTop from "../ui/back-to-top";
 
 interface AppLayoutProps {

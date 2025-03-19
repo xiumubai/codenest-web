@@ -4,8 +4,8 @@ import { useState, useEffect } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { clientFetch } from '@/lib/fetch/clientFetch';
 import { Article } from "@/types/article";
-import { ArticleCard } from "./ArticleCard";
-import { Pagination } from "../common/Pagination";
+import { ArticleCard } from "./article-card";
+import { Pagination } from "../common/pagination";
 
 // 获取文章列表数据
 const fetchArticles = async (page: number) => {

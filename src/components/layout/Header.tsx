@@ -3,11 +3,11 @@ import Link from "next/link";
 import { Menu, PlusCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import { usePathname } from 'next/navigation';
-import Logo from './Logo';
-import UserAvatar from "../auth/UserAvatar";
-import ModeToggle from './ModeToggle'
+import Logo from './logo';
+import UserAvatar from "../auth/user-avatar";
+import ModeToggle from './mode-toggle'
 import { useUserStore } from '@/store/user';
-import SearchBar from '../search/SearchBar';
+import SearchBar from '../search/search-bar';
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 const navItems = [

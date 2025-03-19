@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Search, Loader2 } from "lucide-react";
 import { useDebounce } from "@uidotdev/usehooks";
 import { Article } from "@/types/article";
-import ArticleCard from "../article/ArticleCard";
+import { ArticleCard } from "../article/article-card";
 import { Portal } from "../ui/portal";
 import { clientFetch } from "@/lib/fetch/clientFetch";
 import { useRouter } from "next/navigation";

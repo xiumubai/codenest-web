@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
-import SearchDialog from "@/components/search/SearchDialog";
+import SearchDialog from "@/components/search/search-dialog";
 
 export default function SearchBar() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);

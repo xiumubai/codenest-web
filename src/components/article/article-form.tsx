@@ -9,10 +9,10 @@ import { toast } from 'sonner';
 import { useUserStore } from '@/store/user';
 import { clientFetch } from '@/lib/fetch/clientFetch';
 import { getBaseExtensions } from '@/components/editor/extensions';
-import UserAvatar from '@/components/auth/UserAvatar';
-import Outline from '@/components/article/Outline';
+import UserAvatar from '@/components/auth/user-avatar';
+import Outline from '@/components/article/outline';
 import ArticleEditor from '@/components/editor/ArticleEditor';
-import PublishDialog from '@/components/article/PublishDialog';
+import PublishDialog from '@/components/article/publish-dialog';
 
 interface OutlineItem {
   id: string;

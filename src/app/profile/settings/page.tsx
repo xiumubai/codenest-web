@@ -2,9 +2,9 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { UserInfoForm } from "@/components/profile/UserInfoForm";
-import { PhoneBindForm } from "@/components/profile/PhoneBindForm";
-import { PasswordForm } from "@/components/profile/PasswordForm";
+import { UserInfoForm } from "@/components/profile/user-info-form";
+import { PhoneBindForm } from "@/components/profile/phone-bind-form";
+import { PasswordForm } from "@/components/profile/password-form";
 
 export default function SettingsPage() {
   return (

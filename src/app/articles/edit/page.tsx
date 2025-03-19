@@ -2,7 +2,7 @@
 
 import { useSearchParams } from "next/navigation";
 
-import ArticleForm from '@/components/article/ArticleForm';
+import ArticleForm from '@/components/article/article-form';
 
 export default function EditArticlePage() {
   const searchParams = useSearchParams();
