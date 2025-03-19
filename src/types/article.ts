@@ -13,8 +13,11 @@ export interface Article {
   bookmarks?: number;
   author: {
     id: number;
-    name: string;
+    username: string;
     avatar: string;
   };
-  tags: string[];
-} 
+  tag: {
+    id: number;
+    name: string;
+  };
+}

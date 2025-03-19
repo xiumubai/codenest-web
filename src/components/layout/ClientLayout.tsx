@@ -1,7 +1,7 @@
 "use client";
 
 import { Providers } from "@/app/providers";
-import { LayoutProvider } from "@/contexts/LayoutContext";
+import { LayoutProvider } from "@/contexts/layout-context";
 import AppLayout from "@/components/layout/AppLayout";
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import { useLayout } from "@/contexts/LayoutContext";
+import { useLayout } from "@/contexts/layout-context";
 import Header from "./Header";
 import Footer from "./Footer";
 import Main from "./Main";
@@ -27,4 +27,4 @@ export default function AppLayout({ children }: AppLayoutProps) {
         <BackToTop containerSelector="#main"/>
     </div>
   );
-} 
+}

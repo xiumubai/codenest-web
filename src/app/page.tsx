@@ -1,129 +1,123 @@
-"use client";
-
-import { ArrowRight, Code2, BookOpen, Users, Sparkles } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import Image from "next/image";
+'use client';
+import { Button } from "@/components/ui/button"
+import { FeaturedPosts } from "@/components/home/featured-posts"
+import { HeroSection } from "@/components/home/hero-section"
+import { RecentPosts } from "@/components/home/recent-posts"
+import { CategoryList } from "@/components/home/category-list"
+import Link from "next/link"
+import { ArrowRight } from "lucide-react"
 
 export default function Home() {
-  const features = [
-    {
-      icon: <Code2 className="w-6 h-6" />,
-      title: "技术文章",
-      description: "分享前沿技术动态，深入解析开发难题，助你把握技术脉搏",
-    },
-    {
-      icon: <Users className="w-6 h-6" />,
-      title: "问答社区",
-      description: "汇聚开发者智慧，解答技术难题，促进知识分享与交流",
-    },
-    {
-      icon: <BookOpen className="w-6 h-6" />,
-      title: "学习指南",
-      description: "系统化的学习路线，助你突破技术瓶颈，实现技术进阶",
-    },
-  ];
-
   return (
-    <div className="min-h-full container mx-auto">
-      {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row items-center gap-12">
-            <div className="flex-1 space-y-8">
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                CodeNest
-                <span className="text-primary">.</span>
-                <br />
-                你的技术成长伙伴
-              </h1>
-              <p className="text-xl text-muted-foreground">
-                在这里，与开发者一起学习、分享、成长。
-                探索编程世界的无限可能。
-              </p>
-              <div className="flex gap-4">
-                <Link href="/article">
-                  <Button size="lg" className="gap-2">
-                    开始探索
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                </Link>
-                <Link href="/community">
-                  <Button size="lg" variant="outline">
-                    加入社区
-                  </Button>
-                </Link>
-              </div>
-            </div>
-            <div className="flex-1 relative">
-              <div className="relative w-full aspect-square">
-                <Image
-                  src="/hero.png"
-                  alt="Hero Image"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-            </div>
+    <div className="min-h-screen">
+      {/* 全宽英雄区域 */}
+      <section className="relative bg-gradient-to-r from-primary/10 to-background pb-20 pt-16">
+        <div className="container">
+          <HeroSection />
+        </div>
+        <div className="absolute -bottom-10 left-0 right-0 flex justify-center">
+          <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-lg">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              className="animate-bounce"
+            >
+              <path d="M12 5v14" />
+              <path d="m19 12-7 7-7-7" />
+            </svg>
           </div>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 bg-muted/50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold mb-4">
-              为什么选择 CodeNest
-            </h2>
-            <p className="text-muted-foreground">
-              打造优质的技术学习平台，助力开发者成长
-            </p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="p-6 rounded-lg bg-background shadow-sm hover:shadow-md transition-shadow"
-              >
-                <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-4">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
+      {/* 精选文章 - 水平滚动 */}
       <section className="py-20">
-        <div className="container mx-auto px-4">
-          <div className="bg-primary text-primary-foreground rounded-2xl p-12 relative overflow-hidden">
-            <div className="relative z-10 text-center max-w-2xl mx-auto">
-              <Sparkles className="w-12 h-12 mx-auto mb-6" />
-              <h2 className="text-3xl font-bold mb-4">
-                准备好开始你的技术之旅了吗？
-              </h2>
-              <p className="mb-8 text-primary-foreground/80">
-                加入我们，与千万开发者一起，书写你的技术人生。
-              </p>
-              <Link href="/auth/login">
-                <Button
-                  size="lg"
-                  variant="secondary"
-                  className="gap-2"
-                >
-                  立即开始
-                  <ArrowRight className="w-4 h-4" />
-                </Button>
-              </Link>
+        <div className="container mb-8">
+          <div className="flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-semibold">精选文章</h2>
+              <p className="mt-2 text-muted-foreground">探索我们精心挑选的高质量文章</p>
+            </div>
+            <Link href="/articles" className="group flex items-center gap-1 text-primary">
+              查看全部
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
+        </div>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 w-20 bg-gradient-to-r from-background to-transparent z-10"></div>
+          <div className="absolute inset-y-0 right-0 w-20 bg-gradient-to-l from-background to-transparent z-10"></div>
+          <div className="container-fluid overflow-x-auto pb-6 no-scrollbar">
+            <div className="flex w-max gap-6 px-20">
+              <FeaturedPosts />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 分类和最新文章 - 交错布局 */}
+      <section className="bg-muted/30 py-20">
+        <div className="container">
+          <div className="grid grid-cols-1 gap-16 md:grid-cols-12">
+            {/* 分类 */}
+            <div className="md:col-span-4 md:order-last">
+              <div className="sticky top-20 space-y-8">
+                <div className="rounded-xl border bg-card p-6 shadow-sm">
+                  <h3 className="mb-4 text-xl font-semibold">分类</h3>
+                  <CategoryList />
+                </div>
+                <div className="rounded-xl border bg-gradient-to-br from-primary/10 to-background p-6 shadow-sm">
+                  <h3 className="mb-4 text-xl font-semibold">加入我们</h3>
+                  <p className="mb-4 text-muted-foreground">注册账号，开始您的写作之旅</p>
+                  <Link href="/register">
+                    <Button className="w-full bg-primary text-primary-foreground hover:bg-primary/90">立即注册</Button>
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            {/* 最新文章 */}
+            <div className="md:col-span-8">
+              <div className="mb-8">
+                <h2 className="text-3xl font-semibold">最新文章</h2>
+                <p className="mt-2 text-muted-foreground">查看我们平台上最新发布的内容</p>
+              </div>
+              <RecentPosts />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 统计数据 */}
+      <section className="py-20">
+        <div className="container">
+          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
+            <div className="rounded-xl border bg-card p-6 text-center">
+              <div className="text-4xl font-bold text-primary">1.2k+</div>
+              <div className="mt-2 text-muted-foreground">文章</div>
+            </div>
+            <div className="rounded-xl border bg-card p-6 text-center">
+              <div className="text-4xl font-bold text-primary">5k+</div>
+              <div className="mt-2 text-muted-foreground">用户</div>
+            </div>
+            <div className="rounded-xl border bg-card p-6 text-center">
+              <div className="text-4xl font-bold text-primary">15k+</div>
+              <div className="mt-2 text-muted-foreground">评论</div>
+            </div>
+            <div className="rounded-xl border bg-card p-6 text-center">
+              <div className="text-4xl font-bold text-primary">3.5k+</div>
+              <div className="mt-2 text-muted-foreground">分享</div>
             </div>
           </div>
         </div>
       </section>
     </div>
-  );
+  )
 }
+

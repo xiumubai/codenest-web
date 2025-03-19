@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { useLayout } from "@/contexts/LayoutContext";
+import { useLayout } from "@/contexts/layout-context";
 
 export default function AuthLayout({
   children,

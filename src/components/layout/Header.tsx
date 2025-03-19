@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { LogIn, PlusCircle } from "lucide-react";
+import { Menu, PlusCircle } from "lucide-react";
 import { Button } from "../ui/button";
 import { usePathname } from 'next/navigation';
 import Logo from './Logo';
@@ -8,6 +8,8 @@ import UserAvatar from "../auth/UserAvatar";
 import ModeToggle from './ModeToggle'
 import { useUserStore } from '@/store/user';
 import SearchBar from '../search/SearchBar';
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+
 const navItems = [
   { name: '首页', href: '/' },
   { name: '文章', href: '/articles' },
@@ -60,6 +62,34 @@ export default function Header() {
               </Button>
             </Link>
           )}
+
+          {/* 移动端菜单按钮 */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="w-[80%] sm:w-[350px]">
+              <div className="flex flex-col h-full">
+                <div className="flex-1 py-6">
+                  <nav className="flex flex-col space-y-4">
+                    {navItems.map((item) => (
+                      <Link
+                        href={item.href}
+                        key={item.href}
+                        className={`px-2 py-1 rounded-md hover:bg-muted ${
+                          pathname.startsWith(item.href) ? "bg-muted font-medium" : ""
+                        }`}
+                      >
+                        {item.name}
+                      </Link>
+                    ))}
+                  </nav>
+                </div>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </header>

@@ -21,7 +21,7 @@ export default function SearchBar() {
   }, []);
 
   return (
-    <>
+    <div className="hidden">
       <SearchDialog isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       <div className="w-full flex flex-col items-center text-center">
         <div className="flex">
@@ -37,6 +37,6 @@ export default function SearchBar() {
           </button>
         </div>
       </div>
-    </>
+    </div>
   );
 }
