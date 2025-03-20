@@ -1,17 +1,44 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Comment } from '@/types/comment';
-import CommentEditor from '../../editor/CommentEditor';
-import CommentItem from './comment-item';
+import CommentEditor from '../../editor/comment-editor';
+import { CommentItem } from './comment-item';
 import { clientFetch } from "@/lib/fetch/clientFetch";
 
 interface CommentListProps {
-  comments: Comment[];
-  articleId: string;
-  onAddComment: (comment: Comment) => void;
+  articleId: number | string;
 }
 
-export default function CommentList({ comments, articleId, onAddComment }: CommentListProps) {
+export function CommentList({ articleId }: CommentListProps) {
+
+  const [comments, setComments] = useState<Comment[]>([]);
+
+  // 加载评论数据
+  const fetchComments = async (page: number) => {
+    try {
+      const res = await clientFetch(`/comments/${articleId}?page=${page}&pageSize=10`, {
+        method: 'GET'
+      });
+      
+      const newComments = res.data.items;
+      
+      if (page === 1) {
+        setComments(newComments);
+      } else {
+        setComments(prev => [...prev, ...newComments]);
+      }
+    } catch (error) {
+      console.error('加载评论失败:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (articleId) {
+      fetchComments(1);
+    }
+  }, [articleId]);
+
   const handleAddComment = async (content: string) => {
     try {
       const response = await clientFetch('/comments', {
@@ -29,7 +56,7 @@ export default function CommentList({ comments, articleId, onAddComment }: Comme
         throw new Error('评论提交失败');
       }
 
-      onAddComment(response.data?.data);
+      // onAddComment(response.data?.data);
     } catch (error) {
       console.error('评论提交失败:', error);
     }
@@ -71,14 +98,14 @@ export default function CommentList({ comments, articleId, onAddComment }: Comme
         throw new Error('回复提交失败');
       }
 
-      onAddComment(response.data?.data);
+      // onAddComment(response.data?.data);
     } catch (error) {
       console.error('回复提交失败:', error);
     }
   };
 
   return (
-    <div id="comments" className="max-w-4xl mx-auto py-8">
+    <div id="comments" className="mx-auto py-8">
       <h2 className="text-2xl font-bold mb-8">评论</h2>
       <div className="space-y-4">
         <CommentEditor onSubmit={handleAddComment} />

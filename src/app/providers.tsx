@@ -2,25 +2,11 @@
 
 import { useEffect, useState, Suspense } from 'react';
 import Loading from '@/components/ui/loading';
-import { QueryClient, QueryClientProvider as TanstackQueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from 'sonner';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
   const [isFirstMount, setIsFirstMount] = useState(true);
-  
-  const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: {
-            staleTime: 5 * 60 * 1000, // 5分钟
-            gcTime: 10 * 60 * 1000,   // 10分钟
-            refetchOnWindowFocus: false,
-          },
-        },
-      })
-  );
 
   useEffect(() => {
     // 只在组件首次加载时显示加载动画
@@ -41,11 +27,9 @@ export function Providers({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <TanstackQueryClientProvider client={queryClient}>
-      <Suspense fallback={<Loading />}>
-        {children}
-      </Suspense>
+    <Suspense fallback={<Loading />}>
+      {children}
       <Toaster />
-    </TanstackQueryClientProvider>
+    </Suspense>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import ArticleEditor from '@/components/editor/ArticleEditor';
+import ArticleEditor from '@/components/editor/article-editor';
 import { toast } from 'sonner';
 
 interface AnswerEditorProps {

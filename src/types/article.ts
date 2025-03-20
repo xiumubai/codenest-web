@@ -1,16 +1,20 @@
+
+// 定义 Article 类型
 export interface Article {
   id: number;
   title: string;
-  description: string;
   content: string;
+  description: string;
   cover: string;
-  category: string;
-  readingTime: string;
+  isDraft: boolean;
+  publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  views: number;
-  likes: number;
-  bookmarks?: number;
+  viewCount: number;
+  likeCount: number;
+  commentCount: number;
+  authorId: number;
+  tagId: number;
   author: {
     id: number;
     username: string;
@@ -19,5 +23,8 @@ export interface Article {
   tag: {
     id: number;
     name: string;
+    createdAt: string;
+    updatedAt: string;
   };
+  liked: boolean;
 }

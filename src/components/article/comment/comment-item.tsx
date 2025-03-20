@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { Comment } from '@/types/comment';
-import CommentEditor from '../../editor/CommentEditor';
+import CommentEditor from '../../editor/comment-editor';
 
 interface CommentItemProps {
   comment: Comment;
@@ -11,7 +11,7 @@ interface CommentItemProps {
   level?: number;
 }
 
-export default function CommentItem({ comment, onReply, level = 0 }: CommentItemProps) {
+export function CommentItem({ comment, onReply, level = 0 }: CommentItemProps) {
   const [showReplyEditor, setShowReplyEditor] = useState(false);
   const maxLevel = 3; // 最大嵌套层级
 

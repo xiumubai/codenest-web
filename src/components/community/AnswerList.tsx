@@ -4,10 +4,10 @@ import { useState, memo } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
-import ArticleViewer from '@/components/editor/ArticleViewer';
+import ArticleViewer from '@/components/editor/article-viewer';
 import { ThumbsUp, MessageSquare } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import ArticleEditor from '@/components/editor/ArticleEditor';
+import ArticleEditor from '@/components/editor/article-editor';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 

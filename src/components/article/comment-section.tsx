@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { ThumbsUp, Reply, MoreHorizontal } from "lucide-react"
+import { clientFetch } from "@/lib/fetch/clientFetch";
 
 // 模拟评论数据
 const initialComments = [
@@ -57,11 +58,45 @@ const initialComments = [
   },
 ]
 
+
+
 export function CommentSection({ articleId }: { articleId: string }) {
   const [comments, setComments] = useState(initialComments)
   const [newComment, setNewComment] = useState("")
   const [replyingTo, setReplyingTo] = useState<number | null>(null)
   const [replyContent, setReplyContent] = useState("")
+  const [isLoadingComments, setIsLoadingComments] = useState(false);
+  const [hasMoreComments, setHasMoreComments] = useState(true);
+
+
+  // 加载评论数据
+  const fetchComments = async (page: number) => {
+    try {
+      setIsLoadingComments(true);
+      const res = await clientFetch(`/comments/${articleId}?page=${page}&pageSize=10`, {
+        method: 'GET'
+      });
+      
+      const newComments = res.data.items;
+      setHasMoreComments(newComments.length === 10);
+      
+      if (page === 1) {
+        setComments(newComments);
+      } else {
+        setComments(prev => [...prev, ...newComments]);
+      }
+    } catch (error) {
+      console.error('加载评论失败:', error);
+    } finally {
+      setIsLoadingComments(false);
+    }
+  };
+
+  useEffect(() => {
+    if (articleId) {
+      fetchComments(1);
+    }
+  }, [articleId]);
 
   const handleCommentSubmit = () => {
     if (!newComment.trim()) return

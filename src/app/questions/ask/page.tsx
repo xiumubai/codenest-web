@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { toast } from 'sonner';
 import { Tag } from '@/types/question';
-import ArticleEditor from '@/components/editor/ArticleEditor';
+import ArticleEditor from '@/components/editor/article-editor';
 
 // 添加必填标记组件
 function RequiredLabel({ children }: { children: React.ReactNode }) {

@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/card';
 import { formatDistanceToNow } from 'date-fns';
 import { zhCN } from 'date-fns/locale';
 import { MessageSquare, ThumbsUp } from 'lucide-react';
-import ArticleViewer from '@/components/editor/ArticleViewer';
+import ArticleViewer from '@/components/editor/article-viewer';
 import AnswerEditor from '@/components/community/AnswerEditor';
 import AnswerList from '@/components/community/AnswerList';
 import { cn } from '@/lib/utils';

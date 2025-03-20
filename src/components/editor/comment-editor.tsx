@@ -31,11 +31,6 @@ export default function CommentEditor({
 
   return (
     <div className={`space-y-4 ${replyTo ? 'ml-12 mt-2' : ''}`}>
-      {replyTo && (
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
-          <span>回复 @{replyTo.username}</span>
-        </div>
-      )}
       <div className="min-h-[100px] rounded-lg border bg-background overflow-hidden focus-within:ring-2 focus-within:ring-primary">
         <textarea
           value={content}

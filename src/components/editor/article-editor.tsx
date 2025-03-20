@@ -2,9 +2,9 @@
 
 // import { useEffect, useState } from 'react';
 import { useEditor } from '@tiptap/react';
-import BaseEditor from './BaseEditor';
-import EditorToolbar from './EditorToolbar';
-import EditorBubbleMenu from './EditorBubbleMenu';
+import BaseEditor from './base-editor';
+import EditorToolbar from './editor-toolbar';
+import EditorBubbleMenu from './editor-bubble-menu';
 // import ArticleOutline from '../article/ArticleOutline';
 import { getBaseExtensions } from './extensions';
 import { toast } from 'sonner';

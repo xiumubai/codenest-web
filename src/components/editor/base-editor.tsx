@@ -14,13 +14,15 @@ interface BaseEditorProps {
 }
 
 export default function BaseEditor({
-  content,
-  onChange,
-  editable = true,
-  className,
-  minHeight = '6rem',
   editor,
+  content,
+  className,
+  editable = true,
+  minHeight = '6rem',
+  onChange,
 }: BaseEditorProps) {
+  console.log('content', content);
+  
   const internalEditor = useEditor({
     extensions: getBaseExtensions(editable),
     content,

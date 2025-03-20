@@ -11,7 +11,7 @@ import { clientFetch } from '@/lib/fetch/clientFetch';
 import { getBaseExtensions } from '@/components/editor/extensions';
 import UserAvatar from '@/components/auth/user-avatar';
 import Outline from '@/components/article/outline';
-import ArticleEditor from '@/components/editor/ArticleEditor';
+import ArticleEditor from '@/components/editor/article-editor';
 import PublishDialog from '@/components/article/publish-dialog';
 
 interface OutlineItem {
