@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       {/* 全宽英雄区域 */}
-      <section className="relative bg-gradient-to-r from-primary/10 to-background pb-20 pt-16">
+      <section className="relative from-primary/10 to-background pb-20 pt-16">
         <div className="container">
           <HeroSection />
         </div>

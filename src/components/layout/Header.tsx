@@ -14,6 +14,8 @@ const navItems = [
   { name: '首页', href: '/' },
   { name: '文章', href: '/articles' },
   { name: '问答', href: '/questions' },
+  { name: '论坛', href: '/forum' },
+  { name: '小册', href: '/books' },
 ];
 
 export default function Header() {
@@ -43,12 +45,6 @@ export default function Header() {
           </nav>
         </div>
         <div className="ml-auto flex items-center gap-4">
-          <Link href="/ask-question">
-            <Button size="sm" variant="outline" className="hidden md:flex gap-1">
-              <PlusCircle className="h-4 w-4" />
-              提问
-            </Button>
-          </Link>
           <SearchBar />
           <ModeToggle />
           {userInfo ? (

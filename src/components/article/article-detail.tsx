@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import { formatDate } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Heart, MessageSquare, Share2, Bookmark, Copy } from "lucide-react"
@@ -152,7 +153,7 @@ export function ArticleDetail({ articleId }: { articleId: string }) {
                 <div>
                   <div className="font-medium">{article?.author?.username}</div>
                   <div className="text-sm text-muted-foreground">
-                    {/* {format(new Date(article?.createdAt), "yyyy年MM月dd日", { locale: zhCN })} · {article?.viewCount} 次阅读 */}
+                    {article?.createdAt ? formatDate(article.createdAt) : ''}
                   </div>
                 </div>
               </div>
@@ -162,11 +163,6 @@ export function ArticleDetail({ articleId }: { articleId: string }) {
           <div className="relative my-8 h-[300px] w-full overflow-hidden rounded-lg md:h-[400px]">
             <Image src={article?.cover || "/placeholder.svg"} alt={article?.title || 'cover'} fill className="object-cover" />
           </div>
-
-          {/* <div
-            className="prose prose-lg max-w-none dark:prose-invert prose-headings:font-semibold prose-a:text-primary prose-a:no-underline hover:prose-a:underline"
-            dangerouslySetInnerHTML={{ __html: article.content }}
-          /> */}
 
           {/* 文章内容 */}
           <ArticleViewer content={article?.content || ''} />
